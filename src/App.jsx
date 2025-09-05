@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Import pages
-import { Home, About } from './pages';
+import { Home, About, Project, Contact, Faq } from './pages';
 
 // Import CSS files (these should be available in src/assets/css/)
 import './assets/css/bootstrap.css';
@@ -66,6 +66,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/about.html" element={<About />} />
+              <Route path="/project" element={<Project />} />
+              <Route path="/project.html" element={<Project />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact.html" element={<Contact />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/faq.html" element={<Faq />} />
         </Routes>
       </div>
     </Router>
