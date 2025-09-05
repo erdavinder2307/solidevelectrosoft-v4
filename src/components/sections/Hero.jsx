@@ -60,17 +60,63 @@ const Hero = () => {
               style={{
                 backgroundImage: `url(${slide.background})`,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+                position: 'relative'
               }}
             >
-              <div className="tp-slider-text white-box">
-                <span className="text-white">{slide.subtitle}</span>
+              {/* Dark overlay for better text readability */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  zIndex: 1
+                }}
+              ></div>
+              
+              <div 
+                className="tp-slider-text white-box" 
+                style={{ 
+                  position: 'absolute', 
+                  bottom: '80px', 
+                  left: '50px', 
+                  zIndex: 2,
+                  maxWidth: '600px'
+                }}
+              >
+                <span 
+                  className="text-white"
+                  style={{
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                    fontSize: '16px',
+                    fontWeight: '500'
+                  }}
+                >
+                  {slide.subtitle}
+                </span>
                 <h3 
                   className="tp-slider-title tp-sl-lg-text mt-40 mb-55"
+                  style={{
+                    color: '#ffffff',
+                    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.9)',
+                    fontWeight: 'bold',
+                    lineHeight: '1.2'
+                  }}
                   dangerouslySetInnerHTML={{ __html: slide.title }}
                 ></h3>
 
-                <a href="contact.html" className="tp-slider-btn">
+                <a 
+                  href="contact.html" 
+                  className="tp-slider-btn"
+                  style={{
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                    position: 'relative',
+                    zIndex: 3
+                  }}
+                >
                   <span>
                     <svg width="53" height="8" viewBox="0 0 53 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -92,10 +138,6 @@ const Hero = () => {
           </div>
         ))}
       </Slider>
-      
-      {/* Slider Arrow Container */}
-      <div className="slider-arrow-3 d-flex justify-content-between align-items-center">
-      </div>
     </div>
   );
 };
