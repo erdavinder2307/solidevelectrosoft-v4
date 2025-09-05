@@ -1,0 +1,98 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  10. TESTIMONIAL CSS START
+/*----------------------------------------*/
+
+.tp-testimonial-area {
+    @media #{$lg} {
+        padding: 50px 0;
+    }
+
+    @media #{$xs} {
+        padding-right: 0;
+        padding-left: 0;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+.tp-testimonial {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 25px 0;
+
+    & .slick-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        @media #{$lg} {
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            margin-top: 30px;
+        }
+        & i {
+            font-size: 17px;
+            width: 55px;
+            height: 55px;
+            border: 1px solid var(--tp-border-1);
+            line-height: 55px;
+            border-radius: 50%;
+        }
+    }
+
+    & .slick-prev {
+        z-index: 1;
+        left: -120px;
+
+        &::after {
+            position: absolute;
+            top: 52%;
+            right: -26px;
+            content: "";
+            width: 55px;
+            height: 1.3px;
+            background-color: var(--tp-common-black);
+        }
+    }
+
+    & .slick-next {
+        right: -120px;
+
+        &::before {
+            position: absolute;
+            top: 52%;
+            left: -26px;
+            content: "";
+            width: 55px;
+            height: 1.3px;
+            background-color: var(--tp-common-black);
+        }
+    }
+}
+
+.tp-testi-reivew {
+    font-size: 30px;
+    line-height: 1.5;
+
+    & br {
+        @media #{$lg,$md,$sm,$xs} {
+            display: none
+        }
+    }
+
+    @media #{$sm,$xs} {
+        font-size: 20px;
+    }
+}
+
+.tp-testi-reviewer {
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+
+}

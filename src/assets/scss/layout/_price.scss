@@ -1,0 +1,87 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  14. PRICE CSS START
+/*----------------------------------------*/
+
+.price-table {
+    &__item {
+        border: 1px solid #F1F1F1;
+        @include transition(.3s);
+
+        &:hover {
+            box-shadow: (0px 24px 27px rgba(227, 227, 227, 0.3));
+        }
+
+    }
+
+    &__top {
+
+        & span {
+            font-size: 12px;
+            font-family: var(--tp-ff-heading);
+            line-height: 22px;
+            text-transform: uppercase;
+            letter-spacing: .18em;
+            font-weight: 500;
+
+            & i {
+                font-size: 21px;
+            }
+        }
+    }
+
+    &__price {
+        font-size: 53px;
+    }
+
+    &__title {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    &__list {
+        font-size: 16px;
+        font-family: var(--tp-ff-heading);
+        color: var(--tp-text-body);
+
+        & li {
+            padding-bottom: 15px;
+            display: inline-block;
+            @media #{$xl} {
+                font-size: 13px;
+            }
+            @media #{$lg} {
+                display: block;
+               
+            }
+            @media #{$md} {
+                font-size:12px;
+            }
+            @media #{$md,$sm} {
+                display: block;
+
+            }
+            & span {
+                & i {
+                    font-size: 8px;
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    background: #FFFFFF;
+                    border: 1px solid #EDEDED;
+                    border-radius: 50%;
+                    text-align: center;
+                    display: inline-block;
+                    margin-right: 15px;
+                    color: var(--tp-common-black);
+                }
+            }
+        }
+
+        & li.disabled {
+            color: var(--tp-text-body);
+            opacity: 0.3;
+        }
+    }
+}

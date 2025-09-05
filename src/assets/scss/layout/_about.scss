@@ -1,0 +1,212 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  06. ABOUT CSS START
+/*----------------------------------------*/
+.tp-about-area {
+    @media #{$xs} {
+        padding-top: 40px;
+    }
+}
+
+.tp-about-info {
+    display: inline-block;
+    padding: 63px 90px;
+    border: 10px solid var(--tp-common-white);
+    position: absolute;
+    bottom: -138px;
+    @media #{$xs} {
+        position: static;
+        display: block;
+        border: 0;
+    }
+    & h3 {
+        font-size: 100px;
+    }
+
+    & h4 {
+        font-size: 24px;
+        color: var(--tp-grey-1);
+    }
+}
+
+.tp-about-left {
+    @media #{$xs} {
+        padding-right: 0;
+    }
+}
+
+.tp-ab-section {
+    @media #{$xs} {
+        padding-top: 30px;
+    }
+}
+
+.tp-ab-info {
+    @media #{$xs,$md} {
+        padding-right: 0;
+        padding-top: 20px;
+    }
+
+    & p {
+        position: relative;
+        padding-left: 20px;
+        padding-right: 70px;
+        margin-bottom: 40px;
+        font-size: 16px;
+
+        @media #{$xs} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 1px;
+            background-color: var(--tp-common-black);
+
+            @media #{$xs} {
+                display: none;
+            }
+        }
+    }
+}
+
+.tp-flex-reverse {
+    @media #{$xs,$md} {
+        flex-direction: column-reverse;
+    }
+}
+
+.tp-ab-subtitle {
+    font-size: 12px;
+    line-height: 22px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-family: var(--tp-ff-heading);
+}
+
+.tp-ab-title {
+    font-size: 45px;
+    @media #{$xs} {
+        font-size: 30px;
+    }
+}
+
+
+/* about page style */
+
+
+.about-tb-content .nav-links {
+    margin-right: 60px;
+    font-size: 16px;
+    font-family: var(--tp-ff-heading);
+    text-transform: capitalize;
+    color: var(--tp-common-black);
+    @media #{$xs} {
+        margin-right: 20px;
+    }
+}
+
+.nav-links.active {
+    text-decoration: underline;
+}
+
+.about-info-box {
+    width: 330px;
+    height: 340px;
+    background-color: rgba(0, 0, 0, .8);
+
+    & .box-title {
+        color: var(--tp-common-white);
+        font-size: 100px;
+    }
+
+    & .box-subtitle {
+        color: var(--tp-common-white);
+        font-size: 24px;
+    }
+}
+
+.about-details-info {
+    @media #{$xs} {
+        padding-right: 0;
+    }
+}
+
+.about-info-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    left: 50%;
+    border: 10px solid #fff;
+    bottom: 0;
+    right: 0;
+    @media #{$xs} {
+        margin-top: 30px;
+        position: static;
+        transform: none;
+        border: 0;
+    }
+}
+.tab-pane {
+    margin-bottom: 20px;
+}
+.dots-img {
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    z-index: -1;
+}
+
+.ab-fea-bg {
+    position: absolute;
+    left: 0;
+    width: 67%;
+    height: 100%;
+    background-size: cover;
+
+    @media #{$md} {
+        width: 50%;
+    }
+
+    @media #{$xs} {
+        width: 100%;
+        position: static;
+        height: 50vh;
+        display: none;
+    }
+}
+
+.tp-feaure-ct-box {
+    padding-top: 400px;
+
+    @media #{$md} {
+        padding-top: 100px;
+    }
+
+    @media #{$xs} {
+        padding-top: 30px;
+    }
+}
+
+.tp-ab-text {
+    @media #{$xl} {
+        padding-left: 100px;
+        padding-right: 30px;
+    }
+    @media #{$xs} {
+        padding-top: 90px;
+    }
+}
+
+.about-details-page  {
+    @media #{$xs} { 
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}

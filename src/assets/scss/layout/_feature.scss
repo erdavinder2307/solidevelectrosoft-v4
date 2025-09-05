@@ -1,0 +1,113 @@
+@use '../utils' as *;
+/*----------------------------------------*/
+/*  09. FEATURE CSS START
+/*----------------------------------------*/
+.tp-fe-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-size: cover;
+    width: 70.5%;
+
+    @media #{$xl,$lg} {
+        width: 50%;
+    }
+
+}
+
+.tp-feature-img {
+    height: 100%;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.tp-modify-width {
+    width: 29.5%;
+
+    @media #{$xl,$lg} {
+        width: 50%;
+    }
+
+    @media #{$xl,$lg} {
+        width: 50%;
+    }
+
+    @media #{$md,$sm,$xs} {
+        width: 100%;
+        display: none;
+    }
+}
+
+.tp-cta-area {
+    @media #{$xl} {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    @media #{$xs,$lg} {
+        padding-top: 30px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.tp-cta-2-left {
+    height: 100%;
+    @media #{$xl} {
+        padding-left: 50px;
+        padding-right:50px;
+    }
+    @media #{$lg} {
+        padding-left: 40px;
+        padding-right:40px;
+    }
+    @media #{$xs} {
+        padding-left: 15px;
+        padding-right:15px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+}
+.tp-cta-img{
+    height: 100%;
+    & img {
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.tp-cta-2-right {
+    height: 100%;
+    @media #{$xl} {
+        padding-left: 50px;
+        padding-right:50px;
+    }
+    @media #{$lg} {
+        padding-left: 40px;
+        padding-right:40px;
+    }
+    @media #{$xs} {
+        padding-left: 15px;
+        padding-right:15px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+.tp-cta-2-left p {
+    @media #{$xs,$xl,$lg} {
+        padding-right: 0;
+    }
+
+}
+
+.tp-cta-2-right p {
+    @media #{$xs,$xl,$lg} {
+        padding-right: 0;
+    }
+}

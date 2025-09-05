@@ -1,0 +1,46 @@
+
+// font url
+
+$font-url: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Poppins:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,600;1,700&display=swap';
+
+// font family
+$font-family: (
+    ff: (
+        body: "'DM Sans', sans-serif",
+        heading: "'Poppins', sans-serif",
+        poppins: "'Poppins', sans-serif",
+        p: "'DM Sans', sans-serif",
+        fontawesome: '"Font Awesome 5 Pro"',
+    )
+);
+
+// font weight
+$font-scale: (
+    fw: (
+        normal: normal,
+        elight: 200,
+        light: 300,
+        regular: 400,
+        medium: 500,
+        sbold: 600,
+        bold: 700,
+        ebold: 800,
+        black: 900,
+    )
+);
+
+// font size
+$font-size: (
+    fz: (
+        body: 14px,
+        p: 16px,
+        h1: 40px,
+        h2: 36px,
+        h3: 24px,
+        h4: 20px,
+        h5: 16px,
+        h6: 14px,
+    )
+);
+
+

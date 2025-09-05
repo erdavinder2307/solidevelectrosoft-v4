@@ -1,0 +1,92 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  24. BREADCRUMB CSS START
+/*----------------------------------------*/
+
+.breadcrumb{
+    &__area{
+        padding: 150px 0;
+    }
+    &__title{
+        font-size: 60px;
+        color: var(--tp-common-white);
+        text-transform: capitalize;
+        @media #{$xs} {
+            font-size: 35px;
+        }
+        @media #{$sm}{
+            font-size: 40px;
+        }
+        &-2{
+            font-size: 50px;
+            line-height: 1.1;
+            margin-top: 12px;
+            @media #{$xs}{
+                font-size: 26px;
+            }
+            @media #{$sm}{
+                font-size: 40px;
+            }
+        }
+        &-pre{
+            display: inline-block;
+            height: 24px;
+            line-height: 26px;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+            background: var(--tp-theme-2);
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            padding: 0 7px;
+            margin-bottom: 12px;
+        }
+    }
+    &__list{
+        & span{
+            letter-spacing: .18em;
+            font-family: var(--tp-ff-heading);
+            font-size: 12px;
+            color: var(--tp-common-white);
+            font-weight: 500;
+            padding-right: 3px;
+            margin-right: 3px;
+            text-transform: uppercase;
+            & a{
+                &:hover{
+                    color: var(--tp-theme-1);
+                }
+            }
+        }
+        &-2{
+            & span{
+                font-size: 14px;
+                color: var(--tp-text-11);
+                font-weight: 500;
+                padding-right: 3px;
+                margin-right: 3px;
+                text-transform: capitalize;
+                & a{
+                    &:hover{
+                        color: var(--tp-theme-1);
+                    }
+                }
+            }
+        }
+    }
+    &__overlay{
+        position: relative;
+
+        &::after{
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 23, 23, .25);
+        }
+    }
+}

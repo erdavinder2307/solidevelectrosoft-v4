@@ -1,0 +1,94 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  11. PORTFOLIO CSS START
+/*----------------------------------------*/
+
+
+.tp-portfolio-item {
+    @media #{$xs,$md} {
+        margin-bottom: 20px;
+    }
+
+    & img {
+        position: relative;
+    }
+
+    & span {
+        font-size: 12px;
+        font-family: var(--tp-ff-heading);
+        text-transform: uppercase;
+        background-color: var(--tp-common-black);
+        color: var(--tp-common-white);
+        padding: 12px 15px;
+        display: inline-block;
+        line-height: 22px;
+        letter-spacing: 0.18em;
+    }
+}
+
+.portfolio-tag {
+    position: absolute;
+    bottom: 0;
+    right: 11.5px;
+}
+
+.tp-portfolio-info {
+    @media #{$xs} {
+        text-align: center;
+    }
+}
+
+.tp-portfolio-subtitle {
+    font-size: 12px;
+    line-height: 22px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-family: var(--tp-ff-heading);
+}
+
+.tp-portfolio-title {
+    font-size: 45px;
+}
+
+.tp-pf-btn {
+    @media #{$xs} {
+        text-align: center;
+    }
+
+    & button {
+        font-weight: 500;
+        font-size: 14px;
+        font-family: var(--tp-ff-heading);
+        margin-right: 70px;
+        text-transform: uppercase;
+        letter-spacing: .18em;
+
+        @media #{$lg} {
+            margin-right: 30px;
+        }
+
+        @media #{$xs} {
+            font-size: 400;
+            font-size: 12px;
+            letter-spacing: 0;
+            margin-right: 20px;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    & .active {
+        font-weight: 500;
+        color: var(--tp-common-black);
+    }
+}
+
+.mb-reset {
+    @media #{$xs,$md} {
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
+}

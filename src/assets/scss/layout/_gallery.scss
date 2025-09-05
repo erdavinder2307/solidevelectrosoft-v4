@@ -1,0 +1,234 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  07. GALLERY CSS START
+/*----------------------------------------*/
+
+.tp-gallery-area {
+    @media #{$md,$sm,$xs} {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.tp-gallery-item {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    & img {
+        width: 100%;
+    }
+
+    &:hover {
+        & a {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+.tp-gallery-item {
+    overflow: hidden;
+
+    & img {
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+.tp-image-gallery {
+    @media #{$xs} {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+
+.circle {
+    background: #f00;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 99;
+    transform: translate3d(-50%, -50%, 0);
+    transition: transform 0.2s cubic-bezier(.02, 1.23, .79, 1.08);
+}
+
+
+
+
+.cursor-outer {
+    margin-left: -15px;
+    margin-top: -15px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    z-index: 10000000;
+    opacity: 0.5;
+    transition: all 0.08s ease-out;
+}
+
+.mouseCursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translateZ(0);
+    visibility: hidden;
+    text-align: center;
+}
+
+.cursor-inner {
+    margin-left: -3px;
+    margin-top: -3px;
+    width: 6px;
+    height: 6px;
+    z-index: 10000001;
+    background-color: #000;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+    & span {
+        color: #fff;
+        line-height: 80px;
+        opacity: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 12px;
+    }
+
+    &.cursor-big {
+        & span {
+            opacity: 1;
+        }
+    }
+}
+
+.mouseCursor.cursor-big {
+    width: 80px;
+    height: 80px;
+}
+
+.mouseCursor.cursor-big {
+    &.cursor-outer {
+        display: none;
+    }
+}
+
+.tp-cursor-point-area {
+    cursor: none;
+}
+
+
+.tp-gallery-space {
+    & .slick-slide {
+        margin: 0 15px;
+    }
+}
+
+.gt-25 {
+    margin-top: 25px;
+
+    @media #{$xs} {
+        margin-top: 0;
+    }
+}
+
+.tp-col-8 {
+    width: 62.5%;
+
+    @media #{$xs} {
+        width: 100%;
+
+    }
+}
+
+.tp-col-4 {
+    width: 37.5%;
+
+    @media #{$xs} {
+        width: 100%;
+
+    }
+}
+
+.tp-col-9 {
+    width: 73.9%;
+
+    @media #{$xs} {
+        width: 100%;
+
+    }
+}
+
+.tp-col-3 {
+    width: 26%;
+
+    @media #{$xs} {
+        width: 100%;
+
+    }
+}
+
+.tp-img-gl-item {
+    overflow: hidden;
+
+    & img {
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    @media #{$xs} {
+        margin-bottom: 30px;
+        margin-top: 0;
+    }
+}
+.tp-gl-tag {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    & a {
+        color: var(--tp-common-white);
+        background-color: var(--tp-common-black);
+        padding: 8px 15px ;
+        display: inline-block;
+        text-transform: capitalize;
+    }
+  }
+.tp-portfolio-item {
+    overflow: hidden;
+}
+.project-gallery-image {
+    overflow: hidden;
+
+    & img {
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+#qodef-custom-cursor {
+    position: fixed;
+    top: -4px;
+    left: -4px;
+    pointer-events: none;
+    z-index: 9999999;
+    mix-blend-mode: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8px;
+    height: 8px;
+    visibility: hidden;
+}

@@ -1,0 +1,266 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  17. FOOTER CSS START
+/*----------------------------------------*/
+.tp-footer {
+    &__widget {
+        &-title {
+            color: var(--tp-grey-5);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            line-height: 22px;
+            margin-bottom: 20px;
+        }
+
+        & ul {
+            & li {
+                & span {
+                    list-style: none;
+                    font-size: 16px;
+                    color: var(--tp-common-white);
+                    line-height: 35.5px;
+                }
+
+                a {
+                    font-size: 16px;
+                    color: var(--tp-common-white);
+                    line-height: 35.5px;
+                }
+                &:hover {
+                   opacity: .8;
+                }
+            }
+        }
+    }
+
+    &__2 {
+        & ul {
+            & li {
+                & span {
+                    list-style: none;
+                    font-size: 16px;
+                    color: var(--tp-grey-5);
+                    line-height: 35.5px;
+                }
+                a {
+                    font-size: 16px;
+                    color: var(--tp-grey-5);
+                    line-height: 35.5px;
+                    &:hover {
+                        color: var(--tp-common-white);
+    
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+.footer-form-2 {
+    position: relative;
+
+    & input {
+        width: 100%;
+        background-color: transparent;
+        border: 0;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #fff;
+        color: var(--tp-grey-5);
+        font-size: 16px;
+        font-family: var(--tp-ff-heading);
+        padding-right: 150px;
+        @media #{$xs} {
+            padding-right: 130px;
+        }
+        @include tp-placeholder {
+            color: var(--tp-grey-5);
+            font-size: 16px;
+        }
+    }
+
+    & button {
+        position: absolute;
+        font-size: 16px;
+        right: 0;
+        text-transform: uppercase;
+        color: var(--tp-common-white);
+        font-weight: 500;
+
+        & i {
+            padding-left: 5px;
+        }
+    }
+}
+.footer-form-3 {
+   
+
+    & input {
+        width: 100%;
+        background-color: transparent;
+        border: 0;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #fff;
+        color: var(--tp-grey-5);
+        font-size: 16px;
+        font-family: var(--tp-ff-heading);
+        padding-right: 50px;
+        margin-bottom: 50px;
+        margin-top: 20px;
+        @media #{$xs} {
+            padding-right: 130px;
+        }
+        @include tp-placeholder {
+            color: var(--tp-grey-5);
+            font-size: 16px;
+        }
+    }
+
+    & button {
+        font-size: 16px;
+        right: 0;
+        text-transform: uppercase;
+        color: var(--tp-common-white);
+        font-weight: 500;
+        &:hover{
+            opacity: .8;
+        }
+
+        & i {
+            padding-left: 5px;
+        }
+    }
+}
+
+.tp-footer__top {
+    &-title {
+        font-size: 36px;
+        color: var(--tp-common-white);
+
+        @media #{$lg} {
+            font-size: 30px;
+        }
+
+        @media #{$md} {
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media #{$sm ,$xs} {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+    }
+
+    & .tp-border-button {
+        border-bottom: 1px solid #fff;
+    }
+}
+
+.tp-insta {
+    & .tp-insta__item {
+        position: relative;
+
+        @media #{$md, $sm ,$xs} {
+            margin-left: 0;
+            margin-right: 20px;
+        }
+
+        & a {
+            display: block;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 35px;
+            color: var(--tp-common-white);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(23, 23, 23, .5);
+            transition: .3s;
+            visibility: hidden;
+        }
+
+        &:hover {
+            & a {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            &::before {
+                visibility: visible;
+            }
+
+        }
+    }
+}
+
+.tp-footer-border {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tp-copyrigh-text {
+    color: var(--tp-grey-5);
+    font-size: 15px;
+}
+
+.tp-footer-social-icon {
+    & ul {
+        & li {
+            list-style: none;
+            display: inline-block;
+            margin-left: 20px;
+
+            @media #{$sm,$xs} {
+                margin-left: 0px;
+                margin-right: 20px;
+            }
+
+            & a {
+                font-size: 16px;
+                color: var(--tp-grey-5);
+            }
+        }
+    }
+}
+
+
+.tp-ft-social-icons {
+    ul {
+        li{
+            display: inline-block;
+            margin-right: 20px;
+            &:last-child{
+                margin-right: 0;
+            }
+            &:hover{
+                & a {
+                    opacity: .8;
+                }
+            }
+        }
+    }
+}
+
+.footer-col-2-2 {
+	padding-left: 50px;
+    @media #{$md,$xs} {
+        padding-left: 0;
+    }
+}

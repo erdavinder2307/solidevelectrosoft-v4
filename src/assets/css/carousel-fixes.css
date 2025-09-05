@@ -1,0 +1,264 @@
+/* Carousel and Horizontal Scroll Fixes */
+
+/* Ensure body and html don't have horizontal overflow */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Root container fixes */
+#root {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Header specific fixes to prevent vertical scroll issues */
+header {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+.header__area {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.header__transparent {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+.header__main {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Fix for missing pr-90 and pl-90 classes - reduce padding to prevent overflow */
+.pr-90 {
+  padding-right: 30px !important;
+}
+
+.pl-90 {
+  padding-left: 30px !important;
+}
+
+/* Fix for missing pr-15 and pl-15 classes */
+.pr-15 {
+  padding-right: 15px;
+}
+
+.pl-15 {
+  padding-left: 15px;
+}
+
+/* Offcanvas fixes */
+.offcanvas__area {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+.body-overlay {
+  overflow-x: hidden !important;
+}
+
+/* Search form fixes */
+.tp-search-form {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Bootstrap row and container fixes to prevent horizontal scroll */
+.container,
+.container-fluid {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Fix any columns that might overflow */
+.col,
+[class*="col-"] {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Slick carousel container fixes */
+.slick-slider {
+  overflow: hidden !important;
+  max-width: 100%;
+}
+
+.slick-list {
+  overflow: hidden !important;
+  max-width: 100%;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+  max-width: none;
+}
+
+/* Fix for gallery area that might cause horizontal scroll */
+.tp-gallery-area {
+  overflow-x: hidden !important;
+  max-width: 100%;
+}
+
+.tp-gallery-slider {
+  overflow: hidden !important;
+}
+
+.tp-gallery-slider-active {
+  overflow: hidden !important;
+}
+
+/* Brand slider fixes */
+.tp-brand-area {
+  overflow-x: hidden !important;
+}
+
+.tp-brand-slider {
+  overflow: hidden !important;
+}
+
+.tp-brand-silder-actiive {
+  overflow: hidden !important;
+}
+
+/* Team area fixes */
+.tp-team-area {
+  overflow-x: hidden !important;
+}
+
+/* Testimonial area fixes */
+.tp-testimonial-area {
+  overflow-x: hidden !important;
+}
+
+.tp-testimonial-active {
+  overflow: hidden !important;
+}
+
+/* Hero/Slider area fixes */
+.tp-slider-area {
+  overflow-x: hidden !important;
+}
+
+.tp-silder-acive-3 {
+  overflow: hidden !important;
+}
+
+/* Fix any negative margins that might cause horizontal scroll */
+.row > * {
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  max-width: 100%;
+}
+
+/* Ensure all images are responsive */
+img {
+  max-width: 100% !important;
+  height: auto;
+}
+
+/* Slick arrows positioning fixes */
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+/* Fix for potential full-width issues */
+.tp-cursor-point-area {
+  overflow-x: hidden !important;
+}
+
+/* Box container fix */
+.box {
+  overflow-x: hidden !important;
+}
+
+/* Ensure slick slides don't break layout */
+.slick-slide {
+  float: none !important;
+  display: flex;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+.slick-slide > div {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Additional fixes for components that might overflow */
+.tp-hero-area,
+.tp-about-area,
+.tp-cta-area,
+.tp-feature-area {
+  overflow-x: hidden !important;
+}
+
+/* Fix for any position absolute elements that might cause overflow */
+.position-relative {
+  overflow-x: hidden !important;
+}
+
+/* Media queries for responsive fixes */
+@media (max-width: 1199px) {
+  .pr-90, .pl-90 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .pr-90, .pl-90 {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .pr-15, .pl-15, .pr-90, .pl-90 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  
+  .container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  
+  /* Extra mobile fixes */
+  body, html {
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  .header__area {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}

@@ -1,0 +1,31 @@
+@use '../utils' as *;
+
+/*--
+    - Background color
+-----------------------------------------*/
+.grey-bg {
+	background: var(--tp-grey-1);
+}
+.grey-bg-2 {
+	background: var(--tp-grey-2);
+}
+
+.white-bg {
+	background: var(--tp-common-white);
+}
+
+.black-bg {
+	background: var(--tp-common-black);
+}
+.black-bg-2{
+	background-color: #222;
+}
+.grey-bg-3{
+	background-color: #222;
+}
+.grey-bg-4 {
+	background-color: var(--tp-grey-3);
+}
+.off-canvas-bg {
+	background-color: #212121;
+}

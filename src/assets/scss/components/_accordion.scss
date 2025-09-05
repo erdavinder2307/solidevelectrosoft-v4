@@ -1,0 +1,103 @@
+.tp-accordion {
+    
+    & .accordion-body {
+        padding: 25px 0;
+        padding-top: 0;
+        font-family: var(--tp-ff-heading);
+        font-size: 16px;
+    }
+    & .accordion-item{
+        border: 0;
+    }
+    
+    .accordion-button{
+        font-size: 24px;
+        color: var(--tp-common-black);
+        font-family: var(--tp-ff-heading);
+        font-weight: 400;
+        padding: 15px 0;
+        margin-bottom: 35px;
+        border-bottom: 1px solid #F1F1F1;
+        &:not(.collapsed){
+            border-bottom: 1px solid #F1F1F1;
+            background: none;
+            box-shadow: none;
+            margin-bottom: 35px;
+            &::after{
+                width: auto;
+                height: auto;
+                content: '\f068';
+                transform: rotate(0deg);
+            }
+        }
+
+        &:focus{
+            box-shadow: none;
+            border-color: transparent;
+            border-bottom: 1px solid #F1F1F1;
+        }
+
+        &::after{
+            width: auto;
+            height: auto;
+            content: '\f067';
+            font-family: var(--tp-ff-fontawesome);
+            background-image: none;
+            font-size: 24px;
+            color: var(--tp-common-black);
+        }
+    }
+
+}
+
+
+.test{
+    & .accordion-body {
+        padding: 25px 0;
+        padding-top: 0;
+
+
+    }
+
+    & .accordion-item {
+        border: none;
+        margin-bottom: 25px;
+    }
+    & .accordion-button {
+        padding: 15px 0;
+        font-size: 24px;
+
+        &:focus{
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        &.collapsed{
+            border-bottom: 1px solid red;
+            margin-bottom: 35px;
+        }
+        &::after {
+            background-image: none;
+            content: "\f067";
+            font-family: var(--tp-ff-fontawesome);
+            text-decoration: none;
+        }
+
+    }
+
+
+    & .accordion-button:not(.collapsed) {
+        background-color: var(--tp-common-white);
+        color: var(--tp-common-black);
+        box-shadow: none;
+        text-decoration: underline;
+        border-bottom: 1px solid red;
+        margin-bottom: 35px;
+        &::after {
+            background-image: none;
+            content: "\f068";
+            font-family: var(--tp-ff-fontawesome);
+            text-decoration: none;
+        }
+    }
+}
