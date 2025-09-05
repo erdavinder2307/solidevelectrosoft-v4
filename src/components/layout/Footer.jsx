@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   useEffect(() => {
@@ -111,7 +112,7 @@ const Footer = () => {
                     <div className="tp-footer__widget pb-30">
                       <h3 className="tp-footer__widget-title">Quick Links</h3>
                       <ul>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><Link to="/about">About Us</Link></li>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="project.html">Portfolio</a></li>
                         <li><a href="contact.html">Contacts</a></li>
@@ -124,7 +125,7 @@ const Footer = () => {
                       <ul>
                         <li>
                           <a href="#">
-                            Next57 Coworking, Cabin No - 11, C205 Sm Heights Industrial Area Phase 8b Mohali, 140308, India
+                            Soho 419P, 4th Floor, Block A, Chandigarh Citi Center, VIP Road, Zirakpur, 140603, India
                           </a>
                         </li>
                         <li><a href="tel:+919115866828">+91-978 066 6828</a></li>

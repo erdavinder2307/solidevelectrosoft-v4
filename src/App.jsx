@@ -1,28 +1,8 @@
 import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Layout Components
-import { Header, Footer } from './components/layout';
-
-// Section Components
-import { 
-  Hero, 
-  About, 
-  CTA, 
-  Gallery, 
-  Team, 
-  Feature, 
-  Testimonials, 
-  Clients, 
-  ContactCTA 
-} from './components/sections';
-
-// UI Components
-import { 
-  PreLoader, 
-  BackToTop, 
-  MouseCursor, 
-  FloatingMenu 
-} from './components/ui';
+// Import pages
+import { Home, About } from './pages';
 
 // Import CSS files (these should be available in src/assets/css/)
 import './assets/css/bootstrap.css';
@@ -43,83 +23,52 @@ import './components/styles/react-app.css';
 
 function App() {
   useEffect(() => {
-    // Add Google Analytics
-    const gtag = (...args) => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(args);
-    };
+    // Add Google Analytics scripts
+    const script1 = document.createElement('script');
+    script1.async = true;
+    script1.src = 'https://www.googletagmanager.com/gtag/js?id=GT-KFNT9K9X';
+    document.head.appendChild(script1);
 
-    // Initialize gtag
+    const script2 = document.createElement('script');
+    script2.async = true;
+    script2.src = 'https://www.googletagmanager.com/gtag/js?id=GT-MBLK2C2Q';
+    document.head.appendChild(script2);
+
+    // Initialize dataLayer and gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+
     gtag('js', new Date());
     gtag('config', 'GT-KFNT9K9X');
     gtag('config', 'GT-MBLK2C2Q');
 
-    // Conversion event
-    gtag('event', 'conversion', {'send_to': 'GT-KFNT9K9X/MgRjCLiyz4EbEIWQz78_'});
-
     // Set document class
     document.documentElement.className = 'no-js';
 
-    // Set page title
-    document.title = 'Solidev Electrosoft Pvt. Ltd. - Convert Ideas Into Reality';
-
-    // Set meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.content = 'home page';
+    // Set current year for footer
+    const currentYearElement = document.getElementById('CurrentYear');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
     }
+
+    return () => {
+      // Cleanup scripts on unmount
+      document.head.removeChild(script1);
+      document.head.removeChild(script2);
+    };
   }, []);
 
   return (
-    <div className="App">
-      {/* Pre Loader */}
-      <PreLoader />
-
-      {/* Back to Top */}
-      <BackToTop />
-
-      {/* Mouse Cursor */}
-      <MouseCursor />
-
-      {/* Header */}
-      <Header />
-
-      {/* Main Content */}
-      <main>
-        {/* Hero Section */}
-        <Hero />
-
-        {/* About Section */}
-        <About />
-
-        {/* CTA Section */}
-        <CTA />
-
-        {/* Gallery Section */}
-        <Gallery />
-
-        {/* Team Section */}
-        <Team />
-
-        {/* Feature Section */}
-        <Feature />
-
-        {/* Testimonials Section */}
-        <Testimonials />
-
-        {/* Clients Section */}
-        <Clients />
-
-        {/* Contact CTA Section */}
-        <ContactCTA />
-      </main>
-
-      {/* Footer */}
-      <Footer />
-
-      {/* Floating Menu */}
-      <FloatingMenu />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/about.html" element={<About />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

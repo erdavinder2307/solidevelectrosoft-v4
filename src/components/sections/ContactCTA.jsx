@@ -1,3 +1,5 @@
+import React from 'react';
+
 const ContactCTA = () => {
   return (
     <div className="tp-theme-btn-area pt-90 pb-140">
@@ -7,7 +9,7 @@ const ContactCTA = () => {
             <a href="contact.html">
               <div className="tp-theme-btn d-flex align-items-center white-bg">
                 <div className="tp-btn-inner">
-                  <p className="mb-0">Let't Talk</p>
+                  <p className="mb-0">Let's Talk</p>
                   <b>Get in Touch</b>
                   <span className="d-inline-block">
                     <svg width="46" height="8" viewBox="0 0 46 8" fill="none"

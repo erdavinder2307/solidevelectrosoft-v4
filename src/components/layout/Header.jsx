@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,37 +28,42 @@ const Header = () => {
     setIsOffcanvasOpen(false);
   };
 
+  const isAboutPage = location.pathname === '/about' || location.pathname === '/about.html';
+
   return (
     <>
       {/* Header */}
       <header>
         <div 
           id="header-sticky" 
-          className={`header__area header__transparent ${isSticky ? 'header-sticky-active' : ''}`}
+          className={`header__area ${isAboutPage ? 'header__area-2 pl-110 pr-110' : 'header__transparent'} ${isSticky ? 'header-sticky-active' : ''}`}
         >
           <div className="header__main" id="header-sticky">
-            <div className="container">
+            <div className={isAboutPage ? 'container-fluid' : 'container'}>
               <div className="row align-items-center">
                 <div className="col-lg-2 col-md-4 col-7">
                   <div className="logo">
-                    <a href="index.html">
+                    <Link to="/">
                       <img 
                         loading="lazy"
-                        src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
+                        src={isAboutPage ? 
+                          "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo-black.png" :
+                          "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
+                        }
                         alt="logo"
                       />
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="col-lg-7 col-md-4 d-none d-md-block">
-                  <div className="main-menu text-center">
+                  <div className={`main-menu ${isAboutPage ? 'normal-menu' : ''} text-center`}>
                     <nav id="mobile-menu">
                       <ul>
-                        <li className="">
-                          <a href="index.html">Home</a>
+                        <li className={location.pathname === '/' ? 'active' : ''}>
+                          <Link to="/">Home</Link>
                         </li>
-                        <li>
-                          <a href="about.html">About us</a>
+                        <li className={isAboutPage ? 'active' : ''}>
+                          <Link to="/about">About us</Link>
                         </li>
                         <li className="">
                           <a href="project.html">Portfolio</a>
@@ -72,14 +79,14 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-5">
-                  <div className="header__main_right d-flex justify-content-end align-items-center">
+                  <div className={`header__main_right ${isAboutPage ? 'tp-black-text' : ''} d-flex justify-content-end align-items-center`}>
                     <div className="tp-header-search-icons normal-search mr-80 p-relative">
                       <div className="search-btn-wrap">
                         <button 
                           className="button-search-toggle position-relative"
                           onClick={toggleSearch}
                         >
-                          <i className={`header_search-${isSearchOpen ? 'close' : 'button'} text-white far fa-${isSearchOpen ? 'times' : 'search'}`}></i>
+                          <i className={`header_search-${isSearchOpen ? 'close' : 'button'} ${isAboutPage ? '' : 'text-white'} far fa-${isSearchOpen ? 'times' : 'search'}`}></i>
                         </button>
                         <div className={`tp-search-form p-relative ${isSearchOpen ? 'active' : ''}`}>
                           <form action="#">
@@ -91,7 +98,7 @@ const Header = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="tp-bar-icon">
+                    <div className={`tp-bar-icon ${isAboutPage ? 'tp-bar-icon-dark' : ''}`}>
                       <a href="#" className="offcanvas-toggle-btn" onClick={toggleOffcanvas}>
                         <i className="fal fa-bars"></i>
                       </a>
@@ -140,11 +147,11 @@ const Header = () => {
           <h3 className="tp-footer__widget-title">Get in touch</h3>
           <ul>
             <li>
-              <a href="#">Next57 Coworking, Cabin No - 11, C205 Sm Heights Industrial Area Phase 8b Mohali, 140308, India</a>
+              <a href="#">Soho 419P, 4th Floor, Block A, Chandigarh Citi Center, VIP Road, Zirakpur, 140603, India</a>
             </li>
             <li><a href="tel:+919115866828">+91-978 066 6828</a></li>
             <li>
-              <a target="_blank" href="mailto:davinder@solidevelectrosoft.com">admin@solidevelectrosoft.com</a>
+              <a target="_blank" href="mailto:admin@solidevelectrosoft.com">admin@solidevelectrosoft.com</a>
             </li>
             <li><span> Office Hours: 9AM - 6PM </span></li>
             <li><span> Monday - Friday</span></li>

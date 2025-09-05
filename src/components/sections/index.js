@@ -8,3 +8,9 @@ export { default as Feature } from './Feature';
 export { default as Testimonials } from './Testimonials';
 export { default as Clients } from './Clients';
 export { default as ContactCTA } from './ContactCTA';
+
+// About Page Components
+export { default as Breadcrumb } from './Breadcrumb';
+export { default as AboutDetails } from './AboutDetails';
+export { default as Services } from './Services';
+export { default as VideoSection } from './VideoSection';
