@@ -21,13 +21,8 @@ import {
   PreLoader, 
   BackToTop, 
   MouseCursor, 
-  FloatingMenu,
-  AnimatedSection,
-  ScrollProgressIndicator 
+  FloatingMenu 
 } from '../components/ui';
-
-// Modern Home Styles
-import '../assets/css/modern-home.css';
 
 const Home = () => {
   useEffect(() => {
@@ -49,12 +44,12 @@ const Home = () => {
     document.documentElement.className = 'no-js';
 
     // Set page title
-    document.title = 'Solidev Electrosoft - Premium Software Development & Digital Solutions';
+    document.title = 'Solidev Electrosoft Pvt. Ltd. - Convert Ideas Into Reality';
 
     // Set meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Leading software development company specializing in cutting-edge web development, mobile applications, and custom software solutions. Transform your digital vision into reality with our expert team.';
+      metaDescription.content = 'Leading software development company specializing in web development, mobile applications, and custom software solutions. Convert your ideas into reality with our expert team.';
     }
 
     // Add canonical URL
@@ -67,37 +62,10 @@ const Home = () => {
       canonical.href = 'https://solidevelectrosoft.com/';
       document.head.appendChild(canonical);
     }
-
-    // Add structured data for better SEO
-    const structuredData = {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Solidev Electrosoft",
-      "url": "https://solidevelectrosoft.com",
-      "logo": "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png",
-      "description": "Leading software development company",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Next57 Coworking, Cabin No - 11, C205 Sm Heights Industrial Area",
-        "addressLocality": "Mohali",
-        "postalCode": "140308",
-        "addressCountry": "IN"
-      },
-      "telephone": "+91-9115866828",
-      "email": "admin@solidevelectrosoft.com"
-    };
-
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(structuredData);
-    document.head.appendChild(script);
   }, []);
 
   return (
     <div className="App">
-      {/* Modern Scroll Progress Indicator */}
-      <ScrollProgressIndicator color="#4f46e5" height="3px" />
-
       {/* Pre Loader */}
       <PreLoader />
 
@@ -111,51 +79,33 @@ const Home = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="modern-home-layout">
-        {/* Hero Section - Primary focal point */}
-        <AnimatedSection className="hero-wrapper" aria-label="Hero section" animation="fade-in">
-          <Hero />
-        </AnimatedSection>
+      <main>
+        {/* Hero Section */}
+        <Hero />
 
-        {/* Value Proposition - Immediate impact */}
-        <AnimatedSection className="value-proposition-wrapper" aria-label="Company overview" animation="fade-in-up" delay={200}>
-          <About />
-        </AnimatedSection>
+        {/* About Section */}
+        <About />
 
-        {/* Social Proof - Build trust early */}
-        <AnimatedSection className="clients-wrapper" aria-label="Our clients" animation="fade-in-up" delay={400}>
-          <Clients />
-        </AnimatedSection>
+        {/* CTA Section */}
+        <CTA />
 
-        {/* Services/Features - Core offerings */}
-        <AnimatedSection className="features-wrapper" aria-label="Our services" animation="fade-in-up" delay={300}>
-          <Feature />
-        </AnimatedSection>
+        {/* Gallery Section */}
+        <Gallery />
 
-        {/* Call to Action - Strategic placement */}
-        <AnimatedSection className="cta-wrapper" aria-label="Business success" animation="scale-in" delay={200}>
-          <CTA />
-        </AnimatedSection>
+        {/* Team Section */}
+        <Team />
 
-        {/* Team Showcase - Human connection */}
-        <AnimatedSection className="team-wrapper" aria-label="Our team" animation="fade-in-left" delay={300}>
-          <Team />
-        </AnimatedSection>
+        {/* Feature Section */}
+        <Feature />
 
-        {/* Portfolio/Gallery - Visual proof */}
-        <AnimatedSection className="portfolio-wrapper" aria-label="Our work gallery" animation="fade-in-up" delay={200}>
-          <Gallery />
-        </AnimatedSection>
+        {/* Testimonials Section */}
+        <Testimonials />
 
-        {/* Testimonials - Social validation */}
-        <AnimatedSection className="testimonials-wrapper" aria-label="Client testimonials" animation="fade-in-right" delay={400}>
-          <Testimonials />
-        </AnimatedSection>
+        {/* Clients Section */}
+        <Clients />
 
-        {/* Final CTA - Conversion focus */}
-        <AnimatedSection className="contact-cta-wrapper" aria-label="Contact us" animation="fade-in-up" delay={300}>
-          <ContactCTA />
-        </AnimatedSection>
+        {/* Contact CTA Section */}
+        <ContactCTA />
       </main>
 
       {/* Footer */}
