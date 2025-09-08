@@ -64,18 +64,6 @@ const Hero = () => {
                 position: 'relative'
               }}
             >
-              {/* Dark overlay for better text readability */}
-              <div 
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                  zIndex: 1
-                }}
-              ></div>
               
               <div 
                 className="tp-slider-text white-box" 
@@ -84,26 +72,32 @@ const Hero = () => {
                   bottom: '80px', 
                   left: '50px', 
                   zIndex: 2,
-                  maxWidth: '600px'
+                  maxWidth: '600px',
+                  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.6) 100%)',
+                  padding: '40px',
+                  borderRadius: '12px',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
                 }}
               >
                 <span 
                   className="text-white"
                   style={{
-                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
                     fontSize: '16px',
-                    fontWeight: '500'
+                    fontWeight: '500',
+                    display: 'block',
+                    marginBottom: '20px'
                   }}
                 >
                   {slide.subtitle}
                 </span>
                 <h3 
-                  className="tp-slider-title tp-sl-lg-text mt-40 mb-55"
+                  className="tp-slider-title tp-sl-lg-text mb-55"
                   style={{
                     color: '#ffffff',
-                    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.9)',
                     fontWeight: 'bold',
-                    lineHeight: '1.2'
+                    lineHeight: '1.2',
+                    marginBottom: '40px'
                   }}
                   dangerouslySetInnerHTML={{ __html: slide.title }}
                 ></h3>
@@ -112,9 +106,12 @@ const Hero = () => {
                   href="contact.html" 
                   className="tp-slider-btn"
                   style={{
-                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
                     position: 'relative',
-                    zIndex: 3
+                    zIndex: 3,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    color: 'white',
+                    textDecoration: 'none'
                   }}
                 >
                   <span>

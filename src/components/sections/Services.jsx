@@ -36,15 +36,32 @@ const Services = () => {
         </div>
         <div className="row">
           {services.map((service, index) => (
-            <div key={index} className="col-xl-3 col-md-6">
-              <div className="tp-service text-center white-bg pt-60 pb-45 pl-25 pr-25 mb-30">
+            <div key={index} className="col-xl-3 col-md-6 d-flex" style={{ overflow: 'hidden' }}>
+              <div className="tp-service text-center white-bg pt-60 pb-45 pl-25 pr-25 mb-30 w-100" style={{
+                height: '450px',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+                wordWrap: 'break-word',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}>
                 <div className="tp-service__icon">
                   <i className={service.icon}></i>
                 </div>
                 <h3 className="tp-service__title pt-40 pb-25">
-                  <a href="#">{service.title}</a>
+                  <a href="#" style={{ wordWrap: 'break-word' }}>{service.title}</a>
                 </h3>
-                <p>{service.description}</p>
+                <p style={{ 
+                  wordWrap: 'break-word', 
+                  overflowWrap: 'break-word',
+                  hyphens: 'auto',
+                  flex: '1',
+                  display: 'flex',
+                  alignItems: 'flex-start'
+                }}>
+                  {service.description}
+                </p>
               </div>
             </div>
           ))}

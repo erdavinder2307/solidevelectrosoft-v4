@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Layout Components
 import { Header, Footer } from '../components/layout';
@@ -9,12 +9,128 @@ import {
   BackToTop,
   MouseCursor,
   FloatingMenu,
+  FullScreenSlider,
 } from '../components/ui';
 
 // Sections
 import Breadcrumb from '../components/sections/Breadcrumb';
 
 const Project = () => {
+  const [sliderOpen, setSliderOpen] = useState(false);
+  const [currentProject, setCurrentProject] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Project data with image information
+  const projects = {
+    core360: {
+      title: "Core360",
+      category: "WEB DEVELOPING",
+      link: "/project-details",
+      images: [
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp",
+          alt: "Core360 Project Image 1"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech1.webp",
+          alt: "Core360 Project Image 2"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech2.webp",
+          alt: "Core360 Project Image 3"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech3.webp",
+          alt: "Core360 Project Image 4"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech4.webp",
+          alt: "Core360 Project Image 5"
+        }
+      ]
+    },
+    briind: {
+      title: "Briind",
+      category: "SOCIAL NETWORKING APPLICATION",
+      link: "/project-details1",
+      images: [
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp",
+          alt: "Briind Project Image 1"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind.webp",
+          alt: "Briind Project Image 2"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind1.webp",
+          alt: "Briind Project Image 3"
+        }
+      ]
+    },
+    fairway: {
+      title: "Fairway First",
+      category: "MOBILE APPLICATION",
+      link: "/project-details2",
+      images: [
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp",
+          alt: "Fairway First Project Image 1"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway1.webp",
+          alt: "Fairway First Project Image 2"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway2.webp",
+          alt: "Fairway First Project Image 3"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway3.webp",
+          alt: "Fairway First Project Image 4"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway4.webp",
+          alt: "Fairway First Project Image 5"
+        }
+      ]
+    },
+    lexis: {
+      title: "Lexis Convey",
+      category: "WEB DEVELOPING",
+      link: "/project-details3",
+      images: [
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp",
+          alt: "Lexis Convey Project Image 1"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis1.webp",
+          alt: "Lexis Convey Project Image 2"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis2.webp",
+          alt: "Lexis Convey Project Image 3"
+        },
+        {
+          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis3.webp",
+          alt: "Lexis Convey Project Image 4"
+        }
+      ]
+    }
+  };
+
+  const openSlider = (projectKey, imageIndex = 0) => {
+    setCurrentProject(projects[projectKey]);
+    setCurrentImageIndex(imageIndex);
+    setSliderOpen(true);
+  };
+
+  const closeSlider = () => {
+    setSliderOpen(false);
+    setCurrentProject(null);
+    setCurrentImageIndex(0);
+  };
   useEffect(() => {
     // Analytics helpers (gtag already added in App)
     const gtag = (...args) => {
@@ -72,13 +188,17 @@ const Project = () => {
               {/* Project Item 1 */}
               <div className="col-lg-3 col-md-6 col-12">
                 <div className="pj-list-item mb-50">
-                  <div className="pj-list__img s1 project-min-height">
+                  <div 
+                    className="pj-list__img s1 project-min-height"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => openSlider('core360', 0)}
+                  >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech1.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech2.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech3.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech4.webp" alt="" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp" alt="Core360 Project Image 1" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech1.webp" alt="Core360 Project Image 2" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech2.webp" alt="Core360 Project Image 3" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech3.webp" alt="Core360 Project Image 4" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech4.webp" alt="Core360 Project Image 5" />
                     </figure>
                   </div>
                 </div>
@@ -91,11 +211,15 @@ const Project = () => {
               {/* Project Item 2 */}
               <div className="col-lg-3 col-md-6 col-12">
                 <div className="pj-list-item mb-50">
-                  <div className="pj-list__img s1 project-min-height">
+                  <div 
+                    className="pj-list__img s1 project-min-height"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => openSlider('briind', 0)}
+                  >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind1.webp" alt="" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp" alt="Briind Project Image 1" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind.webp" alt="Briind Project Image 2" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind1.webp" alt="Briind Project Image 3" />
                     </figure>
                   </div>
                 </div>
@@ -108,13 +232,17 @@ const Project = () => {
               {/* Project Item 3 */}
               <div className="col-lg-3 col-md-6 col-12">
                 <div className="pj-list-item mb-50">
-                  <div className="pj-list__img s1 project-min-height">
+                  <div 
+                    className="pj-list__img s1 project-min-height"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => openSlider('fairway', 0)}
+                  >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway1.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway2.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway3.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway4.webp" alt="" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp" alt="Fairway First Project Image 1" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway1.webp" alt="Fairway First Project Image 2" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway2.webp" alt="Fairway First Project Image 3" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway3.webp" alt="Fairway First Project Image 4" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway4.webp" alt="Fairway First Project Image 5" />
                     </figure>
                   </div>
                 </div>
@@ -127,12 +255,16 @@ const Project = () => {
               {/* Project Item 4 */}
               <div className="col-lg-3 col-md-6 col-12">
                 <div className="pj-list-item mb-50">
-                  <div className="pj-list__img s1 project-min-height">
+                  <div 
+                    className="pj-list__img s1 project-min-height"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => openSlider('lexis', 0)}
+                  >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis1.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis2.webp" alt="" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis3.webp" alt="" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp" alt="Lexis Convey Project Image 1" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis1.webp" alt="Lexis Convey Project Image 2" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis2.webp" alt="Lexis Convey Project Image 3" />
+                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis3.webp" alt="Lexis Convey Project Image 4" />
                     </figure>
                   </div>
                 </div>
@@ -148,6 +280,15 @@ const Project = () => {
 
       <Footer />
       <FloatingMenu />
+
+      {/* Full Screen Image Slider */}
+      <FullScreenSlider
+        isOpen={sliderOpen}
+        onClose={closeSlider}
+        images={currentProject?.images || []}
+        initialIndex={currentImageIndex}
+        projectTitle={currentProject?.title || ""}
+      />
     </div>
   );
 };

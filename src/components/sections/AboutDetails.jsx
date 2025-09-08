@@ -95,12 +95,18 @@ const AboutDetails = () => {
             </div>
           </div>
           <div className="col-lg-6 text-end">
-            <div className="tp-about-img-box p-relative d-inline-block mb-30">
+            <div className="tp-about-img-box p-relative d-inline-block mb-30" style={{ overflow: 'hidden' }}>
               <div className="about-page-img">
                 <img 
                   loading="lazy"
                   src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/about-page.webp"
                   alt="About Solidev Electrosoft"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: '100%',
+                    display: 'block'
+                  }}
                 />
               </div>
               <div className="dots-img">
@@ -108,6 +114,10 @@ const AboutDetails = () => {
                   loading="lazy"
                   src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/dot.webp"
                   alt="Decorative dots"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto'
+                  }}
                 />
               </div>
               <div className="about-info-box d-flex flex-column justify-content-center text-center">

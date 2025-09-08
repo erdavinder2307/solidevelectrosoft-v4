@@ -2,8 +2,9 @@ import React from 'react';
 
 const VideoSection = () => {
   return (
-    <div className="row">
-      <video controls className="col-md-8">
+    <div className="container">
+      <div className="row">
+        <video controls className="col-md-8">
         <source
           src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/Introduction-Video-Upwork.mp4"
           type="video/mp4"
@@ -36,6 +37,7 @@ const VideoSection = () => {
             </a>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

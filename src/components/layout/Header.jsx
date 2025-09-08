@@ -36,7 +36,7 @@ const Header = () => {
       <header>
         <div 
           id="header-sticky" 
-          className={`header__area ${isAboutPage ? 'header__area-2 pl-110 pr-110' : 'header__transparent'} ${isSticky ? 'header-sticky-active' : ''}`}
+          className={`header__area header__transparent ${isAboutPage ? 'pl-110 pr-110' : ''} ${isSticky ? 'header-sticky-active' : ''}`}
         >
           <div className="header__main" id="header-sticky">
             <div className={isAboutPage ? 'container-fluid' : 'container'}>
@@ -46,17 +46,14 @@ const Header = () => {
                     <Link to="/">
                       <img 
                         loading="lazy"
-                        src={isAboutPage ? 
-                          "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo-black.png" :
-                          "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
-                        }
+                        src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
                         alt="logo"
                       />
                     </Link>
                   </div>
                 </div>
                 <div className="col-lg-7 col-md-4 d-none d-md-block">
-                  <div className={`main-menu ${isAboutPage ? 'normal-menu' : ''} text-center`}>
+                  <div className="main-menu text-center">
                     <nav id="mobile-menu">
                       <ul>
                         <li className={location.pathname === '/' ? 'active' : ''}>
@@ -79,14 +76,14 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-5">
-                  <div className={`header__main_right ${isAboutPage ? 'tp-black-text' : ''} d-flex justify-content-end align-items-center`}>
+                  <div className="header__main_right d-flex justify-content-end align-items-center">
                     <div className="tp-header-search-icons normal-search mr-80 p-relative">
                       <div className="search-btn-wrap">
                         <button 
                           className="button-search-toggle position-relative"
                           onClick={toggleSearch}
                         >
-                          <i className={`header_search-${isSearchOpen ? 'close' : 'button'} ${isAboutPage ? '' : 'text-white'} far fa-${isSearchOpen ? 'times' : 'search'}`}></i>
+                          <i className={`header_search-${isSearchOpen ? 'close' : 'button'} text-white far fa-${isSearchOpen ? 'times' : 'search'}`}></i>
                         </button>
                         <div className={`tp-search-form p-relative ${isSearchOpen ? 'active' : ''}`}>
                           <form action="#">
@@ -98,7 +95,7 @@ const Header = () => {
                         </div>
                       </div>
                     </div>
-                    <div className={`tp-bar-icon ${isAboutPage ? 'tp-bar-icon-dark' : ''}`}>
+                    <div className="tp-bar-icon">
                       <a href="#" className="offcanvas-toggle-btn" onClick={toggleOffcanvas}>
                         <i className="fal fa-bars"></i>
                       </a>
