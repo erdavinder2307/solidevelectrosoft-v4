@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 
 const Team = () => {
-  const teamMembers = [
+  const teamMembersOriginal = [
     {
       image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/director-pic.webp",
       name: "Davinder Pal",
@@ -40,6 +40,18 @@ const Team = () => {
     }
   ];
 
+  // Shuffle array randomly
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const teamMembers = shuffleArray(teamMembersOriginal);
+
   // Team carousel settings - 4 slides on desktop, responsive
   const teamSettings = {
     dots: false,
@@ -47,7 +59,8 @@ const Team = () => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
+    autoplaySpeed: 2000,
     arrows: false,
     responsive: [
       {
@@ -105,15 +118,23 @@ const Team = () => {
                       loading="lazy"
                       src={member.image}
                       alt={member.name}
+                      style={{
+                        width: '120px',
+                        height: '120px',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        margin: '0 auto',
+                        display: 'block'
+                      }}
                     />
                   </div>
-                  <div className="tp-team__info pt-25">
+                  <div className="tp-team__info pt-25 text-center">
                     <h3 className="tp-team-name">
                       <a href="#">{member.name}</a>
                     </h3>
                     <p>{member.position}</p>
                   </div>
-                  <div className="tp-team__social">
+                  <div className="tp-team__social text-center">
                     <a target="_blank" href={member.github} rel="noopener noreferrer">
                       <i className="fab fa-github"></i>
                     </a>

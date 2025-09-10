@@ -4,8 +4,8 @@ const CTA = () => {
       <div className="container">
         <div className="tp-cta-wrapper pt-105 pb-120">
           <div className="row align-items-center justify-content-evenly">
-            <div className="col-lg-4">
-              <div className="tp-about-right p-relative">
+            <div className="col-lg-4" style={{ minHeight: '320px' }}>
+              <div className="tp-about-right p-relative" style={{ minHeight: '180px' }}>
                 <div className="about-img text-md-end">
                   {/* Image can be added here if needed */}
                 </div>

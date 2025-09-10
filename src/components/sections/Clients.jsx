@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 
 const Clients = () => {
-  const clients = [
+  const clientsOriginal = [
     {
       name: "LexisNexis",
       logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp"
@@ -25,6 +25,18 @@ const Clients = () => {
     }
   ];
 
+  // Shuffle array randomly
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const clients = shuffleArray(clientsOriginal);
+
   // Brand/Clients carousel settings - 5 slides on desktop, responsive
   const brandSettings = {
     dots: false,
@@ -33,7 +45,7 @@ const Clients = () => {
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 2000,
     arrows: false,
     responsive: [
       {
