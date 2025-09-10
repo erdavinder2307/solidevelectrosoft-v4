@@ -178,7 +178,7 @@ const Project = () => {
 
       <Breadcrumb
         title="Our Projects"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/work.webp"
+        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/work-v2.webp"
       />
 
       <main>

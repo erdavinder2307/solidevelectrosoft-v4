@@ -4,7 +4,12 @@ const Breadcrumb = ({ title, backgroundImage }) => {
   return (
     <section 
       className="breadcrumb__area include-bg"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      style={{ 
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundPosition: 'center 25%',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
       <div className="container">
         <div className="row">

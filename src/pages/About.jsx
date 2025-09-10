@@ -105,7 +105,7 @@ const About = () => {
       {/* Breadcrumb */}
       <Breadcrumb 
         title="About us"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/breadcrumb/breadcrumb-bg-2.webp"
+        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/breadcrumb/breadcrumb-bg-2-v2.webp"
       />
 
       {/* Main Content */}

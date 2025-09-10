@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header, Footer } from '../components/layout';
 import {
   PreLoader,
@@ -7,8 +7,91 @@ import {
   FloatingMenu,
 } from '../components/ui';
 import Breadcrumb from '../components/sections/Breadcrumb';
+import emailService from '../services/emailService';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [showResponse, setShowResponse] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setShowResponse(false);
+
+    try {
+      // Use Azure Communication Services for email
+      const result = await emailService.sendContactFormEmail(formData);
+      
+      if (result.success) {
+        setResponseMessage(result.message);
+        setShowResponse(true);
+        
+        // Clear form on success
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+
+        // Optionally send confirmation email to the user
+        try {
+          await emailService.sendConfirmationEmail(
+            formData.email, 
+            formData.name, 
+            formData.message
+          );
+        } catch (confirmationError) {
+          console.warn('Failed to send confirmation email:', confirmationError);
+          // Don't show error to user as main email was sent successfully
+        }
+      } else {
+        setResponseMessage(result.message);
+        setShowResponse(true);
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      
+      // Fallback: try the fallback email method
+      try {
+        const fallbackResult = await emailService.sendEmailFallback(formData);
+        setResponseMessage(fallbackResult.message);
+        setShowResponse(true);
+        
+        if (fallbackResult.success) {
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: ''
+          });
+        }
+      } catch (fallbackError) {
+        setResponseMessage('Unable to send message. Please try again later or contact us directly at admin@solidevelectrosoft.com');
+        setShowResponse(true);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   useEffect(() => {
     const gtag = (...args) => {
       window.dataLayer = window.dataLayer || [];
@@ -47,7 +130,7 @@ const Contact = () => {
 
       <Breadcrumb
         title="Contacts"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/contact.webp"
+        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/contact-v2.webp"
       />
 
       <main>
@@ -86,16 +169,94 @@ const Contact = () => {
             <div className="row">
               <div className="col-12">
                 <div className="tp-ct-form pl-110 pr-110 pt-80 pb-190">
-                  <div className="ajax-response" style={{ display: 'none', padding: 15, marginBottom: 20, borderRadius: 5, textAlign: 'center' }} />
+                  {showResponse && (
+                    <div 
+                      className={`ajax-response ${responseMessage.includes('Thank you') ? 'success' : 'error'}`}
+                      style={{ 
+                        display: 'block', 
+                        padding: 15, 
+                        marginBottom: 20, 
+                        borderRadius: 5, 
+                        textAlign: 'center',
+                        backgroundColor: responseMessage.includes('Thank you') ? '#d4edda' : '#f8d7da',
+                        color: responseMessage.includes('Thank you') ? '#155724' : '#721c24',
+                        border: `1px solid ${responseMessage.includes('Thank you') ? '#c3e6cb' : '#f5c6cb'}`,
+                        position: 'relative'
+                      }}
+                    >
+                      {responseMessage}
+                      <button 
+                        onClick={() => setShowResponse(false)}
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          right: '10px',
+                          background: 'none',
+                          border: 'none',
+                          fontSize: '16px',
+                          cursor: 'pointer',
+                          color: 'inherit'
+                        }}
+                        aria-label="Close message"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
 
-                  <form name="form" id="contact-form" action="assets/mail.php" method="POST">
-                    <input type="text" name="name" placeholder="Enter your name*" required />
-                    <input type="email" name="email" placeholder="Enter your email*" required />
-                    <input type="text" name="phone" placeholder="Enter your number*" required />
-                    <input type="text" name="subject" placeholder="Subject*" required />
-                    <textarea name="message" placeholder="Enter your message*" required />
+                  <form onSubmit={handleSubmit}>
+                    <input 
+                      type="text" 
+                      name="name" 
+                      placeholder="Enter your name*" 
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required 
+                      disabled={isSubmitting}
+                    />
+                    <input 
+                      type="email" 
+                      name="email" 
+                      placeholder="Enter your email*" 
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required 
+                      disabled={isSubmitting}
+                    />
+                    <input 
+                      type="text" 
+                      name="phone" 
+                      placeholder="Enter your number*" 
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required 
+                      disabled={isSubmitting}
+                    />
+                    <input 
+                      type="text" 
+                      name="subject" 
+                      placeholder="Subject*" 
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required 
+                      disabled={isSubmitting}
+                    />
+                    <textarea 
+                      name="message" 
+                      placeholder="Enter your message*" 
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required 
+                      disabled={isSubmitting}
+                    />
                     <div className="text-center">
-                      <button type="submit" className="tp-btn-border">Send Message</button>
+                      <button 
+                        type="submit" 
+                        className="tp-btn-border"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </button>
                     </div>
                   </form>
                 </div>
