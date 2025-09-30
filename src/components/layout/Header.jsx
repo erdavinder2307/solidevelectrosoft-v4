@@ -144,9 +144,9 @@ const Header = () => {
           <h3 className="tp-footer__widget-title">Get in touch</h3>
           <ul>
             <li>
-              <a href="#">Soho 419P, 4th Floor, Block A, Chandigarh Citi Center, VIP Road, Zirakpur, 140603, India</a>
+              <a href="#">Next57 Coworking, Cabin No - 11,  C205 Sm Heights Industrial Area Phase 8b Mohali, 140308, India</a>
             </li>
-            <li><a href="tel:+919115866828">+91-978 066 6828</a></li>
+            <li><a href="tel:+919115866828">+91-911 586 6828</a></li>
             <li>
               <a target="_blank" href="mailto:admin@solidevelectrosoft.com">admin@solidevelectrosoft.com</a>
             </li>
