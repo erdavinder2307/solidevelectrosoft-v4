@@ -60,7 +60,7 @@ function App() {
   }, []);
 
   return (
-    <Router basename="/solidevelectrosoft-v4">
+    <Router basename="/">
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
