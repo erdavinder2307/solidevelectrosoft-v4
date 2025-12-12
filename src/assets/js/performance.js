@@ -29,7 +29,7 @@
     // Preload critical images
     function preloadCriticalImages() {
         const criticalImages = [
-            'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png',
+            'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo 3.png',
             'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/lightforyourbusiness.webp'
         ];
 

@@ -1,10 +1,24 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Import pages
+// Import legacy pages (for backwards compatibility)
 import { Home, About, Project, Contact, Faq } from './pages';
 
-// Import CSS files (these should be available in src/assets/css/)
+// Import modern pages
+import { 
+  ModernHome, 
+  ModernContact,
+  ModernAbout,
+  ModernPortfolio,
+  ModernProducts,
+  ServicesPage,
+  WebDevelopmentService,
+  MobileAppService,
+  AISolutionsService,
+  MVPDevelopmentService
+} from './pages';
+
+// Import legacy CSS files
 import './assets/css/bootstrap.css';
 import './assets/css/meanmenu.css';
 import './assets/css/animate.css';
@@ -18,8 +32,14 @@ import './assets/css/font-awesome-pro.css';
 import './assets/css/spacing.css';
 import './assets/css/style.css';
 
+// Import modern CSS
+import './styles/modern.css';
+
 // Import custom React app styles
 import './components/styles/react-app.css';
+
+// Feature flag: Set to true to use modern design, false for legacy
+const USE_MODERN_DESIGN = true;
 
 function App() {
   useEffect(() => {
@@ -44,7 +64,7 @@ function App() {
     gtag('config', 'GT-MBLK2C2Q');
 
     // Set document class
-    document.documentElement.className = 'no-js';
+    document.documentElement.className = USE_MODERN_DESIGN ? '' : 'no-js';
 
     // Set current year for footer
     const currentYearElement = document.getElementById('CurrentYear');
@@ -54,24 +74,49 @@ function App() {
 
     return () => {
       // Cleanup scripts on unmount
-      document.head.removeChild(script1);
-      document.head.removeChild(script2);
+      if (document.head.contains(script1)) document.head.removeChild(script1);
+      if (document.head.contains(script2)) document.head.removeChild(script2);
     };
   }, []);
 
+  // Choose components based on feature flag
+  const HomePage = USE_MODERN_DESIGN ? ModernHome : Home;
+  const ContactPage = USE_MODERN_DESIGN ? ModernContact : Contact;
+  const AboutPage = USE_MODERN_DESIGN ? ModernAbout : About;
+  const PortfolioPage = USE_MODERN_DESIGN ? ModernPortfolio : Project;
+
   return (
-    <Router basename="/solidevelectrosoft-v4">
+    <Router basename="/">
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/about.html" element={<About />} />
-              <Route path="/project" element={<Project />} />
-              <Route path="/project.html" element={<Project />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/contact.html" element={<Contact />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/faq.html" element={<Faq />} />
+          {/* Main Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/about.html" element={<AboutPage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/portfolio.html" element={<PortfolioPage />} />
+          <Route path="/project" element={<PortfolioPage />} />
+          <Route path="/project.html" element={<PortfolioPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/contact.html" element={<ContactPage />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/faq.html" element={<Faq />} />
+          <Route path="/products" element={<ModernProducts />} />
+          <Route path="/products.html" element={<ModernProducts />} />
+          
+          {/* Services Routes */}
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services.html" element={<ServicesPage />} />
+          <Route path="/services/web-development" element={<WebDevelopmentService />} />
+          <Route path="/services/mobile-app-development" element={<MobileAppService />} />
+          <Route path="/services/ai-solutions" element={<AISolutionsService />} />
+          <Route path="/services/mvp-development" element={<MVPDevelopmentService />} />
+
+          {/* Legacy route aliases for SEO */}
+          <Route path="/web-development" element={<WebDevelopmentService />} />
+          <Route path="/mobile-development" element={<MobileAppService />} />
+          <Route path="/ai-ml-solutions" element={<AISolutionsService />} />
+          <Route path="/startup-mvp" element={<MVPDevelopmentService />} />
         </Routes>
       </div>
     </Router>
@@ -79,3 +124,4 @@ function App() {
 }
 
 export default App;
+

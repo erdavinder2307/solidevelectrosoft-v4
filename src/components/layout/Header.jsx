@@ -46,7 +46,7 @@ const Header = () => {
                     <Link to="/">
                       <img 
                         loading="lazy"
-                        src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
+                        src="../src/assets/img/logo/logo 3.png"
                         alt="logo"
                       />
                     </Link>
@@ -127,7 +127,7 @@ const Header = () => {
           <div className="offcanvas-logo pb-30 pt-30">
             <img 
               loading="lazy" 
-              src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/logo/logo.png"
+              src="../src/assets/img/logo/logo 3.png"
               alt=""
             />
           </div>
