@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Import logos for proper Vite bundling
+import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
+import logoLight from '../../assets/img/logo/logo 3.png';
+
 /**
  * Modern Header Component
  * Clean, minimal navbar with mobile-responsive hamburger menu
@@ -99,7 +103,7 @@ const ModernHeader = () => {
             >
               {/* White text logo for dark backgrounds */}
               <img 
-                src="/src/assets/img/logo/logo 3-bg-dark.png"
+                src={logoDark}
                 alt="Solidev Electrosoft"
                 style={{
                   height: isScrolled ? '150px' : '160px',
@@ -110,7 +114,7 @@ const ModernHeader = () => {
               />
               {/* Dark text logo for light backgrounds (when scrolled) */}
               <img 
-                src="/src/assets/img/logo/logo 3.png"
+                src={logoLight}
                 alt="Solidev Electrosoft"
                 style={{
                   height: '150px',

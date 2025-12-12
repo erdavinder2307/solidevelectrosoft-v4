@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+// Import logo for proper Vite bundling
+import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
+
 /**
  * Modern Footer Component
  * Clean, professional footer with newsletter signup
@@ -221,7 +224,7 @@ const ModernFooter = () => {
           <motion.div variants={itemVariants} className="footer-brand">
             <Link to="/" style={{ display: 'inline-block', marginBottom: 'var(--space-4)' }}>
               <img 
-                src="/src/assets/img/logo/logo 3-bg-dark.png"
+                src={logoDark}
                 alt="Solidev Electrosoft"
                 style={{ height: '135px' }}
               />
