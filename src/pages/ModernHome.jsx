@@ -11,12 +11,16 @@ import CaseStudies from '../components/sections/CaseStudies';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
+import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
  * Modern Home Page
  * High-converting landing page with all modern sections
  */
 const ModernHome = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+
   useEffect(() => {
     // SEO
     document.title = 'Solidev Electrosoft | Custom Software Development Company';
@@ -55,8 +59,18 @@ const ModernHome = () => {
     <>
       <ModernHeader />
       <main>
-        {/* Hero Section */}
-        <ModernHero />
+        {/* Hero Section with AI CTA */}
+        <ModernHero 
+          primaryCTA={{
+            text: '🤖 Chat with AI Assistant',
+            onClick: openAI,
+            isButton: true,
+          }}
+          secondaryCTA={{
+            text: 'View Our Work',
+            link: '/portfolio',
+          }}
+        />
 
         {/* Social Proof - Client Logos */}
         <SocialProof 
@@ -120,6 +134,9 @@ const ModernHome = () => {
       </main>
       <ModernFooter />
       <FloatingCTA />
+      
+      {/* AI Project Requirements Assistant */}
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };

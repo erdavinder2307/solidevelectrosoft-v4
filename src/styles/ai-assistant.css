@@ -1,0 +1,75 @@
+/**
+ * AI Assistant Mobile-First Styles
+ * Optimized for 320px+ screens
+ */
+
+/* Mobile Modal - Full Screen */
+@media (max-width: 768px) {
+  .ai-assistant-modal {
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+/* Desktop Modal - Centered */
+@media (min-width: 769px) {
+  .ai-assistant-modal {
+    border-radius: var(--radius-xl) !important;
+    max-width: 600px !important;
+    max-height: 90vh !important;
+  }
+}
+
+/* Messages Container */
+.ai-messages-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Typing Animation */
+@keyframes typing-pulse {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.typing-dot {
+  font-size: 8px;
+  color: var(--color-primary-500);
+}
+
+/* Touch-Friendly Buttons */
+.ai-assistant-modal button,
+.ai-assistant-modal input {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Ensure text wraps properly on mobile */
+.ai-assistant-modal {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Improve scrolling performance */
+.ai-messages-container {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Hero CTA Container Mobile */
+@media (max-width: 640px) {
+  .hero-cta-container {
+    flex-direction: column !important;
+  }
+  
+  .hero-cta-container .modern-btn {
+    width: 100%;
+  }
+}

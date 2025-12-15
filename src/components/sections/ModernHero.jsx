@@ -16,9 +16,10 @@ const ModernHero = ({
   primaryCTA = { text: "Get Free Consultation", link: "/contact" },
   secondaryCTA = { text: "View Our Work", link: "/portfolio" },
   stats = [
-    { value: "50+", label: "Projects Delivered" },
-    { value: "5+", label: "Years Experience" },
-    { value: "98%", label: "Client Satisfaction" },
+    { value: "25+", label: "Projects Delivered" },
+    { value: "2018", label: "Established Since" },
+    { value: "13+", label: "Years in Industry" },
+    { value: "99%", label: "Client Satisfaction" },
   ],
   backgroundImage = null,
 }) => {
@@ -186,20 +187,38 @@ const ModernHero = ({
             }}
             className="hero-cta-container"
           >
-            <Link
-              to={primaryCTA.link}
-              className="modern-btn modern-btn-primary modern-btn-lg"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%)',
-                boxShadow: '0 0 30px rgba(0, 133, 255, 0.3)',
-              }}
-            >
-              {primaryCTA.text}
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </Link>
+            {/* Primary CTA - Can be button or link */}
+            {primaryCTA.isButton ? (
+              <button
+                onClick={primaryCTA.onClick}
+                className="modern-btn modern-btn-primary modern-btn-lg"
+                style={{
+                  background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%)',
+                  boxShadow: '0 0 30px rgba(0, 133, 255, 0.3)',
+                }}
+              >
+                {primaryCTA.text}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            ) : (
+              <Link
+                to={primaryCTA.link}
+                className="modern-btn modern-btn-primary modern-btn-lg"
+                style={{
+                  background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%)',
+                  boxShadow: '0 0 30px rgba(0, 133, 255, 0.3)',
+                }}
+              >
+                {primaryCTA.text}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </Link>
+            )}
             <Link
               to={secondaryCTA.link}
               className="modern-btn modern-btn-secondary"
@@ -217,7 +236,7 @@ const ModernHero = ({
             variants={itemVariants}
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(4, 1fr)',
               gap: 'var(--space-8)',
               paddingTop: 'var(--space-8)',
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',

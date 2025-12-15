@@ -28,6 +28,7 @@ import './assets/css/backtotop.css';
 import './assets/css/magnific-popup.css';
 import './assets/css/nice-select.css';
 import './assets/css/ui-icon.css';
+import './styles/ai-assistant.css';
 import './assets/css/font-awesome-pro.css';
 import './assets/css/spacing.css';
 import './assets/css/style.css';
