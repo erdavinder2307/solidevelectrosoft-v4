@@ -51,6 +51,13 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
       const greeting = {
         role: 'assistant',
         content: "Hi! I'm here to help gather requirements for your software project. Let's start with a simple question: What problem are you trying to solve with this project?",
+        suggestions: [
+          'A mobile app',
+          'A web app',
+          'Both web and mobile',
+          "I’m not sure yet",
+          'I want help defining features',
+        ],
       };
       setMessages([greeting]);
     }
