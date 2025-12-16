@@ -10,8 +10,9 @@ import { sendMessageToAI, sendRequirementsToEmail } from '../../services/aiServi
  * - isOpen: boolean - Controls modal visibility
  * - onClose: function - Close modal callback
  * - initialMessage: string - Optional pre-filled message
+ * - mode: string - 'requirements' (default) or 'consultation'
  */
-const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) => {
+const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode = 'requirements' }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState(initialMessage);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,16 +25,73 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Extract quick replies from an assistant message body
-  const getQuickReplies = (text) => {
-    if (!text) return [];
-    const lines = text.split('\n').map((l) => l.trim());
-    const bullets = lines.filter((l) => /^(-|•|\d+\.)\s+/.test(l))
-      .map((l) => l.replace(/^(-|•|\d+\.)\s+/, ''))
-      .filter((l) => l.length > 0 && l.length <= 80);
-    // Deduplicate and cap to 5 suggestions
-    const uniq = Array.from(new Set(bullets)).slice(0, 5);
-    return uniq;
+  // Mode-specific content
+  const modeConfig = {
+    requirements: {
+      title: '✨ AI Requirements Assistant',
+      subtitle: 'Powered by Claude Sonnet',
+      greeting: "Hi! I'm here to help gather requirements for your software project. Let's start with a simple question: What problem are you trying to solve with this project?",
+      suggestions: [
+        'A mobile app',
+        'A web app',
+        'Both web and mobile',
+        "I'm not sure yet",
+        'I want help defining features',
+      ],
+    },
+    consultation: {
+      title: '✨ Free AI Consultation',
+      subtitle: 'Expert Software Development Guidance',
+      greeting: "Hello! I'm your software development consultant. I can help you with technology choices, architecture decisions, cost estimates, timelines, and best practices. What would you like to discuss today?",
+      suggestions: [
+        'Technology stack recommendations',
+        'Project cost estimation',
+        'Development timeline',
+        'Scalability & architecture',
+        'MVP vs full product',
+      ],
+    },
+  };
+
+  const config = modeConfig[mode] || modeConfig.requirements;
+
+  // Note: We now rely entirely on backend-provided suggestions
+  // Backend (Claude) is instructed to always provide 3-4 relevant quick replies
+
+  // Clean message content from any JSON artifacts
+  const cleanMessageContent = (content) => {
+    if (!content) return '';
+    // Remove any JSON suggestion payload that might remain
+    return content.replace(/\{\"suggestions\"\s*:\s*\[.*?\]\}/gs, '').trim();
+  };
+
+  // Render markdown-formatted text
+  const renderMarkdown = (text) => {
+    if (!text) return null;
+    const lines = text.split('\n');
+    
+    return lines.map((line, i) => {
+      // Handle bold **text**
+      let processed = line.split(/(\*\*.*?\*\*)/g).map((part, j) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={j}>{part.slice(2, -2)}</strong>;
+        }
+        // Handle italic *text*
+        return part.split(/(\*.*?\*)/g).map((subpart, k) => {
+          if (subpart.startsWith('*') && subpart.endsWith('*') && !subpart.startsWith('**')) {
+            return <em key={`${j}-${k}`}>{subpart.slice(1, -1)}</em>;
+          }
+          return subpart;
+        });
+      });
+
+      return (
+        <React.Fragment key={i}>
+          {processed}
+          {i < lines.length - 1 && <br />}
+        </React.Fragment>
+      );
+    });
   };
 
   // Auto-scroll to bottom when new messages arrive
@@ -50,18 +108,12 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
     if (isOpen && messages.length === 0) {
       const greeting = {
         role: 'assistant',
-        content: "Hi! I'm here to help gather requirements for your software project. Let's start with a simple question: What problem are you trying to solve with this project?",
-        suggestions: [
-          'A mobile app',
-          'A web app',
-          'Both web and mobile',
-          "I’m not sure yet",
-          'I want help defining features',
-        ],
+        content: config.greeting,
+        suggestions: config.suggestions,
       };
       setMessages([greeting]);
     }
-  }, [isOpen]);
+  }, [isOpen, config.greeting, config.suggestions]);
 
   // Focus input when modal opens
   useEffect(() => {
@@ -172,7 +224,17 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
+    <>
+      <style>{`
+        .ai-assistant-modal input::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+          opacity: 1;
+        }
+        .ai-assistant-modal input:focus::placeholder {
+          color: rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
+      <AnimatePresence>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -200,7 +262,7 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'white',
+              background: 'linear-gradient(180deg, #0a0e1a 0%, #1a1f35 100%)',
               borderRadius: '0',
               width: '100%',
               height: '100%',
@@ -209,9 +271,35 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
+              position: 'relative',
             }}
             className="ai-assistant-modal"
           >
+            {/* Background Effects */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '20%',
+                right: '10%',
+                width: '300px',
+                height: '300px',
+                background: 'radial-gradient(circle, rgba(0, 133, 255, 0.1) 0%, transparent 70%)',
+                filter: 'blur(60px)',
+                pointerEvents: 'none',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '20%',
+                left: '10%',
+                width: '250px',
+                height: '250px',
+                background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)',
+                filter: 'blur(60px)',
+                pointerEvents: 'none',
+              }}
+            />
             {/* Header */}
             <div
               style={{
@@ -225,11 +313,11 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
               }}
             >
               <div>
-                <h3 style={{ margin: 0, fontSize: 'var(--text-lg)', fontWeight: '600' }}>
-                  🤖 AI Requirements Assistant
+                <h3 style={{ margin: 0, color: 'white', fontSize: 'var(--text-lg)', fontWeight: '600' }}>
+                  {config.title}
                 </h3>
-                <p style={{ margin: '4px 0 0', fontSize: 'var(--text-xs)', opacity: 0.9 }}>
-                  Powered by Claude Sonnet
+                <p style={{ margin: '4px 0 0', fontSize: 'var(--text-xs)', color: 'rgba(255, 255, 255, 0.7)', opacity: 1, textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+                  {config.subtitle}
                 </p>
               </div>
               <button
@@ -278,10 +366,10 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </div>
-                <h3 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>
+                <h3 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)', color: 'white' }}>
                   Requirements Submitted!
                 </h3>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-8)' }}>
+                <p style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 'var(--space-8)' }}>
                   Thank you! We've received your project requirements and will get back to you within 24 hours.
                 </p>
                 <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -309,7 +397,9 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                     flex: 1,
                     overflowY: 'auto',
                     padding: 'var(--space-4)',
-                    background: 'var(--bg-secondary)',
+                    background: 'transparent',
+                    position: 'relative',
+                    zIndex: 1,
                   }}
                   className="ai-messages-container"
                 >
@@ -332,16 +422,17 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                           borderRadius: 'var(--radius-lg)',
                           background: message.role === 'user' 
                             ? 'linear-gradient(135deg, var(--color-primary-500) 0%, #8b5cf6 100%)'
-                            : 'white',
-                          color: message.role === 'user' ? 'white' : 'var(--text-primary)',
+                            : 'rgba(255, 255, 255, 0.05)',
+                          border: message.role === 'user' ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                          color: message.role === 'user' ? 'white' : 'rgba(255, 255, 255, 0.9)',
                           fontSize: 'var(--text-base)',
                           lineHeight: '1.6',
-                          whiteSpace: 'pre-wrap',
                           wordBreak: 'break-word',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                          boxShadow: message.role === 'user' ? '0 0 20px rgba(0, 133, 255, 0.3)' : '0 2px 10px rgba(0,0,0,0.2)',
+                          backdropFilter: message.role === 'user' ? 'none' : 'blur(10px)',
                         }}
                       >
-                        {message.content}
+                        {renderMarkdown(cleanMessageContent(message.content))}
                       </div>
                     </motion.div>
                   ))}
@@ -349,11 +440,12 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                   {/* Quick reply buttons for the latest assistant message */}
                   {(() => {
                     const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant');
-                    const suggestions = lastAssistant && Array.isArray(lastAssistant.suggestions) && lastAssistant.suggestions.length > 0
+                    // Use backend-provided suggestions only
+                    const suggestions = lastAssistant && Array.isArray(lastAssistant.suggestions)
                       ? lastAssistant.suggestions
-                      : lastAssistant
-                        ? getQuickReplies(lastAssistant.content)
-                        : [];
+                      : [];
+                    
+                    // Only show if not loading, has suggestions, and conversation not complete
                     if (!isLoading && suggestions.length > 0 && !isComplete) {
                       return (
                         <div
@@ -368,13 +460,25 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                             <button
                               key={`${s}-${i}`}
                               onClick={() => handleQuickReply(s)}
-                              className="modern-btn modern-btn-secondary"
                               style={{
                                 fontSize: 'var(--text-sm)',
-                                padding: '8px 12px',
+                                padding: '8px 16px',
                                 borderRadius: 'var(--radius-full)',
-                                borderColor: 'var(--border-light)',
-                                background: 'white',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                backdropFilter: 'blur(10px)',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                fontWeight: '500',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(0, 133, 255, 0.2)';
+                                e.currentTarget.style.borderColor = 'rgba(0, 133, 255, 0.5)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                               }}
                             >
                               {s}
@@ -401,8 +505,10 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                         style={{
                           padding: 'var(--space-3) var(--space-4)',
                           borderRadius: 'var(--radius-lg)',
-                          background: 'white',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          backdropFilter: 'blur(10px)',
+                          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
                           display: 'flex',
                           gap: '6px',
                         }}
@@ -461,11 +567,14 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                     onSubmit={(e) => handleSendMessage(e)}
                     style={{
                       padding: 'var(--space-4)',
-                      background: 'white',
-                      borderTop: '1px solid var(--border-light)',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
                       display: 'flex',
                       gap: 'var(--space-2)',
                       flexShrink: 0,
+                      backdropFilter: 'blur(10px)',
+                      position: 'relative',
+                      zIndex: 1,
                     }}
                   >
                     <input
@@ -478,11 +587,14 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
                       style={{
                         flex: 1,
                         padding: 'var(--space-3) var(--space-4)',
-                        border: '1px solid var(--border-light)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
                         borderRadius: 'var(--radius-full)',
                         fontSize: 'var(--text-base)',
                         outline: 'none',
                         minHeight: '48px',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        color: 'white',
+                        backdropFilter: 'blur(10px)',
                       }}
                     />
                     <button
@@ -512,6 +624,7 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) =>
         </motion.div>
       )}
     </AnimatePresence>
+    </>
   );
 };
 

@@ -15,28 +15,29 @@ const SocialProof = ({
   const defaultClients = [
     {
       name: 'LexisNexis',
-      logo: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp',
+      logo: '../src/assets/img/client/lexisnexis.webp',
     },
     {
       name: '9am Software Solutions',
-      logo: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/9am-software-sol.webp',
+      logo: '../src/assets/img/client/9am-software-sol.png',
     },
     {
       name: 'Airvolution',
-      logo: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/airvolution.svg',
+      logo: '../src/assets/img/client/airvolution.svg',
     },
     {
       name: 'Edify',
-      logo: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/edify.webp',
+      logo: '../src/assets/img/client/edify.webp',
     },
     {
       name: 'Fairway Independent',
-      logo: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/fairway-independent.webp',
+      logo: '../src/assets/img/client/fairway-independent.webp',
     },
-    // TODO: Add more client logos
     {
-      name: 'Client 6',
-      logo: null, // Placeholder
+
+      name: 'Spire N Savvy',
+      logo: '../src/assets/img/client/spirensavvy.png',
+    
     },
   ];
 
@@ -114,23 +115,40 @@ const SocialProof = ({
               }}
             >
               {client.logo ? (
-                <img
-                  src={client.logo}
-                  alt={client.name}
+                <div
                   style={{
-                    maxHeight: '150px',
-                    maxWidth: '120px',
-                    objectFit: 'contain',
-                    filter: variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)',
-                    transition: 'all var(--transition-default)',
+                    width: '140px',
+                    height: '80px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 'var(--space-2)',
+                    background: 'white',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(1)' : 'grayscale(0%) opacity(1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)';
-                  }}
-                />
+                >
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      width: 'auto',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      filter: variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)',
+                      transition: 'all var(--transition-default)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(1)' : 'grayscale(0%) opacity(1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)';
+                    }}
+                  />
+                </div>
               ) : (
                 <PlaceholderLogo name={client.name} width={100} height={40} />
               )}

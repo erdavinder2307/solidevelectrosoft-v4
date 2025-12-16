@@ -6,11 +6,15 @@ import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
+import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 /**
  * AI & Machine Learning Solutions Service Page
  */
 const AISolutionsService = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
   useEffect(() => {
     document.title = 'AI & Machine Learning Solutions | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -403,7 +407,8 @@ const AISolutionsService = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };

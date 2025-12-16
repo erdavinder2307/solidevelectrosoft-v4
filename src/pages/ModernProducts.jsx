@@ -5,6 +5,8 @@ import ModernFooter from '../components/layout/ModernFooter';
 import { ProductGrid } from '../components/products';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
+import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../hooks/useAIAssistant';
 import productsData from '../data/productsData';
 
 /**
@@ -12,6 +14,7 @@ import productsData from '../data/productsData';
  * Showcases all Solidev products and apps
  */
 const ModernProducts = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
   useEffect(() => {
     // SEO
     document.title = 'Our Products | Solidev Electrosoft - Apps & Platforms';
@@ -344,7 +347,8 @@ const ModernProducts = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 
       {/* Responsive Styles */}
       <style>{`

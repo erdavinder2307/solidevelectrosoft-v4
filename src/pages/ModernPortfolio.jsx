@@ -5,12 +5,15 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
+import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
  * Modern Portfolio Page
  * Showcase of all projects with filtering
  */
 const ModernPortfolio = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
@@ -609,7 +612,8 @@ const ModernPortfolio = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 
       {/* Responsive Styles */}
       <style>{`

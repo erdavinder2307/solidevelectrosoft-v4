@@ -62,13 +62,13 @@ const ModernHome = () => {
         {/* Hero Section with AI CTA */}
         <ModernHero 
           primaryCTA={{
-            text: '🤖 Chat with AI Assistant',
+            text: '✨ Chat with AI Assistant',
             onClick: openAI,
             isButton: true,
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/portfolio',
+            link: '/products',
           }}
         />
 
@@ -103,12 +103,13 @@ const ModernHome = () => {
           title="Ready to build something great?"
           subtitle="Let's turn your vision into reality. Free consultation for qualified projects."
           primaryCTA={{
-            text: 'Request a Quote',
-            link: '/contact',
+            text: '✨ Chat with AI Assistant',
+            onClick: openAI,
+            isButton: true,
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/portfolio',
+            link: '/products',
           }}
           compact
         />
@@ -122,8 +123,9 @@ const ModernHome = () => {
           title="Let's Build Your Next Big Thing"
           subtitle="From startups to enterprise — we have the expertise to deliver. Get started today."
           primaryCTA={{
-            text: 'Start Your Project',
-            link: '/contact',
+            text: '✨ Start with AI Assistant',
+            onClick: openAI,
+            isButton: true,
           }}
           secondaryCTA={{
             text: 'Schedule a Call',
@@ -133,7 +135,7 @@ const ModernHome = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
       
       {/* AI Project Requirements Assistant */}
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />

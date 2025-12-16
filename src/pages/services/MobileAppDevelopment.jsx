@@ -6,11 +6,15 @@ import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
+import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 /**
  * Mobile App Development Service Page
  */
 const MobileAppService = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
   useEffect(() => {
     document.title = 'Mobile App Development | iOS & Android | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -409,7 +413,8 @@ const MobileAppService = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };

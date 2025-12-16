@@ -5,11 +5,15 @@ import ModernHeader from '../../components/layout/ModernHeader';
 import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import { FloatingCTA } from '../../components/ui';
+import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 /**
  * MVP Development & Startup Packages Service Page
  */
 const MVPDevelopmentService = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
   useEffect(() => {
     document.title = 'MVP Development for Startups | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -555,12 +559,13 @@ const MVPDevelopmentService = () => {
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/portfolio',
+            link: '/products',
           }}
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };

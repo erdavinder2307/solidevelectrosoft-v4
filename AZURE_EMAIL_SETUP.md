@@ -66,7 +66,7 @@ export const environment = {
   },
   email: {
     senderName: 'Solidev Electrosoft',
-    senderEmail: 'donotreply@solidevelectrosoft.com', // Update with your verified domain
+    senderEmail: 'admin@solidevelectrosoft.com', // Update with your verified domain
     recipientEmails: {
       primary: 'admin@solidevelectrosoft.com',
       cc: 'davinder@solidevelectrosoft.com'

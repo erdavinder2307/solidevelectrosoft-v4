@@ -7,12 +7,16 @@ import CTABanner from '../../components/sections/CTABanner';
 import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import { IconBox } from '../../components/ui/Placeholders';
+import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 /**
  * Web Development Service Page
  * Detailed service page for web application development
  */
 const WebDevelopmentService = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
   useEffect(() => {
     document.title = 'Custom Web Application Development | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -462,7 +466,8 @@ const WebDevelopmentService = () => {
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };

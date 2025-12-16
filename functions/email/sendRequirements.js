@@ -1,8 +1,8 @@
-const nodemailer = require('nodemailer');
+const { EmailClient } = require('@azure/communication-email');
 const functions = require('firebase-functions');
 
 /**
- * Send Requirements Email to Solidev Electrosoft
+ * Send Requirements Email to Solidev Electrosoft using Azure Communication Services
  * @param {Object} data - Email data
  * @param {string} data.requirementsSummary - Final structured summary from AI
  * @param {Array} data.conversationHistory - Full conversation
@@ -10,24 +10,16 @@ const functions = require('firebase-functions');
  * @returns {Promise<Object>} - { messageId: string }
  */
 async function sendRequirementsEmail({ requirementsSummary, conversationHistory = [], userEmail = '' }) {
-  // Get email config from Firebase
-  // Configure with: firebase functions:config:set email.user="your-email" email.pass="your-password"
-  const emailUser = functions.config().email?.user;
-  const emailPass = functions.config().email?.pass;
+  // Get Azure Communication Services connection string from Firebase config
+  // Configure with: firebase functions:config:set azure.email.connection_string="endpoint=https://...;accesskey=..."
+  const connectionString = functions.config().azure?.email?.connection_string;
 
-  if (!emailUser || !emailPass) {
-    throw new Error('Email configuration missing. Run: firebase functions:config:set email.user="EMAIL" email.pass="PASSWORD"');
+  if (!connectionString) {
+    throw new Error('Azure Communication Services configuration missing. Run: firebase functions:config:set azure.email.connection_string="YOUR_CONNECTION_STRING"');
   }
 
-  // Create transporter (using Gmail SMTP)
-  // For production, consider using SendGrid, Mailgun, or similar
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: emailUser,
-      pass: emailPass, // Use App Password for Gmail
-    },
-  });
+  // Create Azure Email client
+  const emailClient = new EmailClient(connectionString);
 
   // Format conversation history
   const conversationText = conversationHistory
@@ -86,25 +78,35 @@ async function sendRequirementsEmail({ requirementsSummary, conversationHistory 
     </div>
     <div class="footer">
       <p>Solidev Electrosoft Pvt. Ltd.</p>
-      <p>Automated via Firebase Functions</p>
+      <p>Powered by Azure Communication Services</p>
     </div>
   </div>
 </body>
 </html>
   `.trim();
 
-  // Send email
-  const info = await transporter.sendMail({
-    from: `"Solidev AI Assistant" <${emailUser}>`,
-    to: 'davinder@solidevelectrosoft.com',
-    subject: emailSubject,
-    html: emailBody,
-  });
+  // Configure email message for Azure Communication Services
+  const message = {
+    senderAddress: 'admin@solidevelectrosoft.com',
+    content: {
+      subject: emailSubject,
+      html: emailBody,
+    },
+    recipients: {
+      to: [
+        { address: 'davinder@solidevelectrosoft.com', displayName: 'Davinder Pal' }
+      ],
+    },
+  };
 
-  console.log('Email sent:', info.messageId);
+  // Send email using Azure Communication Services
+  const poller = await emailClient.beginSend(message);
+  const result = await poller.pollUntilDone();
+
+  console.log('Azure Email sent:', result.id);
 
   return {
-    messageId: info.messageId,
+    messageId: result.id,
     timestamp: new Date().toISOString(),
   };
 }

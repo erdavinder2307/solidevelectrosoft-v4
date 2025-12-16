@@ -38,14 +38,15 @@ Rules:
 - After generating the summary, add this exact marker at the end: [REQUIREMENTS_COMPLETE]
 - Be friendly, professional, and concise
 
-Additionally, at the end of each message, include a concise JSON payload on a single line that the frontend can parse, formatted exactly as:
-{"suggestions":["Option 1","Option 2","Option 3"]}
+CRITICAL: After EVERY message, you MUST provide 3-4 quick reply suggestions as a JSON array at the end.
+Format: {"suggestions":["iOS & Android","iOS only","Android only","Not sure yet"]}
 
 Rules for suggestions:
-- Provide 3–5 short, user-clickable options (max 60 characters each)
-- Options should help progress requirements (e.g., pick a platform, confirm a feature, clarify users)
-- Avoid punctuation-heavy or multi-sentence suggestions
-- If the summary is complete ([REQUIREMENTS_COMPLETE]), provide an empty array: {"suggestions":[]}`;
+- Always provide 3-4 specific, actionable options based on your question
+- Keep each option under 50 characters
+- Options should directly answer the question you just asked
+- Make them natural conversation responses
+- If conversation is complete ([REQUIREMENTS_COMPLETE]), use: {"suggestions":[]}`;
 
 /**
  * Call Claude Sonnet API
@@ -107,7 +108,34 @@ async function callClaudeAI(userMessage, conversationHistory = []) {
         }
       }
     } catch (e) {
-      // Ignore parse errors; UI will fall back to local extraction
+      // Ignore parse errors; will try fallback extraction
+    }
+
+    // FALLBACK: If no JSON suggestions found, extract from message content
+    if (suggestions.length === 0) {
+      const lines = assistantMessage.split('\n').map((l) => l.trim());
+      
+      // Method 1: Extract bullet points
+      const bullets = lines
+        .filter((l) => /^(-|•|\d+\.)\s+/.test(l))
+        .map((l) => l.replace(/^(-|•|\d+\.)\s+/, '').replace(/\?$/, ''))
+        .filter((l) => l.length > 5 && l.length <= 60);
+      
+      suggestions.push(...bullets);
+      
+      // Method 2: Extract "For example:" inline patterns
+      const exampleMatch = assistantMessage.match(/for example[:\s]+([^.?!]+[.?!])/i);
+      if (exampleMatch) {
+        const exampleText = exampleMatch[1];
+        // Split on common separators
+        const parts = exampleText.split(/,|\bor\b/)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 5 && s.length <= 60);
+        suggestions.push(...parts);
+      }
+      
+      // Deduplicate and limit to 4
+      suggestions = Array.from(new Set(suggestions)).slice(0, 4);
     }
 
     // Check if requirements are complete

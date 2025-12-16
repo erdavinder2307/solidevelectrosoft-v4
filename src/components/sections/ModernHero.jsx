@@ -14,7 +14,7 @@ const ModernHero = ({
   headlineSuffix = "That Drive Growth",
   subheadline = "We partner with startups and enterprises to design, develop, and deploy world-class web and mobile applications. From MVPs to enterprise solutions.",
   primaryCTA = { text: "Get Free Consultation", link: "/contact" },
-  secondaryCTA = { text: "View Our Work", link: "/portfolio" },
+  secondaryCTA = { text: "View Our Work", link: "/products" },
   stats = [
     { value: "25+", label: "Projects Delivered" },
     { value: "2018", label: "Established Since" },
@@ -285,16 +285,6 @@ const ModernHero = ({
           gap: 'var(--space-2)',
         }}
       >
-        <span
-          style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-neutral-500)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-          }}
-        >
-          Scroll
-        </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}

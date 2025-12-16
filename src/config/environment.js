@@ -22,7 +22,7 @@ export const environment = {
   },
   email: {
     senderName: 'Solidev Electrosoft',
-    senderEmail: 'donotreply@solidevelectrosoft.com',
+    senderEmail: 'admin@solidevelectrosoft.com',
     recipientEmails: {
       primary: 'admin@solidevelectrosoft.com',
       cc: 'davinder@solidevelectrosoft.com'

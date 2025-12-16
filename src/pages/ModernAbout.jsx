@@ -7,12 +7,15 @@ import SocialProof from '../components/sections/SocialProof';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
+import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
  * Modern About Page
  * Clean, professional company introduction
  */
 const ModernAbout = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
   useEffect(() => {
     // SEO
     document.title = 'About Solidev Electrosoft | Custom Software Development Company';
@@ -725,12 +728,13 @@ const ModernAbout = () => {
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/portfolio',
+            link: '/products',
           }}
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 
       {/* Responsive Styles */}
       <style>{`

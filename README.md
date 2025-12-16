@@ -55,12 +55,25 @@ src/
 - Favicon and social media integration
 - Schema markup ready structure
 
+### AI Project Requirements Assistant
+- **Backend**: Firebase Functions (Node.js 20)
+- **AI**: Claude Sonnet 4.5 API for intelligent requirements gathering
+- **Email**: Azure Communication Services with verified domain
+- **Features**: 
+  - Two modes: Requirements gathering & Consultation
+  - Real-time chat interface with markdown support
+  - Quick reply suggestions from AI
+  - Email delivery of conversation summaries
+  - Mobile-first responsive design
+  - Dark theme with glassmorphism effects
+
 ### Contact Integration
 - Phone call functionality
 - WhatsApp integration
 - Contact form modal
 - Email links
 - Social media links
+- Azure Communication Services email (admin@solidevelectrosoft.com)
 
 ## Development
 
@@ -107,6 +120,10 @@ All original assets (CSS, images, fonts, JavaScript) have been preserved from th
 - ✅ Responsive design
 - ✅ Custom mouse cursor
 - ✅ Back to top functionality
+- ✅ AI Project Requirements Assistant
+- ✅ Azure Communication Services email integration
+- ✅ Firebase Functions backend
+- ✅ Claude AI integration for intelligent conversations
 
 ### React-Specific Improvements
 - Component-based architecture
@@ -122,6 +139,14 @@ All original assets (CSS, images, fonts, JavaScript) have been preserved from th
 - Firefox 60+
 - Safari 12+
 - Edge 79+
+
+## Documentation
+
+- [AZURE_EMAIL_INTEGRATION.md](./AZURE_EMAIL_INTEGRATION.md) - Complete guide for Azure Communication Services setup, configuration, and testing
+- [AZURE_EMAIL_SETUP.md](./AZURE_EMAIL_SETUP.md) - Azure Communication Services initial setup documentation
+- [CONTACT_FORM_SETUP.md](./CONTACT_FORM_SETUP.md) - Contact form implementation details
+- [ABOUT_PAGE_IMPLEMENTATION.md](./ABOUT_PAGE_IMPLEMENTATION.md) - About page structure and features
+- [MODERN_UX_ENHANCEMENTS.md](./MODERN_UX_ENHANCEMENTS.md) - Modern UX features and enhancements
 
 ## Contributing
 

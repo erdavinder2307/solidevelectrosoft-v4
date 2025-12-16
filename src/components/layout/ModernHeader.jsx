@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import AIProjectAssistant from '../ai/AIProjectAssistant';
+import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 // Import logos for proper Vite bundling
 import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
@@ -13,6 +15,7 @@ import logoLight from '../../assets/img/logo/logo 3.png';
 const ModernHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const location = useLocation();
 
   // Navigation items
@@ -217,13 +220,13 @@ const ModernHeader = () => {
             {/* Desktop CTA & Mobile Menu Button */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
               {/* Desktop CTA */}
-              <Link
-                to="/contact"
+              <button
+                onClick={openAI}
                 className="modern-btn modern-btn-primary modern-lg-block"
                 style={{ display: 'none' }}
               >
-                Get Free Quote
-              </Link>
+                ✨Get Free AI Consultation
+              </button>
 
               {/* Mobile Menu Button */}
               <button
@@ -370,13 +373,13 @@ const ModernHeader = () => {
                 transition={{ delay: 0.3 }}
                 style={{ marginTop: 'var(--space-8)' }}
               >
-                <Link
-                  to="/contact"
+                <button
+                  onClick={openAI}
                   className="modern-btn modern-btn-primary"
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
-                  Get Free Quote
-                </Link>
+                  ✨ Get Free AI Consultation
+                </button>
               </motion.div>
 
               {/* Mobile Contact Info */}
@@ -421,6 +424,9 @@ const ModernHeader = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* AI Consultation Modal */}
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} mode="consultation" />
 
       {/* CSS for hover effects */}
       <style>{`

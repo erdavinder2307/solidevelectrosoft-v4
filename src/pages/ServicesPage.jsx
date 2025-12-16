@@ -6,6 +6,8 @@ import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
 import SocialProof from '../components/sections/SocialProof';
 import { FloatingCTA } from '../components/ui';
+import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
  * Services Landing Page
@@ -335,17 +337,19 @@ const Services = () => {
           title="Ready to start your project?"
           subtitle="Let's discuss your requirements and find the best solution for your business."
           primaryCTA={{
-            text: 'Request a Quote',
-            link: '/contact',
+            text: '✨ Chat with AI Assistant',
+            onClick: openAI,
+            isButton: true,
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/portfolio',
+            link: '/products',
           }}
         />
       </main>
       <ModernFooter />
-      <FloatingCTA />
+      <FloatingCTA onQuoteClick={openAI} />
+      <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
     </>
   );
 };
