@@ -10,7 +10,7 @@ const CTABanner = ({
   variant = 'gradient', // 'gradient', 'dark', 'light'
   title = "Ready to Build Something Amazing?",
   subtitle = "Let's discuss your project and explore how we can help bring your vision to life.",
-  primaryCTA = { text: "Get Free Consultation", link: "/contact" },
+  primaryCTA = { text: "✨ Chat with AI", link: "/contact" },
   secondaryCTA = { text: "View Our Work", link: "/portfolio" },
   showSecondary = true,
   compact = false,
@@ -119,19 +119,35 @@ const CTABanner = ({
             }}
             className="cta-buttons"
           >
-            <Link
-              to={primaryCTA.link}
-              className={`modern-btn ${variant === 'gradient' ? 'modern-btn-white' : 'modern-btn-primary'}`}
-              style={{
-                minWidth: '200px',
-              }}
-            >
-              {primaryCTA.text}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </Link>
+            {primaryCTA.isButton ? (
+              <button
+                onClick={primaryCTA.onClick}
+                className={`modern-btn ${variant === 'gradient' ? 'modern-btn-white' : 'modern-btn-primary'}`}
+                style={{
+                  minWidth: '200px',
+                }}
+              >
+                {primaryCTA.text}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            ) : (
+              <Link
+                to={primaryCTA.link}
+                className={`modern-btn ${variant === 'gradient' ? 'modern-btn-white' : 'modern-btn-primary'}`}
+                style={{
+                  minWidth: '200px',
+                }}
+              >
+                {primaryCTA.text}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </Link>
+            )}
             {showSecondary && (
               <Link
                 to={secondaryCTA.link}

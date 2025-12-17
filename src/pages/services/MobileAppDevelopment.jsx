@@ -403,7 +403,7 @@ const MobileAppService = () => {
           title="Ready to build your mobile app?"
           subtitle="Let's bring your app idea to life. Free consultation included."
           primaryCTA={{
-            text: 'Get Free Consultation',
+            text: '✨ Chat with AI',
             link: '/contact',
           }}
           secondaryCTA={{

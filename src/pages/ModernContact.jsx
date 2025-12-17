@@ -6,7 +6,6 @@ import ModernContactForm from '../components/ui/ModernContactForm';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
-import emailService from '../services/emailService';
 
 /**
  * Modern Contact Page
@@ -14,21 +13,6 @@ import emailService from '../services/emailService';
  */
 const ModernContact = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
-  
-  // Handle contact form submission
-  const handleContactFormSubmit = async (formData) => {
-    try {
-      const result = await emailService.sendContactFormEmail(formData);
-      if (!result.success) {
-        throw new Error(result.message || 'Failed to send email');
-      }
-      return result;
-    } catch (error) {
-      console.error('Contact form submission error:', error);
-      throw error;
-    }
-  };
-
   useEffect(() => {
     document.title = 'Contact Us | Get a Free Quote | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -43,7 +27,7 @@ const ModernContact = () => {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', 'https://solidev.in/contact');
+    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/contact');
 
     // Analytics
     if (typeof window.gtag === 'function') {
@@ -309,7 +293,7 @@ const ModernContact = () => {
                     Fill out the form with your project specifics
                   </p>
                 </div>
-                <ModernContactForm onSubmit={handleContactFormSubmit} />
+                <ModernContactForm />
               </motion.div>
 
               {/* AI-Powered Assistance */}
@@ -566,7 +550,7 @@ const ModernContact = () => {
                 Our Office Location
               </h2>
               <p style={{ fontSize: 'var(--text-lg)', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                Visit us in Mohali, India. We'd love to meet and discuss your next project over a cup of coffee.
+                Visit us in Hyderabad, India. We'd love to meet and discuss your next project over a cup of coffee.
               </p>
             </motion.div>
 

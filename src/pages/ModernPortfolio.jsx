@@ -35,7 +35,7 @@ const ModernPortfolio = () => {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', 'https://solidev.in/portfolio');
+    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/portfolio');
 
     // Analytics
     if (typeof window.gtag === 'function') {
@@ -611,7 +611,7 @@ const ModernPortfolio = () => {
           }}
         />
       </main>
-      <ModernFooter />
+      <ModernFooter onQuoteClick={openAI} />
       <FloatingCTA onQuoteClick={openAI} />
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 

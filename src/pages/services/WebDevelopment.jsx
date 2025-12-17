@@ -456,7 +456,7 @@ const WebDevelopmentService = () => {
           title="Ready to build your web application?"
           subtitle="Let's discuss your project and create something amazing together."
           primaryCTA={{
-            text: 'Get Free Consultation',
+            text: '✨ Chat with AI',
             link: '/contact',
           }}
           secondaryCTA={{

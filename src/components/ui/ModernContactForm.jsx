@@ -51,9 +51,36 @@ const ModernContactForm = ({
     setSubmitStatus(null);
 
     try {
+      // Call Firebase function to send contact form
+      const response = await fetch(
+        'https://us-central1-solidev-electrosoft.cloudfunctions.net/sendContactForm',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            projectType: formData.projectType,
+            budget: formData.budget,
+            message: formData.message,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to submit form');
+      }
+
+      // Call custom onSubmit if provided
       if (onSubmit) {
         await onSubmit(formData);
       }
+
       setSubmitStatus('success');
       setFormData({
         name: '',
@@ -63,6 +90,11 @@ const ModernContactForm = ({
         budget: '',
         message: '',
       });
+
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');

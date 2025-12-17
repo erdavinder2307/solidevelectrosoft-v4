@@ -34,7 +34,7 @@ const ModernProducts = () => {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', 'https://solidev.in/products');
+    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/products');
 
     // Analytics
     if (typeof window.gtag === 'function') {
@@ -346,7 +346,7 @@ const ModernProducts = () => {
           }}
         />
       </main>
-      <ModernFooter />
+      <ModernFooter onQuoteClick={openAI} />
       <FloatingCTA onQuoteClick={openAI} />
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 

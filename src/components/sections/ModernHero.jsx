@@ -13,7 +13,7 @@ const ModernHero = ({
   headlineHighlight = "Digital Products",
   headlineSuffix = "That Drive Growth",
   subheadline = "We partner with startups and enterprises to design, develop, and deploy world-class web and mobile applications. From MVPs to enterprise solutions.",
-  primaryCTA = { text: "Get Free Consultation", link: "/contact" },
+  primaryCTA = { text: "✨ Chat with AI", link: "/contact" },
   secondaryCTA = { text: "View Our Work", link: "/products" },
   stats = [
     { value: "25+", label: "Projects Delivered" },

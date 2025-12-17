@@ -8,6 +8,24 @@ import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+
+// Import team images
+import team1 from '../assets/img/team/team1.png';
+import team2 from '../assets/img/team/team2.png';
+import team3 from '../assets/img/team/team3.png';
+import team4 from '../assets/img/team/team4.png';
+import team5 from '../assets/img/team/team5.png';
+import team6 from '../assets/img/team/team6.png';
+import team7 from '../assets/img/team/team7.png';
+import team8 from '../assets/img/team/team8.png';
+
+// Import individual team member images
+import davinder from '../assets/img/team/davinder.png';
+import anushka from '../assets/img/team/anushka.png';
+import jagriti from '../assets/img/team/jagriti.png';
+import nisha from '../assets/img/team/nisha.png';
+import sheetal from '../assets/img/team/sheetal.png';
+
 import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
@@ -16,6 +34,11 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
  */
 const ModernAbout = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
+  // Random team image for story section
+  const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];
+  const randomTeamImage = teamImages[Math.floor(Math.random() * teamImages.length)];
+  
   useEffect(() => {
     // SEO
     document.title = 'About Solidev Electrosoft | Custom Software Development Company';
@@ -35,7 +58,7 @@ const ModernAbout = () => {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', 'https://solidev.in/about');
+    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/about');
 
     // Analytics
     if (typeof window.gtag === 'function') {
@@ -51,10 +74,10 @@ const ModernAbout = () => {
   }, []);
 
   const stats = [
-    { number: '7+', label: 'Years Experience' },
-    { number: '200+', label: 'Projects Delivered' },
-    { number: '50+', label: 'Happy Clients' },
-    { number: '98%', label: 'Client Satisfaction' },
+    { number: '13+', label: 'Years Experience' },
+    { number: '25+', label: 'Projects Delivered' },
+    { number: '30+', label: 'Happy Clients' },
+    { number: '99%', label: 'Client Satisfaction' },
   ];
 
   const values = [
@@ -105,22 +128,34 @@ const ModernAbout = () => {
 
   const team = [
     {
-      name: 'Gurpreet Singh',
-      role: 'Founder & CEO',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/team-1-v2.webp',
-      linkedin: 'https://www.linkedin.com/in/gurpreet-singh-5b3b3b1b1/',
+      name: 'Davinder Pal',
+      role: 'Director & CTO',
+      image: davinder,
+      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
     },
     {
-      name: 'Davinder Pal Singh',
-      role: 'Co-Founder & CTO',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/team-2-v2.webp',
-      linkedin: 'https://www.linkedin.com/in/davinderpalsingh/',
+      name: 'Anushka',
+      role: 'Sales & Finance',
+      image: anushka,
+      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
     },
     {
-      name: 'Expert Team',
-      role: 'Senior Developers',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/team-3.webp',
-      linkedin: '#',
+      name: 'Jagriti',
+      role: 'Software Developer (Remote)',
+      image: jagriti,
+      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
+    },
+    {
+      name: 'Nisha',
+      role: 'Software Developer',
+      image: nisha,
+      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
+    },
+    {
+      name: 'Sheetal',
+      role: 'Software Developer',
+      image: sheetal,
+      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
     },
   ];
 
@@ -363,7 +398,7 @@ const ModernAbout = () => {
                 }}
               >
                 <img
-                  src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/about-1-v2.webp"
+                  src={randomTeamImage}
                   alt="Solidev Team"
                   style={{
                     width: '100%',
@@ -723,7 +758,7 @@ const ModernAbout = () => {
           title="Ready to Start Your Project?"
           subtitle="Let's discuss how we can help transform your ideas into reality."
           primaryCTA={{
-            text: 'Get Free Consultation',
+            text: '✨ Chat with AI',
             link: '/contact',
           }}
           secondaryCTA={{
@@ -732,7 +767,7 @@ const ModernAbout = () => {
           }}
         />
       </main>
-      <ModernFooter />
+      <ModernFooter onQuoteClick={openAI} />
       <FloatingCTA onQuoteClick={openAI} />
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
 

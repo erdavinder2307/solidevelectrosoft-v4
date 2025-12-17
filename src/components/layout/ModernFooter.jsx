@@ -9,7 +9,7 @@ import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
  * Modern Footer Component
  * Clean, professional footer with newsletter signup
  */
-const ModernFooter = () => {
+const ModernFooter = ({ onQuoteClick = null }) => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
@@ -139,16 +139,29 @@ const ModernFooter = () => {
             >
               We'd love to hear about your project and explore how we can help bring your vision to life.
             </p>
-            <Link
-              to="/contact"
-              className="modern-btn modern-btn-primary"
-            >
-              Get Free Consultation
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </Link>
+            {onQuoteClick ? (
+              <button
+                onClick={onQuoteClick}
+                className="modern-btn modern-btn-primary"
+              >
+                ✨ Chat with AI
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            ) : (
+              <Link
+                to="/contact"
+                className="modern-btn modern-btn-primary"
+              >
+                ✨ Chat with AI
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </Link>
+            )}
           </div>
 
           {/* Newsletter Signup */}
