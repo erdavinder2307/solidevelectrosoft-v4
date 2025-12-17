@@ -7,10 +7,10 @@ import { motion } from 'framer-motion';
  * Clean grid layout with service cards
  */
 const ModernServices = ({
-  badge = "What We Do",
-  title = "Services That Drive",
-  titleHighlight = "Digital Transformation",
-  subtitle = "We deliver end-to-end software solutions that help businesses innovate, scale, and succeed in the digital age.",
+  badge = "Core Capabilities",
+  title = "Enterprise-Grade",
+  titleHighlight = "Software Engineering",
+  subtitle = "Proven delivery across healthcare, finance, legal tech, and SaaS. We build systems that scale, perform, and last.",
   services = null,
 }) => {
   // Default services if not provided
@@ -24,9 +24,9 @@ const ModernServices = ({
           <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
       ),
-      title: "Web App Development",
-      description: "Custom web applications built with React, Angular, .NET Core, and Node.js. Scalable, secure, and optimized for performance.",
-      features: ["Single Page Apps", "Progressive Web Apps", "Enterprise Portals", "E-commerce Platforms"],
+      title: "Web Application Development",
+      description: "Production-ready web systems using Angular, React, .NET Core, and Python. Built for security, performance, and long-term maintenance.",
+      features: ["Enterprise Portals", "SaaS Platforms", "Healthcare Systems", "Financial Applications"],
       link: "/services/web-development",
     },
     {
@@ -37,24 +37,22 @@ const ModernServices = ({
           <line x1="12" y1="18" x2="12.01" y2="18"/>
         </svg>
       ),
-      title: "Mobile App Development",
-      description: "Native and cross-platform mobile apps for iOS and Android. Beautiful interfaces with seamless user experiences.",
-      features: ["iOS Development", "Android Development", "React Native", "Flutter Apps"],
+      title: "Mobile Application Development",
+      description: "Native iOS/Android and cross-platform apps with Flutter. Designed for reliability and seamless user experience.",
+      features: ["Native iOS & Android", "Flutter Cross-Platform", "Offline-First Architecture", "Payment Integration"],
       link: "/services/mobile-development",
     },
     {
-      id: 'ai-solutions',
+      id: 'cloud-solutions',
       icon: (
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
-          <path d="M21.18 8.02c-1-2.3-2.85-4.17-5.16-5.18"/>
-          <circle cx="12" cy="12" r="3"/>
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
         </svg>
       ),
-      title: "AI-Powered Solutions",
-      description: "Harness the power of artificial intelligence with custom ML models, chatbots, and intelligent automation systems.",
-      features: ["Machine Learning", "Natural Language Processing", "Computer Vision", "Predictive Analytics"],
-      link: "/services/ai-solutions",
+      title: "Cloud & Infrastructure",
+      description: "Scalable cloud architecture on Azure and Firebase. CI/CD pipelines, monitoring, and infrastructure as code.",
+      features: ["Azure Cloud Services", "Firebase Backend", "DevOps & CI/CD", "CosmosDB & MongoDB"],
+      link: "/services/cloud-solutions",
     },
     {
       id: 'mvp-development',
@@ -63,9 +61,9 @@ const ModernServices = ({
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
         </svg>
       ),
-      title: "MVP Development",
-      description: "Fast-track your startup with our MVP packages. Go from idea to market in weeks, not months.",
-      features: ["Rapid Prototyping", "Lean Development", "Market Validation", "Scalable Architecture"],
+      title: "MVP & Product Development",
+      description: "Rapid product development with senior-level engineering. Ship faster without compromising on quality or architecture.",
+      features: ["Rapid Prototyping", "Scalable Foundation", "Production-Ready Code", "Technical Due Diligence"],
       link: "/services/mvp-packages",
     },
   ];

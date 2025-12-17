@@ -18,6 +18,13 @@ import {
   MVPDevelopmentService
 } from './pages';
 
+// Import admin components
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminLayout from './components/admin/AdminLayout';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
+
 // Import legacy CSS files
 import './assets/css/bootstrap.css';
 import './assets/css/meanmenu.css';
@@ -87,40 +94,53 @@ function App() {
   const PortfolioPage = USE_MODERN_DESIGN ? ModernPortfolio : Project;
 
   return (
-    <Router basename="/">
-      <div className="App">
-        <Routes>
-          {/* Main Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/about.html" element={<AboutPage />} />
-          <Route path="/portfolio" element={<PortfolioPage />} />
-          <Route path="/portfolio.html" element={<PortfolioPage />} />
-          <Route path="/project" element={<PortfolioPage />} />
-          <Route path="/project.html" element={<PortfolioPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/contact.html" element={<ContactPage />} />
-          <Route path="/faq" element={<Faq />} />
-          <Route path="/faq.html" element={<Faq />} />
-          <Route path="/products" element={<ModernProducts />} />
-          <Route path="/products.html" element={<ModernProducts />} />
-          
-          {/* Services Routes */}
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/services.html" element={<ServicesPage />} />
-          <Route path="/services/web-development" element={<WebDevelopmentService />} />
-          <Route path="/services/mobile-app-development" element={<MobileAppService />} />
-          <Route path="/services/ai-solutions" element={<AISolutionsService />} />
-          <Route path="/services/mvp-development" element={<MVPDevelopmentService />} />
+    <AuthProvider>
+      <Router basename="/">
+        <div className="App">
+          <Routes>
+            {/* Main Routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about.html" element={<AboutPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/portfolio.html" element={<PortfolioPage />} />
+            <Route path="/project" element={<PortfolioPage />} />
+            <Route path="/project.html" element={<PortfolioPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact.html" element={<ContactPage />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/faq.html" element={<Faq />} />
+            <Route path="/products" element={<ModernProducts />} />
+            <Route path="/products.html" element={<ModernProducts />} />
+            
+            {/* Services Routes */}
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services.html" element={<ServicesPage />} />
+            <Route path="/services/web-development" element={<WebDevelopmentService />} />
+            <Route path="/services/mobile-app-development" element={<MobileAppService />} />
+            <Route path="/services/ai-solutions" element={<AISolutionsService />} />
+            <Route path="/services/mvp-development" element={<MVPDevelopmentService />} />
 
-          {/* Legacy route aliases for SEO */}
-          <Route path="/web-development" element={<WebDevelopmentService />} />
-          <Route path="/mobile-development" element={<MobileAppService />} />
-          <Route path="/ai-ml-solutions" element={<AISolutionsService />} />
-          <Route path="/startup-mvp" element={<MVPDevelopmentService />} />
-        </Routes>
-      </div>
-    </Router>
+            {/* Legacy route aliases for SEO */}
+            <Route path="/web-development" element={<WebDevelopmentService />} />
+            <Route path="/mobile-development" element={<MobileAppService />} />
+            <Route path="/ai-ml-solutions" element={<AISolutionsService />} />
+            <Route path="/startup-mvp" element={<MVPDevelopmentService />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

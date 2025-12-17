@@ -8,18 +8,18 @@ import { motion } from 'framer-motion';
  * Mobile-first responsive design
  */
 const ModernHero = ({
-  badge = "Transform Your Ideas Into Reality",
-  headline = "Build Powerful",
-  headlineHighlight = "Digital Products",
-  headlineSuffix = "That Drive Growth",
-  subheadline = "We partner with startups and enterprises to design, develop, and deploy world-class web and mobile applications. From MVPs to enterprise solutions.",
+  badge = "Backed by Over a Decade of Software Delivery",
+  headline = "Production-Ready",
+  headlineHighlight = "Web & Mobile Systems",
+  headlineSuffix = "Built for Scale",
+  subheadline = "We deliver secure, scalable applications for healthcare, finance, legal tech, and SaaS. Senior engineering team with 13+ years shipping real products to production.",
   primaryCTA = { text: "✨ Chat with AI", link: "/contact" },
   secondaryCTA = { text: "View Our Work", link: "/products" },
   stats = [
-    { value: "25+", label: "Projects Delivered" },
-    { value: "2018", label: "Established Since" },
-    { value: "13+", label: "Years in Industry" },
-    { value: "99%", label: "Client Satisfaction" },
+    { value: "13+", label: "Years Experience" },
+    { value: "25+", label: "Systems Delivered" },
+    { value: "4", label: "Core Industries" },
+    { value: "100%", label: "Production Grade" },
   ],
   backgroundImage = null,
 }) => {

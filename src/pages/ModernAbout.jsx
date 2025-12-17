@@ -6,6 +6,7 @@ import ModernFooter from '../components/layout/ModernFooter';
 import SocialProof from '../components/sections/SocialProof';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
+import TechStack from '../components/sections/TechStack';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 
@@ -74,23 +75,22 @@ const ModernAbout = () => {
   }, []);
 
   const stats = [
-    { number: '13+', label: 'Years Experience' },
-    { number: '25+', label: 'Projects Delivered' },
-    { number: '30+', label: 'Happy Clients' },
-    { number: '99%', label: 'Client Satisfaction' },
+    { number: '13+', label: 'Years Shipping Software' },
+    { number: '25+', label: 'Production Systems' },
+    { number: '4', label: 'Core Industries' },
+    { number: '100%', label: 'Maintained Code' },
   ];
 
   const values = [
     {
       icon: (
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
       ),
-      title: 'Innovation First',
-      description: 'We embrace cutting-edge technologies and innovative approaches to deliver solutions that give you a competitive edge.',
+      title: 'Production-Ready Delivery',
+      description: 'Every system we build is architected for real-world use—secure, performant, and maintainable over years, not just months.',
     },
     {
       icon: (
@@ -101,8 +101,8 @@ const ModernAbout = () => {
           <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
         </svg>
       ),
-      title: 'Client Partnership',
-      description: 'We don\'t just build software; we build relationships. Your success is our success, and we work as an extension of your team.',
+      title: 'Domain Expertise',
+      description: 'Deep experience in healthcare, legal tech, finance, and SaaS. We understand regulatory compliance, security, and industry-specific challenges.',
     },
     {
       icon: (
@@ -111,18 +111,18 @@ const ModernAbout = () => {
           <polyline points="22 4 12 14.01 9 11.01"/>
         </svg>
       ),
-      title: 'Quality Obsessed',
-      description: 'Every line of code is crafted with care. We follow industry best practices and rigorous testing to ensure excellence.',
+      title: 'Long-Term Thinking',
+      description: 'We build systems designed for evolution—maintainable architecture, documented code, and scalable infrastructure that grows with your business.',
     },
     {
       icon: (
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
+          <path d="M12 6v6l4 2"/>
         </svg>
       ),
-      title: 'On-Time Delivery',
-      description: 'We understand that time is money. Our agile methodology ensures projects are delivered on schedule without compromising quality.',
+      title: 'Senior-Level Engineering',
+      description: 'No junior experiments. Our team brings over a decade of hands-on delivery experience across complex, mission-critical systems.',
     },
   ];
 
@@ -349,8 +349,8 @@ const ModernAbout = () => {
                     marginBottom: '24px',
                   }}
                 >
-                  From a Small Team to a{' '}
-                  <span style={{ color: '#3b82f6' }}>Global Partner</span>
+                  Over a Decade of{' '}
+                  <span style={{ color: '#3b82f6' }}>Real-World Engineering</span>
                 </h2>
                 <p
                   style={{
@@ -360,9 +360,9 @@ const ModernAbout = () => {
                     marginBottom: '20px',
                   }}
                 >
-                  Solidev Electrosoft was founded in 2018 with a simple mission: to help businesses 
-                  leverage technology to achieve their goals. What started as a small team of passionate 
-                  developers has grown into a full-service software development company.
+                  Since 2018, Solidev Electrosoft has been delivering production-grade software systems 
+                  across healthcare, finance, legal tech, and SaaS. Our team brings 13+ years of combined 
+                  hands-on experience building, shipping, and maintaining mission-critical applications.
                 </p>
                 <p
                   style={{
@@ -372,9 +372,9 @@ const ModernAbout = () => {
                     marginBottom: '32px',
                   }}
                 >
-                  Today, we serve clients across the globe, from ambitious startups to Fortune 500 
-                  companies, delivering custom web applications, mobile apps, and AI-powered solutions 
-                  that make a real difference.
+                  We specialize in complex, regulated industries where reliability matters. From 
+                  Angular and React frontends to .NET Core and Python backends, we build with 
+                  Azure and Firebase infrastructure—always production-ready, always maintainable.
                 </p>
                 <Link 
                   to="/contact" 
@@ -748,6 +748,9 @@ const ModernAbout = () => {
           title="Trusted by innovative companies worldwide" 
           variant="default"
         />
+
+        {/* Tech Stack */}
+        <TechStack />
 
         {/* Testimonials */}
         <ModernTestimonials />

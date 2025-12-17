@@ -225,7 +225,7 @@ const ModernHeader = () => {
                 className="modern-btn modern-btn-primary modern-lg-block"
                 style={{ display: 'none' }}
               >
-                ✨ Chat with AI
+                ✨ Free AI Consultation
               </button>
 
               {/* Mobile Menu Button */}

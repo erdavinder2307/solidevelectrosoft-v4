@@ -269,7 +269,7 @@ const WebDevelopmentService = () => {
               </p>
             </motion.div>
 
-            <div className="modern-grid-3">
+            <div className="features-grid">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
@@ -277,23 +277,11 @@ const WebDevelopmentService = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card"
-                  style={{ textAlign: 'center' }}
+                  className="feature-card"
                 >
-                  <div
-                    style={{
-                      fontSize: '2.5rem',
-                      marginBottom: 'var(--space-4)',
-                    }}
-                  >
-                    {feature.icon}
-                  </div>
-                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)' }}>
-                    {feature.title}
-                  </h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-                    {feature.description}
-                  </p>
+                  <div className="feature-icon">{feature.icon}</div>
+                  <h3 className="feature-title">{feature.title}</h3>
+                  <p className="feature-description">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
