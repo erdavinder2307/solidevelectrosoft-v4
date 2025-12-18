@@ -166,7 +166,18 @@ const ProductsList = () => {
                 alignItems: 'center',
               }}
             >
-              {product.image && (
+              {product.logo ? (
+                <img
+                  src={product.logo}
+                  alt={product.title}
+                  style={{
+                    width: '120px',
+                    height: '120px',
+                    borderRadius: '8px',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : product.image ? (
                 <img
                   src={product.image}
                   alt={product.title}
@@ -177,7 +188,7 @@ const ProductsList = () => {
                     objectFit: 'cover',
                   }}
                 />
-              )}
+              ) : null}
 
               <div style={{ flex: 1 }}>
                 <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1a202c' }}>

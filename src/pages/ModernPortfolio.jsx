@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { db } from '../config/firebase';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
@@ -15,6 +17,75 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
 const ModernPortfolio = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const [activeFilter, setActiveFilter] = useState('all');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchPortfolios();
+  }, []);
+
+  const fetchPortfolios = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const portfoliosQuery = query(
+        collection(db, 'portfolios'),
+        where('status', '==', 'completed'),
+        orderBy('createdAt', 'desc')
+      );
+      
+      const querySnapshot = await getDocs(portfoliosQuery);
+      const portfoliosData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data.projectName,
+          category: mapCategory(data.category),
+          type: data.category,
+          description: data.description,
+          image: data.thumbnailUrl || (data.images && data.images[0]) || '',
+          tags: data.technologies || [],
+          client: data.client,
+          year: extractYear(data.createdAt),
+          featured: data.featured || false,
+        };
+      });
+      
+      setProjects(portfoliosData);
+    } catch (error) {
+      console.error('Error fetching portfolios:', error);
+      setError('Failed to load projects. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Map Firestore category to filter category
+  const mapCategory = (firestoreCategory) => {
+    const categoryMap = {
+      'Web Application': 'web',
+      'Mobile App': 'mobile',
+      'Mobile Application': 'mobile',
+      'Enterprise System': 'enterprise',
+      'Legal Tech': 'enterprise',
+      'AI/ML Solution': 'ai',
+      'AI Integration': 'ai',
+      'E-Commerce': 'web',
+      'Healthcare': 'enterprise',
+      'Financial Services': 'web',
+      'SaaS Platform': 'web',
+      'Social Platform': 'mobile',
+    };
+    return categoryMap[firestoreCategory] || 'web';
+  };
+
+  // Extract year from ISO date string
+  const extractYear = (isoString) => {
+    if (!isoString) return new Date().getFullYear().toString();
+    return new Date(isoString).getFullYear().toString();
+  };
 
   useEffect(() => {
     // SEO
@@ -58,105 +129,6 @@ const ModernPortfolio = () => {
     { id: 'ai', label: 'AI/ML' },
   ];
 
-  const projects = [
-    {
-      id: 'core360',
-      title: 'Core360',
-      category: 'web',
-      type: 'Web Application',
-      description: 'Enterprise-grade web application built with modern technologies for streamlined business operations and workflow automation.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp',
-      tags: ['React', '.NET Core', 'SQL Server', 'Azure'],
-      client: 'Dracra Technologies',
-      year: '2023',
-      featured: true,
-    },
-    {
-      id: 'briind',
-      title: 'Briind',
-      category: 'mobile',
-      type: 'Social Platform',
-      description: 'Social networking application connecting communities and enabling meaningful interactions with real-time messaging.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp',
-      tags: ['React Native', 'Node.js', 'MongoDB', 'Socket.io'],
-      client: 'Briind Inc.',
-      year: '2022',
-      featured: true,
-    },
-    {
-      id: 'fairway',
-      title: 'Fairway First',
-      category: 'mobile',
-      type: 'Mobile Application',
-      description: 'Mobile application for Fairway Independent Mortgage Corporation with seamless user experience and secure transactions.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp',
-      tags: ['iOS', 'Android', 'Swift', 'Kotlin'],
-      client: 'Fairway IMC',
-      year: '2023',
-      featured: true,
-    },
-    {
-      id: 'lexis',
-      title: 'Lexis Convey',
-      category: 'enterprise',
-      type: 'Legal Tech',
-      description: 'Legal conveyancing platform for LexisNexis, streamlining property transactions and document management.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp',
-      tags: ['.NET', 'Angular', 'Azure', 'SQL Server'],
-      client: 'LexisNexis',
-      year: '2022',
-      featured: true,
-    },
-    {
-      id: 'ecommerce-platform',
-      title: 'E-Commerce Platform',
-      category: 'web',
-      type: 'E-Commerce',
-      description: 'Full-featured e-commerce solution with inventory management, payment processing, and analytics dashboard.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/project/project-1-v2.webp',
-      tags: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe'],
-      client: 'Retail Client',
-      year: '2023',
-      featured: false,
-    },
-    {
-      id: 'healthcare-app',
-      title: 'Healthcare Portal',
-      category: 'enterprise',
-      type: 'Healthcare',
-      description: 'Patient management system with appointment scheduling, telemedicine, and electronic health records.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/project/project-2-v2.webp',
-      tags: ['React', '.NET Core', 'Azure', 'HIPAA Compliant'],
-      client: 'Healthcare Provider',
-      year: '2023',
-      featured: false,
-    },
-    {
-      id: 'ai-chatbot',
-      title: 'AI Customer Support',
-      category: 'ai',
-      type: 'AI/ML Solution',
-      description: 'Intelligent chatbot powered by natural language processing for automated customer support.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/project/project-3-v2.webp',
-      tags: ['Python', 'TensorFlow', 'Azure Bot Service', 'NLP'],
-      client: 'Tech Startup',
-      year: '2024',
-      featured: false,
-    },
-    {
-      id: 'fintech-app',
-      title: 'FinTech Dashboard',
-      category: 'web',
-      type: 'Financial Services',
-      description: 'Real-time financial analytics dashboard with trading insights and portfolio management.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/project/project-4-v2.webp',
-      tags: ['React', 'Python', 'Redis', 'WebSocket'],
-      client: 'Financial Services',
-      year: '2023',
-      featured: false,
-    },
-  ];
-
   const filteredProjects = activeFilter === 'all' 
     ? projects 
     : projects.filter(p => p.category === activeFilter);
@@ -174,6 +146,91 @@ const ModernPortfolio = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <ModernHeader />
+        <main>
+          <section style={{
+            minHeight: '70vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '80px 20px',
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  display: 'inline-block',
+                  width: '48px',
+                  height: '48px',
+                  border: '4px solid #f3f4f6',
+                  borderTopColor: '#3b82f6',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite',
+                }}
+              />
+              <p style={{ marginTop: '20px', fontSize: '16px', color: '#6b7280' }}>
+                Loading portfolio...
+              </p>
+              <style>{`
+                @keyframes spin {
+                  to { transform: rotate(360deg); }
+                }
+              `}</style>
+            </div>
+          </section>
+        </main>
+        <ModernFooter onQuoteClick={openAI} />
+      </>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <>
+        <ModernHeader />
+        <main>
+          <section style={{
+            minHeight: '70vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '80px 20px',
+          }}>
+            <div style={{ textAlign: 'center', maxWidth: '500px' }}>
+              <div style={{ fontSize: '64px', marginBottom: '20px' }}>⚠️</div>
+              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#1a202c', marginBottom: '12px' }}>
+                Failed to Load Portfolio
+              </h2>
+              <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '24px' }}>
+                {error}
+              </p>
+              <button
+                onClick={fetchPortfolios}
+                style={{
+                  padding: '12px 24px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                Try Again
+              </button>
+            </div>
+          </section>
+        </main>
+        <ModernFooter onQuoteClick={openAI} />
+      </>
+    );
+  }
 
   return (
     <>

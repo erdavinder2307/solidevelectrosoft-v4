@@ -13,16 +13,25 @@ const ProductCard = ({ product, onViewScreenshots }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const {
+    title,
     name,
     description,
-    platform,
-    status,
+    platform = [],
+    status = 'active',
     icon,
-    color,
+    logo,
+    color = '#3b82f6',
     links,
+    category,
+    screenshots = [],
   } = product;
 
-  const isLive = status === 'LIVE';
+  // Use title or name (Firestore uses 'title', legacy might use 'name')
+  const displayName = title || name;
+  
+  // Normalize status for display
+  const displayStatus = (status || 'active').toUpperCase();
+  const isLive = displayStatus === 'ACTIVE' || displayStatus === 'LIVE';
   const hasLink = links?.websiteUrl || links?.appStoreUrl || links?.playStoreUrl;
 
   const getMainLink = () => {
@@ -71,7 +80,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             marginBottom: '20px',
           }}
         >
-          {/* Product Icon */}
+          {/* Product Logo */}
           <div
             style={{
               width: '64px',
@@ -85,7 +94,17 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               border: `2px solid ${color}20`,
             }}
           >
-            {iconError ? (
+            {logo ? (
+              <img
+                src={logo}
+                alt={`${displayName} logo`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : iconError ? (
               <PlaceholderImage
                 width={64}
                 height={64}
@@ -95,7 +114,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             ) : (
               <img
                 src={icon}
-                alt={`${name} icon`}
+                alt={`${displayName} icon`}
                 onError={() => setIconError(true)}
                 style={{
                   width: '100%',
@@ -132,7 +151,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             marginBottom: '8px',
           }}
         >
-          {name}
+          {displayName}
         </h3>
 
         {/* Description */}
@@ -200,40 +219,42 @@ const ProductCard = ({ product, onViewScreenshots }) => {
           }}
         >
           {/* View Screenshots Button */}
-          <button
-            onClick={() => onViewScreenshots(product)}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              borderRadius: '10px',
-              border: '1px solid #e5e7eb',
-              background: '#ffffff',
-              color: '#374151',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f9fafb';
-              e.currentTarget.style.borderColor = '#d1d5db';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#ffffff';
-              e.currentTarget.style.borderColor = '#e5e7eb';
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            Screenshots
-          </button>
+          {screenshots && screenshots.length > 0 ? (
+            <button
+              onClick={() => onViewScreenshots(product)}
+              style={{
+                flex: 1,
+                padding: '12px 16px',
+                borderRadius: '10px',
+                border: '1px solid #e5e7eb',
+                background: '#ffffff',
+                color: '#374151',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.borderColor = '#d1d5db';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.borderColor = '#e5e7eb';
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              Screenshots ({screenshots.length})
+            </button>
+          ) : null}
 
           {/* Open App Button */}
           {hasLink ? (
@@ -242,7 +263,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                flex: 1,
+                flex: screenshots && screenshots.length > 0 ? 1 : 2,
                 padding: '12px 16px',
                 borderRadius: '10px',
                 border: 'none',
@@ -278,7 +299,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             <button
               disabled
               style={{
-                flex: 1,
+                flex: screenshots && screenshots.length > 0 ? 1 : 2,
                 padding: '12px 16px',
                 borderRadius: '10px',
                 border: 'none',

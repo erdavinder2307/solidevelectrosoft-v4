@@ -16,7 +16,20 @@ const ScreenshotModal = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageError, setImageError] = useState({});
 
-  const screenshots = product?.screenshots || [];
+  // Extract screenshots and filter by product category
+  const allScreenshots = product?.screenshots || [];
+  const category = product?.category;
+  
+  // Filter screenshots based on product category
+  const filteredScreenshots = allScreenshots.filter(screenshot => {
+    if (category === 'Web Development' || category === 'Web App') {
+      return screenshot.type === 'web' || screenshot.type === 'both';
+    } else if (category === 'Mobile App') {
+      return screenshot.type === 'mobile' || screenshot.type === 'both';
+    }
+    // If no category match, show all
+    return true;
+  });
 
   // Reset index when modal opens
   useEffect(() => {
@@ -53,12 +66,12 @@ const ScreenshotModal = ({
   }, [isOpen]);
 
   const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
-  }, [screenshots.length]);
+    setCurrentIndex((prev) => (prev === 0 ? filteredScreenshots.length - 1 : prev - 1));
+  }, [filteredScreenshots.length]);
 
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
-  }, [screenshots.length]);
+    setCurrentIndex((prev) => (prev === filteredScreenshots.length - 1 ? 0 : prev + 1));
+  }, [filteredScreenshots.length]);
 
   const handleImageError = (index) => {
     setImageError((prev) => ({ ...prev, [index]: true }));
@@ -131,7 +144,7 @@ const ScreenshotModal = ({
                     margin: 0,
                   }}
                 >
-                  {product.name}
+                  {product.title || product.name}
                 </h3>
                 <p
                   style={{
@@ -140,7 +153,7 @@ const ScreenshotModal = ({
                     margin: '4px 0 0 0',
                   }}
                 >
-                  Screenshot {currentIndex + 1} of {screenshots.length}
+                  Screenshot {currentIndex + 1} of {filteredScreenshots.length}
                 </p>
               </div>
               <button
@@ -206,13 +219,13 @@ const ScreenshotModal = ({
                       width="100%"
                       height="100%"
                       type="screenshot"
-                      text={`${product.name} Screenshot ${currentIndex + 1}`}
+                      text={`${product.title || product.name} Screenshot ${currentIndex + 1}`}
                       color={product.color}
                     />
                   ) : (
                     <img
-                      src={screenshots[currentIndex]}
-                      alt={`${product.name} screenshot ${currentIndex + 1}`}
+                      src={filteredScreenshots[currentIndex]?.url || filteredScreenshots[currentIndex]}
+                      alt={`${product.title || product.name} screenshot ${currentIndex + 1}`}
                       onError={() => handleImageError(currentIndex)}
                       style={{
                         maxWidth: '100%',
@@ -226,7 +239,7 @@ const ScreenshotModal = ({
               </AnimatePresence>
 
               {/* Navigation Arrows */}
-              {screenshots.length > 1 && (
+              {filteredScreenshots.length > 1 && (
                 <>
                   <button
                     onClick={handlePrev}
@@ -295,7 +308,7 @@ const ScreenshotModal = ({
             </div>
 
             {/* Dots Indicator */}
-            {screenshots.length > 1 && (
+            {filteredScreenshots.length > 1 && (
               <div
                 style={{
                   display: 'flex',
@@ -306,7 +319,7 @@ const ScreenshotModal = ({
                   borderTop: '1px solid #e5e7eb',
                 }}
               >
-                {screenshots.map((_, index) => (
+                {filteredScreenshots.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}

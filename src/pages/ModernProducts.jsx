@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { db } from '../config/firebase';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { ProductGrid } from '../components/products';
@@ -7,7 +9,6 @@ import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
-import productsData from '../data/productsData';
 
 /**
  * Modern Products Page
@@ -15,6 +16,40 @@ import productsData from '../data/productsData';
  */
 const ModernProducts = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const productsQuery = query(
+        collection(db, 'products'),
+        where('status', '==', 'active'),
+        orderBy('createdAt', 'desc')
+      );
+      
+      const querySnapshot = await getDocs(productsQuery);
+      const productsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      
+      setProducts(productsData);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setError('Failed to load products. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     // SEO
     document.title = 'Our Products | Solidev Electrosoft - Apps & Platforms';
@@ -51,26 +86,111 @@ const ModernProducts = () => {
 
   const stats = [
     { 
-      number: productsData.length, 
+      number: products.length, 
       label: 'Total Products',
       icon: '📦',
     },
     { 
-      number: productsData.filter(p => p.status === 'LIVE').length, 
-      label: 'Live Apps',
+      number: products.filter(p => p.featured).length, 
+      label: 'Featured Apps',
       icon: '🚀',
     },
     { 
-      number: productsData.filter(p => p.platform.includes('Mobile')).length, 
+      number: products.filter(p => p.category === 'Mobile App').length, 
       label: 'Mobile Apps',
       icon: '📱',
     },
     { 
-      number: productsData.filter(p => p.platform.includes('Web')).length, 
-      label: 'Web Platforms',
+      number: products.filter(p => p.category !== 'Mobile App').length, 
+      label: 'Web & Other',
       icon: '🌐',
     },
   ];
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <ModernHeader />
+        <main>
+          <section style={{
+            minHeight: '70vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '80px 20px',
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  display: 'inline-block',
+                  width: '48px',
+                  height: '48px',
+                  border: '4px solid #f3f4f6',
+                  borderTopColor: '#667eea',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite',
+                }}
+              />
+              <p style={{ marginTop: '20px', fontSize: '16px', color: '#6b7280' }}>
+                Loading products...
+              </p>
+              <style>{`
+                @keyframes spin {
+                  to { transform: rotate(360deg); }
+                }
+              `}</style>
+            </div>
+          </section>
+        </main>
+        <ModernFooter onQuoteClick={openAI} />
+      </>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <>
+        <ModernHeader />
+        <main>
+          <section style={{
+            minHeight: '70vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '80px 20px',
+          }}>
+            <div style={{ textAlign: 'center', maxWidth: '500px' }}>
+              <div style={{ fontSize: '64px', marginBottom: '20px' }}>⚠️</div>
+              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#1a202c', marginBottom: '12px' }}>
+                Failed to Load Products
+              </h2>
+              <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '24px' }}>
+                {error}
+              </p>
+              <button
+                onClick={fetchProducts}
+                style={{
+                  padding: '12px 24px',
+                  background: '#667eea',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                Try Again
+              </button>
+            </div>
+          </section>
+        </main>
+        <ModernFooter onQuoteClick={openAI} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -211,7 +331,7 @@ const ModernProducts = () => {
         {/* Products Grid Section */}
         <section className="modern-section-lg" style={{ background: '#f9fafb' }}>
           <div className="modern-container">
-            <ProductGrid products={productsData} showFilter={true} />
+            <ProductGrid products={products} showFilter={true} />
           </div>
         </section>
 

@@ -8,12 +8,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate": "node scripts/migrateInitialData.js",
+    "migrate:logo": "node scripts/migrateProductLogo.js"
   },
   "dependencies": {
     "@azure/communication-email": "^1.0.0",
     "browser-image-compression": "^2.0.2",
     "firebase": "^12.7.0",
+    "firebase-admin": "^13.6.0",
     "framer-motion": "^12.23.26",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

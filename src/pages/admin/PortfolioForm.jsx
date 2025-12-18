@@ -47,7 +47,13 @@ const PortfolioForm = () => {
     try {
       const docSnap = await getDoc(doc(db, 'portfolios', id));
       if (docSnap.exists()) {
-        setFormData(docSnap.data());
+        const data = docSnap.data();
+        setFormData({
+          ...data,
+          images: data.images || [],
+          imageFiles: [],
+          technologies: data.technologies || [],
+        });
       } else {
         setErrors({ general: 'Portfolio not found' });
       }

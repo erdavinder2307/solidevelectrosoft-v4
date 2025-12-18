@@ -20,8 +20,9 @@ const ProductForm = () => {
     title: '',
     description: '',
     category: '',
-    image: '',
-    imageFile: null,
+    logo: '',
+    logoFile: null,
+    screenshots: [],
     features: [],
     technologies: [],
     status: 'active',
@@ -29,8 +30,11 @@ const ProductForm = () => {
 
   const [featureInput, setFeatureInput] = useState('');
   const [techInput, setTechInput] = useState('');
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [imageError, setImageError] = useState('');
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [logoError, setLogoError] = useState('');
+  const [uploadingScreenshots, setUploadingScreenshots] = useState(false);
+  const [screenshotError, setScreenshotError] = useState('');
+  const [screenshotType, setScreenshotType] = useState('web');
 
   useEffect(() => {
     if (isEditing) {
@@ -42,7 +46,12 @@ const ProductForm = () => {
     try {
       const docSnap = await getDoc(doc(db, 'products', id));
       if (docSnap.exists()) {
-        setFormData(docSnap.data());
+        const data = docSnap.data();
+        setFormData({
+          ...data,
+          screenshots: data.screenshots || [],
+          logoFile: null,
+        });
       } else {
         setErrors({ general: 'Product not found' });
       }
@@ -105,13 +114,38 @@ const ProductForm = () => {
   const handleImageSelected = (croppedFile) => {
     setFormData((prev) => ({
       ...prev,
-      imageFile: croppedFile,
+      logoFile: croppedFile,
     }));
-    setImageError('');
+    setLogoError('');
   };
 
   const handleImageError = (error) => {
-    setImageError(error);
+    setLogoError(error);
+  };
+
+  const handleScreenshotSelected = (croppedFile) => {
+    const newScreenshot = {
+      id: Date.now(),
+      url: URL.createObjectURL(croppedFile),
+      file: croppedFile,
+      type: screenshotType,
+    };
+    setFormData((prev) => ({
+      ...prev,
+      screenshots: [...prev.screenshots, newScreenshot],
+    }));
+    setScreenshotError('');
+  };
+
+  const handleScreenshotError = (error) => {
+    setScreenshotError(error);
+  };
+
+  const handleRemoveScreenshot = (screenshotId) => {
+    setFormData((prev) => ({
+      ...prev,
+      screenshots: prev.screenshots.filter(s => s.id !== screenshotId),
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -132,21 +166,53 @@ const ProductForm = () => {
     setErrors({});
 
     try {
-      let imageUrl = formData.image;
+      let logoUrl = formData.logo;
 
-      // Upload image to Firebase if new image selected
-      if (formData.imageFile) {
-        setUploadingImage(true);
+      // Upload logo to Firebase if new logo selected
+      if (formData.logoFile) {
+        setUploadingLogo(true);
         try {
-          imageUrl = await uploadImageToFirebase(formData.imageFile, 'products');
+          logoUrl = await uploadImageToFirebase(formData.logoFile, 'products/logos');
         } catch (uploadError) {
-          console.error('Image upload error:', uploadError);
-          setErrors({ general: 'Failed to upload image. Please try again.' });
+          console.error('Logo upload error:', uploadError);
+          setErrors({ general: 'Failed to upload logo. Please try again.' });
           setSubmitting(false);
-          setUploadingImage(false);
+          setUploadingLogo(false);
           return;
         } finally {
-          setUploadingImage(false);
+          setUploadingLogo(false);
+        }
+      }
+
+      // Upload screenshots to Firebase
+      const screenshotPromises = formData.screenshots.map(async (screenshot) => {
+        // If it's a new file (has file property)
+        if (screenshot.file) {
+          try {
+            const url = await uploadImageToFirebase(screenshot.file, 'products/screenshots');
+            return { url, type: screenshot.type };
+          } catch (error) {
+            console.error('Screenshot upload error:', error);
+            throw error;
+          }
+        }
+        // If it's an existing screenshot from database
+        return { url: screenshot.url, type: screenshot.type };
+      });
+
+      let screenshotsData = [];
+      if (screenshotPromises.length > 0) {
+        setUploadingScreenshots(true);
+        try {
+          screenshotsData = await Promise.all(screenshotPromises);
+        } catch (uploadError) {
+          console.error('Screenshots upload error:', uploadError);
+          setErrors({ general: 'Failed to upload screenshots. Please try again.' });
+          setSubmitting(false);
+          setUploadingScreenshots(false);
+          return;
+        } finally {
+          setUploadingScreenshots(false);
         }
       }
 
@@ -154,7 +220,8 @@ const ProductForm = () => {
         title: formData.title,
         description: formData.description,
         category: formData.category,
-        image: imageUrl,
+        logo: logoUrl,
+        screenshots: screenshotsData,
         features: formData.features,
         technologies: formData.technologies,
         status: formData.status,
@@ -328,45 +395,212 @@ const ProductForm = () => {
           )}
         </div>
 
-        {/* Image */}
+        {/* Logo */}
         <div style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
-            Product Image {!isEditing && '*'}
+            Product Logo (1:1 ratio) {!isEditing && '*'}
           </label>
-          {formData.image && !formData.imageFile && (
+          
+          {formData.logoFile ? (
             <div style={{ marginBottom: '12px' }}>
               <img
-                src={formData.image}
-                alt="Product preview"
+                src={URL.createObjectURL(formData.logoFile)}
+                alt="Logo preview"
                 style={{
-                  width: '100%',
-                  maxHeight: '200px',
+                  width: '120px',
+                  height: '120px',
                   borderRadius: '8px',
                   objectFit: 'cover',
+                  border: '2px solid #667eea',
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#059669', marginTop: '8px', fontWeight: '500' }}>
+                ✅ New logo selected (will be uploaded on save)
+              </p>
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, logoFile: null }))}
+                style={{
+                  marginTop: '8px',
+                  padding: '6px 12px',
+                  background: '#fee2e2',
+                  color: '#991b1b',
+                  border: '1px solid #fca5a5',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                }}
+              >
+                Change Logo
+              </button>
+            </div>
+          ) : formData.logo && !isEditing ? (
+            <div style={{ marginBottom: '12px' }}>
+              <img
+                src={formData.logo}
+                alt="Logo preview"
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '8px',
+                  objectFit: 'cover',
+                  border: '1px solid #e5e7eb',
                 }}
               />
               <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px' }}>
-                ✅ Current image (will be replaced if you select a new one)
+                ✅ Current logo (will be replaced if you select a new one)
               </p>
             </div>
-          )}
-          {!formData.image || formData.imageFile ? (
+          ) : null}
+
+          {!formData.logoFile && (!formData.logo || isEditing) ? (
             <ImageUploader
               onImageSelected={handleImageSelected}
               onError={handleImageError}
+              aspectRatio={1 / 1}
+              mode="single"
+            />
+          ) : null}
+          
+          {logoError && (
+            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '8px' }}>
+              {logoError}
+            </p>
+          )}
+          {errors.logo && (
+            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+              {errors.logo}
+            </p>
+          )}
+        </div>
+
+        {/* Screenshots */}
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
+            Screenshots
+          </label>
+          <div style={{ marginBottom: '12px', padding: '12px', background: '#f9fafb', borderRadius: '8px' }}>
+            <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
+              📸 Add screenshots for different platforms. Select the type below:
+            </p>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+              <select
+                value={screenshotType}
+                onChange={(e) => setScreenshotType(e.target.value)}
+                style={{
+                  flex: 1,
+                  padding: '10px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                }}
+              >
+                <option value="web">Web Application</option>
+                <option value="mobile">Mobile App</option>
+                <option value="both">Both Web & Mobile</option>
+              </select>
+            </div>
+          </div>
+
+          {formData.screenshots.length === 0 ? (
+            <ImageUploader
+              onImageSelected={handleScreenshotSelected}
+              onError={handleScreenshotError}
               aspectRatio={16 / 9}
               mode="single"
             />
           ) : null}
-          {imageError && (
-            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '8px' }}>
-              {imageError}
+
+          {screenshotError && (
+            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '8px', marginBottom: '12px' }}>
+              {screenshotError}
             </p>
           )}
-          {errors.image && (
-            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
-              {errors.image}
-            </p>
+
+          {formData.screenshots.length > 0 && (
+            <div style={{ marginBottom: '12px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '12px' }}>
+                Uploaded Screenshots ({formData.screenshots.length})
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+                {formData.screenshots.map((screenshot) => (
+                  <div
+                    key={screenshot.id}
+                    style={{
+                      position: 'relative',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      border: '2px solid #e5e7eb',
+                    }}
+                  >
+                    <img
+                      src={screenshot.url}
+                      alt="Screenshot"
+                      style={{
+                        width: '100%',
+                        height: '100px',
+                        objectFit: 'cover',
+                      }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      top: '4px',
+                      right: '4px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      color: 'white',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      fontSize: '11px',
+                      fontWeight: '600',
+                    }}>
+                      {screenshot.type === 'both' ? 'Web & Mobile' : screenshot.type === 'web' ? 'Web' : 'Mobile'}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveScreenshot(screenshot.id)}
+                      style={{
+                        position: 'absolute',
+                        bottom: '4px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: '#ef4444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '4px 8px',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {formData.screenshots.length < 6 && (
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, screenshots: [...prev.screenshots, {}] }))}
+                  style={{
+                    marginTop: '12px',
+                    padding: '10px 16px',
+                    background: '#f3f4f6',
+                    color: '#374151',
+                    border: '1px dashed #d1d5db',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                  }}
+                >
+                  + Add Another Screenshot
+                </button>
+              )}
+            </div>
           )}
         </div>
 
@@ -546,20 +780,20 @@ const ProductForm = () => {
         <div style={{ display: 'flex', gap: '12px' }}>
           <button
             type="submit"
-            disabled={submitting || uploadingImage}
+            disabled={submitting || uploadingLogo || uploadingScreenshots}
             style={{
               flex: 1,
               padding: '12px 24px',
-              background: submitting || uploadingImage ? '#9ca3af' : '#667eea',
+              background: submitting || uploadingLogo || uploadingScreenshots ? '#9ca3af' : '#667eea',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               fontSize: '16px',
               fontWeight: '600',
-              cursor: submitting || uploadingImage ? 'not-allowed' : 'pointer',
+              cursor: submitting || uploadingLogo || uploadingScreenshots ? 'not-allowed' : 'pointer',
             }}
           >
-            {uploadingImage ? '📤 Uploading image...' : submitting ? '⏳ Saving...' : isEditing ? '💾 Update Product' : '✨ Create Product'}
+            {uploadingLogo ? '📤 Uploading logo...' : uploadingScreenshots ? '📸 Uploading screenshots...' : submitting ? '⏳ Saving...' : isEditing ? '💾 Update Product' : '✨ Create Product'}
           </button>
           <button
             type="button"
