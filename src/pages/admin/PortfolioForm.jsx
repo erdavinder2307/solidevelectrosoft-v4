@@ -5,6 +5,7 @@ import { db } from '../../config/firebase';
 import { validatePortfolio, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase, generateThumbnail } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
+import { FaGlobe, FaGooglePlay, FaApple } from 'react-icons/fa';
 
 const PortfolioForm = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ const PortfolioForm = () => {
     webAppUrl: '',
     androidAppUrl: '',
     iosAppUrl: '',
+    displayOrder: 0,
   });
 
   const [techInput, setTechInput] = useState('');
@@ -204,6 +206,7 @@ const PortfolioForm = () => {
         webAppUrl: formData.webAppUrl || '',
         androidAppUrl: formData.androidAppUrl || '',
         iosAppUrl: formData.iosAppUrl || '',
+        displayOrder: formData.displayOrder || 0,
         updatedAt: new Date().toISOString(),
       };
 
@@ -748,8 +751,8 @@ const PortfolioForm = () => {
           
           {/* Web App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              🌐 Web App URL
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaGlobe size={16} /> Web App URL
             </label>
             <input
               type="url"
@@ -771,8 +774,8 @@ const PortfolioForm = () => {
 
           {/* Android App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              📱 Android App URL (Play Store)
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaGooglePlay size={16} /> Android App URL (Play Store)
             </label>
             <input
               type="url"
@@ -794,8 +797,8 @@ const PortfolioForm = () => {
 
           {/* iOS App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              🍎 iOS App URL (App Store)
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaApple size={16} /> iOS App URL (App Store)
             </label>
             <input
               type="url"
@@ -813,6 +816,33 @@ const PortfolioForm = () => {
                 boxSizing: 'border-box',
               }}
             />
+          </div>
+
+          {/* Display Order */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              📊 Display Order (lower number = appears first)
+            </label>
+            <input
+              type="number"
+              name="displayOrder"
+              min="0"
+              value={formData.displayOrder}
+              onChange={handleInputChange}
+              placeholder="0"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+            <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '6px' }}>
+              Set the order in which this portfolio appears on the frontend. Use increments of 10 (0, 10, 20, etc.) for flexibility.
+            </p>
           </div>
         </div>
 

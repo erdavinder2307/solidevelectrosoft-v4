@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { FaApple, FaGooglePlay, FaGlobe } from 'react-icons/fa';
 import PlaceholderImage from './PlaceholderImage';
 
 /**
@@ -301,7 +302,8 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  🌐 Web App
+                  <FaGlobe size={14} />
+                  Web App
                 </a>
               )}
 
@@ -338,7 +340,8 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  📱 Android
+                  <FaGooglePlay size={14} />
+                  Android
                 </a>
               )}
 
@@ -375,7 +378,8 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  🍎 iOS
+                  <FaApple size={14} />
+                  iOS
                 </a>
               )}
             </div>

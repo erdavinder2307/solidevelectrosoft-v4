@@ -5,6 +5,7 @@ import { db } from '../../config/firebase';
 import { validateProduct, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
+import { FaGlobe, FaGooglePlay, FaApple } from 'react-icons/fa';
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const ProductForm = () => {
     webAppUrl: '',
     androidAppUrl: '',
     iosAppUrl: '',
+    displayOrder: 0,
   });
 
   const [featureInput, setFeatureInput] = useState('');
@@ -39,6 +41,7 @@ const ProductForm = () => {
   const [screenshotError, setScreenshotError] = useState('');
   const [screenshotType, setScreenshotType] = useState('web');
   const [addingAnotherScreenshot, setAddingAnotherScreenshot] = useState(false);
+  const [changingLogo, setChangingLogo] = useState(false);
 
   useEffect(() => {
     if (isEditing) {
@@ -121,6 +124,7 @@ const ProductForm = () => {
       logoFile: croppedFile,
     }));
     setLogoError('');
+    setChangingLogo(false);
   };
 
   const handleImageError = (error) => {
@@ -233,6 +237,7 @@ const ProductForm = () => {
         webAppUrl: formData.webAppUrl || '',
         androidAppUrl: formData.androidAppUrl || '',
         iosAppUrl: formData.iosAppUrl || '',
+        displayOrder: formData.displayOrder || 0,
         updatedAt: new Date().toISOString(),
       };
 
@@ -440,10 +445,10 @@ const ProductForm = () => {
                   fontWeight: '500',
                 }}
               >
-                Change Logo
+                Remove Selected
               </button>
             </div>
-          ) : formData.logo && !isEditing ? (
+          ) : formData.logo ? (
             <div style={{ marginBottom: '12px' }}>
               <img
                 src={formData.logo}
@@ -459,10 +464,29 @@ const ProductForm = () => {
               <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px' }}>
                 ✅ Current logo (will be replaced if you select a new one)
               </p>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => setChangingLogo((v) => !v)}
+                  style={{
+                    marginTop: '8px',
+                    padding: '6px 12px',
+                    background: changingLogo ? '#f3f4f6' : '#eef2ff',
+                    color: '#374151',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                >
+                  {changingLogo ? 'Cancel' : 'Change Logo'}
+                </button>
+              )}
             </div>
           ) : null}
 
-          {!formData.logoFile && (!formData.logo || isEditing) ? (
+          {!formData.logoFile && (!formData.logo || changingLogo) ? (
             <ImageUploader
               onImageSelected={handleImageSelected}
               onError={handleImageError}
@@ -780,8 +804,8 @@ const ProductForm = () => {
           
           {/* Web App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              🌐 Web App URL
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaGlobe size={16} /> Web App URL
             </label>
             <input
               type="url"
@@ -803,8 +827,8 @@ const ProductForm = () => {
 
           {/* Android App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              📱 Android App URL (Play Store)
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaGooglePlay size={16} /> Android App URL (Play Store)
             </label>
             <input
               type="url"
@@ -826,8 +850,8 @@ const ProductForm = () => {
 
           {/* iOS App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
-              🍎 iOS App URL (App Store)
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaApple size={16} /> iOS App URL (App Store)
             </label>
             <input
               type="url"
@@ -845,6 +869,33 @@ const ProductForm = () => {
                 boxSizing: 'border-box',
               }}
             />
+          </div>
+
+          {/* Display Order */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              📊 Display Order (lower number = appears first)
+            </label>
+            <input
+              type="number"
+              name="displayOrder"
+              min="0"
+              value={formData.displayOrder}
+              onChange={handleInputChange}
+              placeholder="0"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+            <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '6px' }}>
+              Set the order in which this product appears on the frontend. Use increments of 10 (0, 10, 20, etc.) for flexibility.
+            </p>
           </div>
         </div>
 

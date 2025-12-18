@@ -41,6 +41,9 @@ const ModernProducts = () => {
         ...doc.data(),
       }));
       
+      // Sort by displayOrder
+      productsData.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+      
       setProducts(productsData);
     } catch (error) {
       console.error('Error fetching products:', error);

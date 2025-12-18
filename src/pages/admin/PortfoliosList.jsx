@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 const PortfoliosList = () => {
@@ -8,6 +8,7 @@ const PortfoliosList = () => {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
   const [error, setError] = useState('');
+  const [sortOrder, setSortOrder] = useState('newest');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +45,39 @@ const PortfoliosList = () => {
       } finally {
         setDeleting(null);
       }
+    }
+  };
+
+  const getSortedPortfolios = () => {
+    const sorted = [...portfolios];
+    switch (sortOrder) {
+      case 'order':
+        return sorted.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+      case 'newest':
+        return sorted.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+      case 'oldest':
+        return sorted.sort((a, b) => (a.createdAt?.toMillis?.() || 0) - (b.createdAt?.toMillis?.() || 0));
+      case 'a-z':
+        return sorted.sort((a, b) => a.projectName.localeCompare(b.projectName));
+      case 'z-a':
+        return sorted.sort((a, b) => b.projectName.localeCompare(a.projectName));
+      default:
+        return sorted;
+    }
+  };
+
+  const handleOrderChange = async (portfolioId, newOrder) => {
+    try {
+      await updateDoc(doc(db, 'portfolios', portfolioId), {
+        displayOrder: parseInt(newOrder) || 0,
+        updatedAt: new Date(),
+      });
+      setPortfolios(portfolios.map(p => 
+        p.id === portfolioId ? { ...p, displayOrder: parseInt(newOrder) || 0 } : p
+      ));
+    } catch (error) {
+      console.error('Error updating display order:', error);
+      setError('Failed to update display order');
     }
   };
 
@@ -100,6 +134,42 @@ const PortfoliosList = () => {
         </Link>
       </div>
 
+      {portfolios.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            gap: '12px',
+            marginBottom: '24px',
+            padding: '12px',
+            background: '#f9fafb',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+          }}
+        >
+          <label style={{ fontSize: '14px', fontWeight: '500', color: '#1a202c' }}>
+            Sort by:
+          </label>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            style={{
+              padding: '6px 12px',
+              borderRadius: '6px',
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              cursor: 'pointer',
+              background: 'white',
+            }}
+          >
+            <option value="order">Display Order</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="a-z">A to Z</option>
+            <option value="z-a">Z to A</option>
+          </select>
+        </div>
+      )}
+
       {error && (
         <div
           style={{
@@ -146,7 +216,7 @@ const PortfoliosList = () => {
         </div>
       ) : (
         <div style={{ display: 'grid', gap: '16px' }}>
-          {portfolios.map((portfolio) => (
+          {getSortedPortfolios().map((portfolio) => (
             <div
               key={portfolio.id}
               style={{
@@ -189,7 +259,7 @@ const PortfoliosList = () => {
                 >
                   {portfolio.description.substring(0, 100)}...
                 </p>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                   <span
                     style={{
                       display: 'inline-block',
@@ -203,6 +273,30 @@ const PortfoliosList = () => {
                   >
                     {portfolio.category}
                   </span>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '4px 8px',
+                    background: '#FEF3C7',
+                    borderRadius: '6px',
+                    border: '1px solid #FCD34D',
+                  }}>
+                    <label style={{ fontSize: '12px', fontWeight: '500', color: '#92400e' }}>Order:</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={portfolio.displayOrder || 0}
+                      onChange={(e) => handleOrderChange(portfolio.id, e.target.value)}
+                      style={{
+                        width: '45px',
+                        padding: '2px 4px',
+                        border: '1px solid #FCD34D',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                      }}
+                    />
+                  </div>
                   <span
                     style={{
                       display: 'inline-block',

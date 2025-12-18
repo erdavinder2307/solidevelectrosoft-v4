@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import ModernHero from '../components/sections/ModernHero';
@@ -13,6 +14,7 @@ import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { db } from '../config/firebase';
 
 /**
  * Modern Home Page
@@ -20,6 +22,59 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
  */
 const ModernHome = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const [portfolioProjects, setPortfolioProjects] = useState([]);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+
+  const mapCategory = (firestoreCategory) => {
+    const categoryMap = {
+      'Web Application': 'web',
+      'Mobile App': 'mobile',
+      'Mobile Application': 'mobile',
+      'Enterprise System': 'enterprise',
+      'Legal Tech': 'enterprise',
+      'AI/ML Solution': 'ai',
+      'AI Integration': 'ai',
+      'E-Commerce': 'web',
+      'Healthcare': 'enterprise',
+      'Financial Services': 'web',
+      'SaaS Platform': 'web',
+      'Social Platform': 'mobile',
+    };
+    return categoryMap[firestoreCategory] || 'web';
+  };
+
+  const fetchPortfolioProjects = async () => {
+    try {
+      setPortfolioLoading(true);
+      const portfoliosQuery = query(
+        collection(db, 'portfolios'),
+        where('status', '==', 'completed'),
+        orderBy('displayOrder', 'asc')
+      );
+
+      const snapshot = await getDocs(portfoliosQuery);
+      const projects = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data.projectName || 'Untitled Project',
+          category: mapCategory(data.category),
+          description: data.description || '',
+          image: data.thumbnailUrl || (data.images && data.images[0]) || '',
+          tags: data.technologies || [],
+          link: '/portfolio',
+          displayOrder: data.displayOrder || 0,
+        };
+      });
+
+      projects.sort((a, b) => a.displayOrder - b.displayOrder);
+      setPortfolioProjects(projects);
+    } catch (error) {
+      console.error('Error fetching portfolio projects:', error);
+    } finally {
+      setPortfolioLoading(false);
+    }
+  };
 
   useEffect(() => {
     // SEO
@@ -55,6 +110,10 @@ const ModernHome = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    fetchPortfolioProjects();
+  }, []);
+
   return (
     <>
       <ModernHeader />
@@ -84,8 +143,11 @@ const ModernHome = () => {
         {/* Why Choose Us */}
         <WhyChooseUs />
 
-        {/* Portfolio Showcase */}
-        <ModernPortfolio />
+        {/* Our Work (Portfolios) */}
+        <ModernPortfolio
+          projects={portfolioProjects.length ? portfolioProjects.slice(0, 6) : null}
+          showViewAll={!portfolioLoading}
+        />
 
         {/* Case Studies */}
         <CaseStudies />

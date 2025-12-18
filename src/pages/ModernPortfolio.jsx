@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { FaApple, FaGooglePlay, FaGlobe } from 'react-icons/fa';
 import { db } from '../config/firebase';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
@@ -50,11 +51,15 @@ const ModernPortfolio = () => {
           client: data.client,
           year: extractYear(data.createdAt),
           featured: data.featured || false,
+          displayOrder: data.displayOrder || 0,
           webAppUrl: data.webAppUrl || '',
           androidAppUrl: data.androidAppUrl || '',
           iosAppUrl: data.iosAppUrl || '',
         };
       });
+      
+      // Sort by displayOrder
+      portfoliosData.sort((a, b) => a.displayOrder - b.displayOrder);
       
       setProjects(portfoliosData);
     } catch (error) {
@@ -539,7 +544,8 @@ const ModernPortfolio = () => {
                                   e.currentTarget.style.transform = 'scale(1)';
                                 }}
                               >
-                                🌐 Web App
+                                <FaGlobe size={14} />
+                                Web App
                               </a>
                             )}
 
@@ -576,7 +582,8 @@ const ModernPortfolio = () => {
                                   e.currentTarget.style.transform = 'scale(1)';
                                 }}
                               >
-                                📱 Android
+                                <FaGooglePlay size={14} />
+                                Android
                               </a>
                             )}
 
@@ -613,7 +620,8 @@ const ModernPortfolio = () => {
                                   e.currentTarget.style.transform = 'scale(1)';
                                 }}
                               >
-                                🍎 iOS
+                                <FaApple size={14} />
+                                iOS
                               </a>
                             )}
                           </div>
