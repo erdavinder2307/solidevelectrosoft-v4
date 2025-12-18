@@ -1,0 +1,21 @@
+# VSCode ignore - prevents indexing these directories
+node_modules/**
+functions/node_modules/**
+solidev/node_modules/**
+dist/**
+.git/**
+*.log
+.DS_Store
+.cache/**
+coverage/**
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Build artifacts
+*.map
+.vite/**
+.firebase/**

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { validatePortfolio, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase, generateThumbnail } from '../../utils/imageUtils';
@@ -31,6 +31,9 @@ const PortfolioForm = () => {
     teamSize: 1,
     featured: false,
     status: 'completed',
+    webAppUrl: '',
+    androidAppUrl: '',
+    iosAppUrl: '',
   });
 
   const [techInput, setTechInput] = useState('');
@@ -198,6 +201,9 @@ const PortfolioForm = () => {
         teamSize: parseInt(formData.teamSize),
         featured: formData.featured,
         status: formData.status,
+        webAppUrl: formData.webAppUrl || '',
+        androidAppUrl: formData.androidAppUrl || '',
+        iosAppUrl: formData.iosAppUrl || '',
         updatedAt: new Date().toISOString(),
       };
 
@@ -205,7 +211,7 @@ const PortfolioForm = () => {
         await updateDoc(doc(db, 'portfolios', id), dataToSave);
         setSuccessMessage('Portfolio updated successfully!');
       } else {
-        await setDoc(doc(db, 'portfolios'), {
+        await addDoc(collection(db, 'portfolios'), {
           ...dataToSave,
           createdAt: new Date().toISOString(),
         });
@@ -731,6 +737,82 @@ const PortfolioForm = () => {
                 {errors.teamSize}
               </p>
             )}
+          </div>
+        </div>
+
+        {/* App URLs */}
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', marginBottom: '16px', fontWeight: '600', color: '#374151', fontSize: '16px' }}>
+            🔗 App Links (Optional)
+          </label>
+          
+          {/* Web App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              🌐 Web App URL
+            </label>
+            <input
+              type="url"
+              name="webAppUrl"
+              value={formData.webAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://app.example.com"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          {/* Android App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              📱 Android App URL (Play Store)
+            </label>
+            <input
+              type="url"
+              name="androidAppUrl"
+              value={formData.androidAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://play.google.com/store/apps/details?id=..."
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          {/* iOS App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              🍎 iOS App URL (App Store)
+            </label>
+            <input
+              type="url"
+              name="iosAppUrl"
+              value={formData.iosAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://apps.apple.com/app/..."
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
           </div>
         </div>
 

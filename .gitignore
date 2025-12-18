@@ -13,11 +13,15 @@ dist-ssr
 *.local
 
 # Firebase & Secrets
+# Be careful with broad JSON ignore rules; explicitly allow needed project JSON.
 *.json
 !package.json
 !tsconfig.json
 !eslint.config.js
 !vite.config.ts
+!firebase.json
+!firestore.indexes.json
+!staticwebapp.config.json
 .env
 .env.local
 .env.*.local

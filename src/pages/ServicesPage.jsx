@@ -14,6 +14,7 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
  * Overview of all services with links to detail pages
  */
 const Services = () => {
+  const { isAIOpen, openAI, closeAI } = useAIAssistant();
   useEffect(() => {
     document.title = 'Our Services | Web, Mobile, AI Development | Solidev Electrosoft';
     const metaDesc = document.querySelector('meta[name="description"]');

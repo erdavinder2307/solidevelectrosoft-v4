@@ -23,5 +23,15 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "functions",
+    "solidev",
+    "dist",
+    "build",
+    "scripts",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }

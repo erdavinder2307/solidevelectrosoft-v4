@@ -24,6 +24,9 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     links,
     category,
     screenshots = [],
+    webAppUrl,
+    androidAppUrl,
+    iosAppUrl,
   } = product;
 
   // Use title or name (Firestore uses 'title', legacy might use 'name')
@@ -32,12 +35,17 @@ const ProductCard = ({ product, onViewScreenshots }) => {
   // Normalize status for display
   const displayStatus = (status || 'active').toUpperCase();
   const isLive = displayStatus === 'ACTIVE' || displayStatus === 'LIVE';
-  const hasLink = links?.websiteUrl || links?.appStoreUrl || links?.playStoreUrl;
+  
+  // Check for any available links
+  const hasLink = links?.websiteUrl || links?.appStoreUrl || links?.playStoreUrl || webAppUrl || androidAppUrl || iosAppUrl;
 
   const getMainLink = () => {
+    if (webAppUrl) return webAppUrl;
     if (links?.websiteUrl) return links.websiteUrl;
-    if (links?.appStoreUrl) return links.appStoreUrl;
+    if (androidAppUrl) return androidAppUrl;
     if (links?.playStoreUrl) return links.playStoreUrl;
+    if (iosAppUrl) return iosAppUrl;
+    if (links?.appStoreUrl) return links.appStoreUrl;
     return null;
   };
 
@@ -213,17 +221,18 @@ const ProductCard = ({ product, onViewScreenshots }) => {
         <div
           style={{
             display: 'flex',
+            flexDirection: 'column',
             gap: '12px',
             paddingTop: '16px',
             borderTop: '1px solid #e5e7eb',
           }}
         >
-          {/* View Screenshots Button */}
-          {screenshots && screenshots.length > 0 ? (
+          {/* Screenshots Button (if available) */}
+          {screenshots && screenshots.length > 0 && (
             <button
               onClick={() => onViewScreenshots(product)}
               style={{
-                flex: 1,
+                width: '100%',
                 padding: '12px 16px',
                 borderRadius: '10px',
                 border: '1px solid #e5e7eb',
@@ -254,16 +263,132 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               </svg>
               Screenshots ({screenshots.length})
             </button>
-          ) : null}
+          )}
 
-          {/* Open App Button */}
-          {hasLink ? (
+          {/* App URL Buttons */}
+          {(webAppUrl || androidAppUrl || iosAppUrl) && (
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {/* Web App Button */}
+              {webAppUrl && (
+                <a
+                  href={webAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    flex: '1 1 auto',
+                    minWidth: 'calc(50% - 4px)',
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: color,
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                >
+                  🌐 Web App
+                </a>
+              )}
+
+              {/* Android Button */}
+              {androidAppUrl && (
+                <a
+                  href={androidAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    flex: '1 1 auto',
+                    minWidth: 'calc(50% - 4px)',
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: '#34a853',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                >
+                  📱 Android
+                </a>
+              )}
+
+              {/* iOS Button */}
+              {iosAppUrl && (
+                <a
+                  href={iosAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    flex: '1 1 auto',
+                    minWidth: 'calc(50% - 4px)',
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: '#000000',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                >
+                  🍎 iOS
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Legacy Open App Button - Only show if no new URL fields but has legacy links */}
+          {!webAppUrl && !androidAppUrl && !iosAppUrl && hasLink ? (
             <a
               href={getMainLink()}
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                flex: screenshots && screenshots.length > 0 ? 1 : 2,
+                width: '100%',
                 padding: '12px 16px',
                 borderRadius: '10px',
                 border: 'none',
@@ -295,11 +420,11 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                 <line x1="10" y1="14" x2="21" y2="3"/>
               </svg>
             </a>
-          ) : (
+          ) : !hasLink ? (
             <button
               disabled
               style={{
-                flex: screenshots && screenshots.length > 0 ? 1 : 2,
+                width: '100%',
                 padding: '12px 16px',
                 borderRadius: '10px',
                 border: 'none',
@@ -316,7 +441,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             >
               Coming Soon
             </button>
-          )}
+          ) : null}
         </div>
       </div>
     </motion.div>

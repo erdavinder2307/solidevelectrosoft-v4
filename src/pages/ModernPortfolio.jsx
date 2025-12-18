@@ -50,6 +50,9 @@ const ModernPortfolio = () => {
           client: data.client,
           year: extractYear(data.createdAt),
           featured: data.featured || false,
+          webAppUrl: data.webAppUrl || '',
+          androidAppUrl: data.androidAppUrl || '',
+          iosAppUrl: data.iosAppUrl || '',
         };
       });
       
@@ -494,6 +497,127 @@ const ModernPortfolio = () => {
                             </span>
                           ))}
                         </div>
+
+                        {/* App URL Buttons */}
+                        {(project.webAppUrl || project.androidAppUrl || project.iosAppUrl) && (
+                          <div style={{ 
+                            display: 'flex', 
+                            gap: '8px', 
+                            flexWrap: 'wrap',
+                            marginBottom: '20px',
+                          }}>
+                            {/* Web App Button */}
+                            {project.webAppUrl && (
+                              <a
+                                href={project.webAppUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  flex: '1 1 auto',
+                                  minWidth: 'calc(50% - 4px)',
+                                  padding: '10px 14px',
+                                  borderRadius: '10px',
+                                  border: 'none',
+                                  background: '#3b82f6',
+                                  color: '#ffffff',
+                                  fontSize: '13px',
+                                  fontWeight: '500',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  gap: '6px',
+                                  textDecoration: 'none',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.opacity = '0.9';
+                                  e.currentTarget.style.transform = 'scale(1.02)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.opacity = '1';
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                }}
+                              >
+                                🌐 Web App
+                              </a>
+                            )}
+
+                            {/* Android Button */}
+                            {project.androidAppUrl && (
+                              <a
+                                href={project.androidAppUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  flex: '1 1 auto',
+                                  minWidth: 'calc(50% - 4px)',
+                                  padding: '10px 14px',
+                                  borderRadius: '10px',
+                                  border: 'none',
+                                  background: '#34a853',
+                                  color: '#ffffff',
+                                  fontSize: '13px',
+                                  fontWeight: '500',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  gap: '6px',
+                                  textDecoration: 'none',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.opacity = '0.9';
+                                  e.currentTarget.style.transform = 'scale(1.02)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.opacity = '1';
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                }}
+                              >
+                                📱 Android
+                              </a>
+                            )}
+
+                            {/* iOS Button */}
+                            {project.iosAppUrl && (
+                              <a
+                                href={project.iosAppUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  flex: '1 1 auto',
+                                  minWidth: 'calc(50% - 4px)',
+                                  padding: '10px 14px',
+                                  borderRadius: '10px',
+                                  border: 'none',
+                                  background: '#000000',
+                                  color: '#ffffff',
+                                  fontSize: '13px',
+                                  fontWeight: '500',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  gap: '6px',
+                                  textDecoration: 'none',
+                                  transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.opacity = '0.9';
+                                  e.currentTarget.style.transform = 'scale(1.02)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.opacity = '1';
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                }}
+                              >
+                                🍎 iOS
+                              </a>
+                            )}
+                          </div>
+                        )}
 
                         {/* Client */}
                         <div

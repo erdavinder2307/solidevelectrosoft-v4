@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { validateProduct, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase } from '../../utils/imageUtils';
@@ -26,6 +26,9 @@ const ProductForm = () => {
     features: [],
     technologies: [],
     status: 'active',
+    webAppUrl: '',
+    androidAppUrl: '',
+    iosAppUrl: '',
   });
 
   const [featureInput, setFeatureInput] = useState('');
@@ -35,6 +38,7 @@ const ProductForm = () => {
   const [uploadingScreenshots, setUploadingScreenshots] = useState(false);
   const [screenshotError, setScreenshotError] = useState('');
   const [screenshotType, setScreenshotType] = useState('web');
+  const [addingAnotherScreenshot, setAddingAnotherScreenshot] = useState(false);
 
   useEffect(() => {
     if (isEditing) {
@@ -135,6 +139,7 @@ const ProductForm = () => {
       screenshots: [...prev.screenshots, newScreenshot],
     }));
     setScreenshotError('');
+    setAddingAnotherScreenshot(false);
   };
 
   const handleScreenshotError = (error) => {
@@ -225,6 +230,9 @@ const ProductForm = () => {
         features: formData.features,
         technologies: formData.technologies,
         status: formData.status,
+        webAppUrl: formData.webAppUrl || '',
+        androidAppUrl: formData.androidAppUrl || '',
+        iosAppUrl: formData.iosAppUrl || '',
         updatedAt: new Date().toISOString(),
       };
 
@@ -232,7 +240,7 @@ const ProductForm = () => {
         await updateDoc(doc(db, 'products', id), dataToSave);
         setSuccessMessage('Product updated successfully!');
       } else {
-        await setDoc(doc(db, 'products'), {
+        await addDoc(collection(db, 'products'), {
           ...dataToSave,
           createdAt: new Date().toISOString(),
         });
@@ -460,6 +468,7 @@ const ProductForm = () => {
               onError={handleImageError}
               aspectRatio={1 / 1}
               mode="single"
+              inputId="product-logo-input"
             />
           ) : null}
           
@@ -510,6 +519,7 @@ const ProductForm = () => {
               onError={handleScreenshotError}
               aspectRatio={16 / 9}
               mode="single"
+              inputId="product-screenshot-input"
             />
           ) : null}
 
@@ -581,10 +591,10 @@ const ProductForm = () => {
                 ))}
               </div>
 
-              {formData.screenshots.length < 6 && (
+              {formData.screenshots.length < 6 && !addingAnotherScreenshot && (
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, screenshots: [...prev.screenshots, {}] }))}
+                  onClick={() => setAddingAnotherScreenshot(true)}
                   style={{
                     marginTop: '12px',
                     padding: '10px 16px',
@@ -599,6 +609,17 @@ const ProductForm = () => {
                 >
                   + Add Another Screenshot
                 </button>
+              )}
+              {addingAnotherScreenshot && (
+                <div style={{ marginTop: '12px' }}>
+                  <ImageUploader
+                    onImageSelected={handleScreenshotSelected}
+                    onError={handleScreenshotError}
+                    aspectRatio={16 / 9}
+                    mode="single"
+                    inputId="product-screenshot-input-more"
+                  />
+                </div>
               )}
             </div>
           )}
@@ -748,6 +769,82 @@ const ProductForm = () => {
                 </button>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* App URLs */}
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', marginBottom: '16px', fontWeight: '600', color: '#374151', fontSize: '16px' }}>
+            🔗 App Links (Optional)
+          </label>
+          
+          {/* Web App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              🌐 Web App URL
+            </label>
+            <input
+              type="url"
+              name="webAppUrl"
+              value={formData.webAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://app.example.com"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          {/* Android App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              📱 Android App URL (Play Store)
+            </label>
+            <input
+              type="url"
+              name="androidAppUrl"
+              value={formData.androidAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://play.google.com/store/apps/details?id=..."
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          {/* iOS App URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280' }}>
+              🍎 iOS App URL (App Store)
+            </label>
+            <input
+              type="url"
+              name="iosAppUrl"
+              value={formData.iosAppUrl}
+              onChange={handleInputChange}
+              placeholder="https://apps.apple.com/app/..."
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
           </div>
         </div>
 

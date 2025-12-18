@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import ImageCropper from './ImageCropper';
 import { validateImageFile } from '../../utils/imageUtils';
 
@@ -11,12 +11,15 @@ const ImageUploader = ({
   aspectRatio = 1,
   mode = 'single', // 'single' or 'multiple'
   maxImages = 10,
-  onError = null
+  onError = null,
+  inputId,
 }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showCropper, setShowCropper] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const autoId = useId();
+  const fieldId = inputId || `image-input-${autoId}`;
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -109,11 +112,11 @@ const ImageUploader = ({
         accept="image/*"
         onChange={handleFileSelect}
         style={{ display: 'none' }}
-        id="image-input"
+        id={fieldId}
       />
 
       <label
-        htmlFor="image-input"
+        htmlFor={fieldId}
         style={{
           cursor: 'pointer',
           display: 'block',
