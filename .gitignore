@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Firebase & Secrets
+*.json
+!package.json
+!tsconfig.json
+!eslint.config.js
+!vite.config.ts
+.env
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
