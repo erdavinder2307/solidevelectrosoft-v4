@@ -27,9 +27,14 @@ export const validateProduct = (data) => {
     errors.category = 'Category is required';
   }
 
-  // Image validation (required for new products)
-  if (!data.image && data.isNew) {
-    errors.image = 'Product image is required';
+  // Logo validation (required for new products)
+  // ProductForm uses `logo` (existing URL) and `logoFile` (new file) fields.
+  if (data.isNew) {
+    const hasLogo = !!(data.logo && String(data.logo).trim().length > 0);
+    const hasLogoFile = !!data.logoFile;
+    if (!hasLogo && !hasLogoFile) {
+      errors.logo = 'Logo is required';
+    }
   }
 
   // Technologies validation
