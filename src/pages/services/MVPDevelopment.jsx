@@ -6,7 +6,7 @@ import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
-import { FaRocket, FaBullseye, FaChartLine, FaCrown, FaLock, FaCode, FaArrowUp } from 'react-icons/fa';
+import { FaRocket, FaBullseye, FaChartLine, FaCrown, FaLock, FaCode, FaArrowUp, FaLightbulb, FaRegClipboard, FaCompass, FaCubes } from 'react-icons/fa';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 
 /**
@@ -26,104 +26,139 @@ const MVPDevelopmentService = () => {
 
   const packages = [
     {
-      name: 'Quick Prototype',
-      price: '$1,500',
-      duration: '2 weeks',
+      name: 'Idea Validation',
+      price: '$99',
+      duration: 'One-time',
       ideal: 'Test your idea',
-      icon: FaRocket,
+      icon: FaLightbulb,
       bgGradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
       accentColor: '#f59e0b',
       shadowColor: '#f59e0b20',
+      tier: 'entry',
       features: [
-        'Landing page + one core feature',
-        'Single platform (Web OR Mobile)',
-        'Basic user flow',
-        'Minimal database setup',
-        'Idea validation focus',
-        'Basic deployment',
-        'Direct support',
+        'AI-assisted idea discussion',
+        'Problem & solution clarity',
+        'High-level feasibility check',
+        'Feature brainstorming',
+        'Basic guidance & next steps',
       ],
       notIncluded: [
-        'Admin dashboard',
-        'Payment integration',
-        'Multiple features',
+        'Coding or development',
+        'Production-ready output',
+        'App delivery',
       ],
+      disclaimer: 'This plan focuses on idea clarity, not development.',
+      ctaText: 'Validate My Idea',
+      ctaAction: 'contact',
       popular: false,
     },
     {
-      name: 'Starter MVP',
-      price: '$8,000',
-      duration: '4 weeks',
-      ideal: 'Proof of concept',
-      icon: FaBullseye,
+      name: 'Idea to Prototype',
+      price: '$499',
+      duration: 'One-time',
+      ideal: 'Turn idea into design',
+      icon: FaRegClipboard,
       bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
       accentColor: '#8b5cf6',
       shadowColor: '#8b5cf620',
+      tier: 'entry',
       features: [
-        'Single platform (Web OR Mobile)',
-        'Up to 5 core screens',
-        'User authentication',
-        'Basic database setup',
-        'Essential features only',
-        '1 revision round',
-        'Basic deployment',
+        'Everything in Idea Validation',
+        'Structured requirements document',
+        'Feature prioritization',
+        'Tech stack recommendation',
+        'Clickable wireframe/prototype',
+        'Rough cost & timeline estimate',
       ],
       notIncluded: [
-        'Admin dashboard',
-        'Payment integration',
-        'Third-party APIs',
+        'Development or coding',
+        'Deployment',
       ],
+      disclaimer: 'Outputs are designs and planning documents, not production code.',
+      ctaText: 'Create Prototype',
+      ctaAction: 'contact',
       popular: false,
     },
     {
-      name: 'Growth MVP',
-      price: '$15,000',
-      duration: '6 weeks',
-      ideal: 'Market validation',
-      icon: FaChartLine,
+      name: 'Founder Kickstart',
+      price: '$1,499',
+      duration: '2-4 weeks',
+      ideal: 'Launch your first MVP',
+      icon: FaRocket,
       bgGradient: 'linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%)',
       accentColor: '#06b6d4',
       shadowColor: '#06b6d420',
+      tier: 'core',
       features: [
-        'Web + Mobile (React Native)',
-        'Up to 12 screens',
-        'User authentication + roles',
-        'Admin dashboard',
-        'Payment integration',
-        '2 third-party API integrations',
-        '2 revision rounds',
-        'Cloud deployment (AWS/Azure)',
-        'Analytics integration',
+        'Limited-scope MVP development',
+        'Core screens only (3-5)',
+        'Basic user authentication',
+        'Web or mobile app',
+        'Deployment & hosting',
+        'Direct support',
       ],
       notIncluded: [
-        'Custom AI features',
-        'Complex workflows',
+        'Payment integration',
+        'Complex features',
+        'Admin dashboard',
       ],
+      disclaimer: null,
+      ctaText: 'Start My MVP',
+      ctaAction: 'contact',
       popular: true,
     },
     {
-      name: 'Enterprise MVP',
-      price: '$30,000+',
-      duration: '8-12 weeks',
-      ideal: 'Investor-ready product',
+      name: 'Startup MVP',
+      price: 'Starting from $5,000',
+      duration: '6-8 weeks',
+      ideal: 'Build a scalable product',
+      icon: FaCubes,
+      bgGradient: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+      accentColor: '#10b981',
+      shadowColor: '#10b98120',
+      tier: 'premium',
+      features: [
+        'Full MVP with core features',
+        'Web + Mobile (React Native)',
+        'User authentication + roles',
+        'Payment integration',
+        'Database & backend setup',
+        '2-3 third-party integrations',
+        'Cloud deployment',
+      ],
+      notIncluded: [
+        'Custom AI features',
+        'Enterprise scale',
+      ],
+      disclaimer: 'Final pricing after discovery call based on scope.',
+      ctaText: 'Build My Product',
+      ctaAction: 'contact',
+      popular: false,
+    },
+    {
+      name: 'Enterprise',
+      price: 'Custom',
+      duration: '8-12+ weeks',
+      ideal: 'Large-scale solutions',
       icon: FaCrown,
       bgGradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
       accentColor: '#ec4899',
       shadowColor: '#ec489920',
+      tier: 'premium',
       features: [
         'Full platform (Web + iOS + Android)',
-        'Unlimited screens',
-        'Advanced authentication (SSO)',
-        'Comprehensive admin system',
-        'Multiple payment gateways',
-        'Unlimited integrations',
-        'Custom AI/ML features',
-        'Auto-scaling infrastructure',
+        'Advanced features & integrations',
+        'Custom AI/ML capabilities',
+        'Advanced security & compliance',
         'Dedicated project manager',
-        'Priority support',
+        'Priority support & SLA',
         'Documentation & training',
+        'Auto-scaling infrastructure',
       ],
       notIncluded: [],
+      disclaimer: null,
+      ctaText: 'Request Custom Proposal',
+      ctaAction: 'contact',
       popular: false,
     },
   ];
@@ -255,9 +290,8 @@ const MVPDevelopmentService = () => {
                   lineHeight: 1.7,
                 }}
               >
-                Got an idea but unsure about the cost? We have packages starting at just $1,500. 
-                Launch your MVP, test your concept, and validate your idea without breaking the bank. 
-                Whether you're a solo founder or a startup team, we've got a package for you.
+                Start validating your idea today for just $99. Whether you're exploring a concept 
+                or building a full-scale MVP, we have a plan to help you move forward with confidence.
               </motion.p>
 
               <motion.div
@@ -340,16 +374,17 @@ const MVPDevelopmentService = () => {
               style={{ textAlign: 'center', marginBottom: 'var(--space-12)' }}
             >
               <h2 className="modern-h2" style={{ marginBottom: 'var(--space-4)' }}>
-                Packages Starting from $1,500
+                Plans for Every Stage
               </h2>
-              <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-                From testing a quick idea to launching an investor-ready product, we have the right package for your stage.
+              <p style={{ color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto' }}>
+                Start with idea validation, grow to a fully-fledged product. Each plan is designed to help you move to the next stage with clarity and confidence.
               </p>
             </motion.div>
 
-            <div className="modern-grid-3" style={{ alignItems: 'stretch' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-6)', alignItems: 'stretch' }}>
               {packages.map((pkg, index) => {
                 const Icon = pkg.icon;
+                const isEntryTier = pkg.tier === 'entry';
                 return (
                   <motion.div
                     key={index}
@@ -361,7 +396,7 @@ const MVPDevelopmentService = () => {
                     className="package-card"
                     style={{
                       padding: 'var(--space-8)',
-                      background: pkg.popular ? 'var(--bg-dark)' : 'var(--bg-secondary)',
+                      background: pkg.popular ? 'var(--bg-dark)' : (isEntryTier ? 'var(--bg-secondary)' : 'var(--bg-secondary)'),
                       borderRadius: 'var(--radius-xl)',
                       border: pkg.popular ? `2px solid ${pkg.accentColor}` : `1px solid var(--border-light)`,
                       position: 'relative',
@@ -412,20 +447,20 @@ const MVPDevelopmentService = () => {
                     {/* Icon Container */}
                     <div
                       style={{
-                        width: '64px',
-                        height: '64px',
+                        width: '56px',
+                        height: '56px',
                         borderRadius: 'var(--radius-lg)',
                         background: pkg.bgGradient,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: 'var(--space-6)',
-                        boxShadow: `0 16px 32px ${pkg.shadowColor}`,
+                        marginBottom: 'var(--space-4)',
+                        boxShadow: `0 12px 24px ${pkg.shadowColor}`,
                         position: 'relative',
                         zIndex: 1,
                       }}
                     >
-                      <Icon size={32} color="#ffffff" />
+                      <Icon size={28} color="#ffffff" />
                     </div>
 
                     {/* Package Info */}
@@ -441,7 +476,7 @@ const MVPDevelopmentService = () => {
                         {pkg.ideal}
                       </span>
                       <h3
-                        className="modern-h3"
+                        className="modern-h4"
                         style={{
                           marginBottom: 'var(--space-2)',
                           color: pkg.popular ? 'white' : 'var(--text-primary)',
@@ -450,12 +485,13 @@ const MVPDevelopmentService = () => {
                       >
                         {pkg.name}
                       </h3>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-2)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)', marginBottom: 'var(--space-2)' }}>
                         <span
                           style={{
-                            fontSize: 'var(--text-4xl)',
+                            fontSize: 'var(--text-3xl)',
                             fontWeight: '700',
                             color: pkg.popular ? 'white' : 'var(--text-primary)',
+                            lineHeight: 1.1,
                           }}
                         >
                           {pkg.price}
@@ -463,10 +499,11 @@ const MVPDevelopmentService = () => {
                         <span
                           style={{
                             color: pkg.popular ? 'var(--color-neutral-400)' : 'var(--text-tertiary)',
-                            fontSize: 'var(--text-sm)',
+                            fontSize: 'var(--text-xs)',
+                            fontWeight: '500',
                           }}
                         >
-                          / {pkg.duration}
+                          {pkg.duration}
                         </span>
                       </div>
                     </div>
@@ -477,7 +514,7 @@ const MVPDevelopmentService = () => {
                         listStyle: 'none',
                         padding: 0,
                         margin: 0,
-                        marginBottom: 'var(--space-6)',
+                        marginBottom: 'var(--space-4)',
                         flex: 1,
                         position: 'relative',
                         zIndex: 1,
@@ -520,7 +557,7 @@ const MVPDevelopmentService = () => {
                             fontSize: 'var(--text-sm)',
                             color: 'var(--color-neutral-500)',
                             textDecoration: 'line-through',
-                            opacity: 0.6,
+                            opacity: 0.5,
                             lineHeight: 1.5,
                           }}
                         >
@@ -530,19 +567,39 @@ const MVPDevelopmentService = () => {
                       ))}
                     </ul>
 
-                    <Link
-                      to="/contact"
+                    {/* Disclaimer */}
+                    {pkg.disclaimer && (
+                      <p
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-neutral-500)',
+                          fontStyle: 'italic',
+                          marginBottom: 'var(--space-4)',
+                          padding: 'var(--space-3)',
+                          background: pkg.popular ? 'rgba(0,0,0,0.2)' : 'var(--bg-tertiary)',
+                          borderRadius: 'var(--radius-lg)',
+                          position: 'relative',
+                          zIndex: 1,
+                        }}
+                      >
+                        {pkg.disclaimer}
+                      </p>
+                    )}
+
+                    <a
+                      href="/contact"
                       className={`modern-btn ${pkg.popular ? 'modern-btn-primary' : 'modern-btn-outline'}`}
                       style={{
                         width: '100%',
                         justifyContent: 'center',
                         position: 'relative',
                         zIndex: 1,
+                        textDecoration: 'none',
                         ...(pkg.popular ? {} : { borderColor: pkg.accentColor, color: pkg.accentColor }),
                       }}
                     >
-                      Get Started
-                    </Link>
+                      {pkg.ctaText}
+                    </a>
 
                     {/* Bottom accent border */}
                     <div
@@ -560,8 +617,7 @@ const MVPDevelopmentService = () => {
                     />
                   </motion.div>
                 );
-              })}
-            </div>
+              })}            </div>
 
             {/* Enhanced hover styles */}
             <style>{`
@@ -579,16 +635,24 @@ const MVPDevelopmentService = () => {
               }
             `}</style>
 
-            <p
+            <div
               style={{
+                gridColumn: '1 / -1',
                 textAlign: 'center',
                 marginTop: 'var(--space-8)',
-                color: 'var(--text-tertiary)',
-                fontSize: 'var(--text-sm)',
+                padding: 'var(--space-6)',
+                background: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border-light)',
               }}
             >
-              * All prices are indicative. Final quote based on specific requirements.
-            </p>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                <strong>Not sure which plan is right for you?</strong>
+              </p>
+              <a href="/contact" className="modern-btn modern-btn-outline" style={{ borderColor: 'var(--color-primary-500)', color: 'var(--color-primary-500)' }}>
+                Schedule Free Consultation
+              </a>
+            </div>
           </div>
         </section>
 
