@@ -8,7 +8,6 @@ import ModernServices from '../components/sections/ModernServices';
 import WhyChooseUs from '../components/sections/WhyChooseUs';
 import ModernPortfolio from '../components/sections/ModernPortfolio';
 import ProductsSection from '../components/sections/ProductsSection';
-import CaseStudies from '../components/sections/CaseStudies';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
@@ -48,8 +47,7 @@ const ModernHome = () => {
       setPortfolioLoading(true);
       const portfoliosQuery = query(
         collection(db, 'portfolios'),
-        where('status', '==', 'completed'),
-        orderBy('displayOrder', 'asc')
+        where('status', 'in', ['completed', 'in progress', 'in-progress'])
       );
 
       const snapshot = await getDocs(portfoliosQuery);
@@ -60,9 +58,11 @@ const ModernHome = () => {
           title: data.projectName || 'Untitled Project',
           category: mapCategory(data.category),
           description: data.description || '',
-          image: data.thumbnailUrl || (data.images && data.images[0]) || '',
+          image: data.logo || data.thumbnailUrl || (data.images && data.images[0]) || '',
+          isLogo: Boolean(data.logo),
+          status: data.status || 'completed',
           tags: data.technologies || [],
-          link: '/portfolio',
+          link: `/portfolio/${doc.id}`,
           displayOrder: data.displayOrder || 0,
         };
       });
@@ -127,7 +127,7 @@ const ModernHome = () => {
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/products',
+            link: '/portfolio',
           }}
         />
 
@@ -156,8 +156,7 @@ const ModernHome = () => {
           showViewAll={!portfolioLoading}
         />
 
-        {/* Case Studies */}
-        <CaseStudies />
+        {/* Case Studies temporarily hidden */}
 
         {/* Mid-page CTA */}
         <CTABanner
@@ -171,7 +170,7 @@ const ModernHome = () => {
           }}
           secondaryCTA={{
             text: 'View Our Work',
-            link: '/products',
+            link: '/portfolio',
           }}
           compact
         />

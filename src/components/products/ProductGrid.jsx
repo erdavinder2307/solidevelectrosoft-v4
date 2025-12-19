@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
-import ScreenshotModal from './ScreenshotModal';
 
 /**
  * ProductGrid Component
  * Responsive grid layout for displaying products
  * 3 columns desktop, 2 tablet, 1 mobile
  */
-const ProductGrid = ({ products, showFilter = true }) => {
+const ProductGrid = ({ products, showFilter = true, onViewScreenshots }) => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filters = [
     { id: 'all', label: 'All Products' },
@@ -47,16 +44,6 @@ const ProductGrid = ({ products, showFilter = true }) => {
     }
     return true;
   });
-
-  const handleViewScreenshots = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedProduct(null), 200);
-  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -151,7 +138,7 @@ const ProductGrid = ({ products, showFilter = true }) => {
           <ProductCard
             key={product.id}
             product={product}
-            onViewScreenshots={handleViewScreenshots}
+            onViewScreenshots={onViewScreenshots}
           />
         ))}
       </motion.div>
@@ -171,13 +158,6 @@ const ProductGrid = ({ products, showFilter = true }) => {
           <p style={{ fontSize: '1.125rem' }}>No products found in this category.</p>
         </motion.div>
       )}
-
-      {/* Screenshot Modal */}
-      <ScreenshotModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        product={selectedProduct}
-      />
 
       {/* Responsive Styles */}
       <style>{`

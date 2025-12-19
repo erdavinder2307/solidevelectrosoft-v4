@@ -159,7 +159,7 @@ const ModernPortfolio = ({
                   {/* Project Image */}
                   <div
                     style={{
-                      aspectRatio: '16/10',
+                      aspectRatio: project.isLogo ? '2/1' : '16/10',
                       overflow: 'hidden',
                       background: 'var(--color-neutral-800)',
                     }}
@@ -171,8 +171,9 @@ const ModernPortfolio = ({
                         style={{
                           width: '100%',
                           height: '100%',
-                          objectFit: 'cover',
+                          objectFit: project.isLogo ? 'contain' : 'cover',
                           transition: 'transform var(--transition-slow)',
+                          padding: project.isLogo ? '20px' : '0',
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'scale(1.05)';
@@ -216,17 +217,39 @@ const ModernPortfolio = ({
                       {project.title}
                     </h3>
 
-                    {/* Description */}
-                    <p
-                      style={{
-                        fontSize: 'var(--text-sm)',
-                        color: 'var(--color-neutral-400)',
-                        lineHeight: '1.6',
-                        marginBottom: 'var(--space-4)',
-                      }}
-                    >
-                      {project.description}
-                    </p>
+                    {/* Description with Learn More */}
+                    {(() => {
+                      const words = (project.description || '').split(' ');
+                      const isTruncated = words.length > 30;
+                      const preview = isTruncated ? words.slice(0, 30).join(' ') + '...' : project.description;
+                      return (
+                        <div style={{ marginBottom: 'var(--space-4)' }}>
+                          <p
+                            style={{
+                              fontSize: 'var(--text-sm)',
+                              color: 'var(--color-neutral-400)',
+                              lineHeight: '1.6',
+                              marginBottom: isTruncated ? 'var(--space-2)' : '0',
+                            }}
+                          >
+                            {preview}
+                          </p>
+                          {isTruncated && (
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                fontSize: 'var(--text-sm)',
+                                fontWeight: 500,
+                                color: 'var(--color-primary-400)',
+                                textDecoration: 'none',
+                              }}
+                            >
+                              Learn More →
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {/* Tags */}
                     <div

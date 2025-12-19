@@ -22,6 +22,8 @@ const PortfolioForm = () => {
     client: '',
     description: '',
     category: '',
+    logo: '',
+    logoFile: null,
     images: [],
     imageFiles: [],
     thumbnailUrl: '',
@@ -40,7 +42,10 @@ const PortfolioForm = () => {
 
   const [techInput, setTechInput] = useState('');
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [imageError, setImageError] = useState('');
+  const [logoError, setLogoError] = useState('');
+  const [changingLogo, setChangingLogo] = useState(false);
 
   useEffect(() => {
     if (isEditing) {
@@ -58,6 +63,8 @@ const PortfolioForm = () => {
           images: data.images || [],
           imageFiles: [],
           technologies: data.technologies || [],
+          logo: data.logo || '',
+          logoFile: null,
         });
       } else {
         setErrors({ general: 'Portfolio not found' });
@@ -102,24 +109,39 @@ const PortfolioForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files || []);
+    const mapped = files.map((file) => ({ id: `${Date.now()}-${Math.random()}`.replace(/\./g, ''), file, preview: URL.createObjectURL(file) }));
     setFormData((prev) => ({
       ...prev,
-      imageFiles: [...prev.imageFiles, ...files],
+      imageFiles: [...prev.imageFiles, ...mapped],
     }));
     setImageError('');
   };
 
   const handleImageSelected = (croppedFile) => {
+    const fileObj = { id: `${Date.now()}-${Math.random()}`.replace(/\./g, ''), file: croppedFile, preview: URL.createObjectURL(croppedFile) };
     setFormData((prev) => ({
       ...prev,
-      imageFiles: [...prev.imageFiles, croppedFile],
+      imageFiles: [...prev.imageFiles, fileObj],
     }));
     setImageError('');
   };
 
   const handleImageError = (error) => {
     setImageError(error);
+  };
+
+  const handleLogoSelected = (croppedFile) => {
+    setFormData((prev) => ({
+      ...prev,
+      logoFile: croppedFile,
+    }));
+    setLogoError('');
+    setChangingLogo(false);
+  };
+
+  const handleLogoError = (error) => {
+    setLogoError(error);
   };
 
   const handleSetThumbnail = (imageUrl) => {
@@ -140,10 +162,14 @@ const PortfolioForm = () => {
   };
 
   const handleRemoveNewImage = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      imageFiles: prev.imageFiles.filter((_, i) => i !== index),
-    }));
+    setFormData((prev) => {
+      const toRemove = prev.imageFiles.find((f) => f.id === id);
+      if (toRemove?.preview) URL.revokeObjectURL(toRemove.preview);
+      return {
+        ...prev,
+        imageFiles: prev.imageFiles.filter((f) => f.id !== id),
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -163,15 +189,32 @@ const PortfolioForm = () => {
     setErrors({});
 
     try {
+      let logoUrl = formData.logo;
       let allImages = [...formData.images];
       let thumbnailUrl = formData.thumbnailUrl;
+
+      // Upload logo to Firebase if new logo selected
+      if (formData.logoFile) {
+        setUploadingLogo(true);
+        try {
+          logoUrl = await uploadImageToFirebase(formData.logoFile, 'portfolios/logos');
+        } catch (uploadError) {
+          console.error('Logo upload error:', uploadError);
+          setErrors({ general: 'Failed to upload logo. Please try again.' });
+          setSubmitting(false);
+          setUploadingLogo(false);
+          return;
+        } finally {
+          setUploadingLogo(false);
+        }
+      }
 
       // Upload new images to Firebase if any
       if (formData.imageFiles.length > 0) {
         setUploadingImages(true);
         try {
-          for (const file of formData.imageFiles) {
-            const imageUrl = await uploadImageToFirebase(file, 'portfolios');
+          for (const fileObj of formData.imageFiles) {
+            const imageUrl = await uploadImageToFirebase(fileObj.file, 'portfolios');
             allImages.push(imageUrl);
 
             // Set first new image as thumbnail if no thumbnail is set
@@ -195,6 +238,7 @@ const PortfolioForm = () => {
         client: formData.client,
         description: formData.description,
         category: formData.category,
+        logo: logoUrl,
         images: allImages,
         thumbnailUrl: thumbnailUrl,
         technologies: formData.technologies,
@@ -404,7 +448,100 @@ const PortfolioForm = () => {
             </p>
           )}
         </div>
+        {/* Logo / Featured Picture */}
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
+            Logo / Featured Picture (1:1 ratio)
+          </label>
+          
+          {formData.logoFile ? (
+            <div style={{ marginBottom: '12px' }}>
+              <img
+                src={URL.createObjectURL(formData.logoFile)}
+                alt="Logo preview"
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '8px',
+                  objectFit: 'cover',
+                  border: '2px solid #f59e0b',
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#059669', marginTop: '8px', fontWeight: '500' }}>
+                ✅ New logo selected (will be uploaded on save)
+              </p>
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, logoFile: null }))}
+                style={{
+                  marginTop: '8px',
+                  padding: '6px 12px',
+                  background: '#fee2e2',
+                  color: '#991b1b',
+                  border: '1px solid #fca5a5',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                }}
+              >
+                Remove Selected
+              </button>
+            </div>
+          ) : formData.logo ? (
+            <div style={{ marginBottom: '12px' }}>
+              <img
+                src={formData.logo}
+                alt="Logo preview"
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '8px',
+                  objectFit: 'cover',
+                  border: '1px solid #e5e7eb',
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px' }}>
+                ✅ Current logo (will be replaced if you select a new one)
+              </p>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => setChangingLogo((v) => !v)}
+                  style={{
+                    marginTop: '8px',
+                    padding: '6px 12px',
+                    background: changingLogo ? '#f3f4f6' : '#fef3c7',
+                    color: '#374151',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                  }}
+                >
+                  {changingLogo ? 'Cancel' : 'Change Logo'}
+                </button>
+              )}
+            </div>
+          ) : null}
 
+          {!formData.logoFile && (!formData.logo || changingLogo) ? (
+            <ImageUploader
+              onImageSelected={handleLogoSelected}
+              onError={handleLogoError}
+              aspectRatio={1 / 1}
+              mode="single"
+              inputId="portfolio-logo-input"
+            />
+          ) : null}
+          
+          {logoError && (
+            <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '8px' }}>
+              {logoError}
+            </p>
+          )}
+        </div>
         {/* Images */}
         <div style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
@@ -512,9 +649,9 @@ const PortfolioForm = () => {
                 New Images to Upload ({formData.imageFiles.length})
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '12px' }}>
-                {formData.imageFiles.map((file, idx) => (
+                {formData.imageFiles.map((fileObj) => (
                   <div
-                    key={`new-${idx}`}
+                    key={fileObj.id}
                     style={{
                       position: 'relative',
                       borderRadius: '8px',
@@ -523,18 +660,11 @@ const PortfolioForm = () => {
                       background: '#FEF3C7',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '100%',
-                        height: '100px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px',
-                      }}
-                    >
-                      📸
-                    </div>
+                    <img
+                      src={fileObj.preview}
+                      alt="New portfolio"
+                      style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                    />
                     <div
                       style={{
                         position: 'absolute',
@@ -547,7 +677,7 @@ const PortfolioForm = () => {
                     >
                       <button
                         type="button"
-                        onClick={() => handleRemoveNewImage(idx)}
+                        onClick={() => handleRemoveNewImage(fileObj.id)}
                         title="Remove image"
                         style={{
                           background: 'none',
@@ -891,20 +1021,20 @@ const PortfolioForm = () => {
         <div style={{ display: 'flex', gap: '12px' }}>
           <button
             type="submit"
-            disabled={submitting || uploadingImages}
+            disabled={submitting || uploadingImages || uploadingLogo}
             style={{
               flex: 1,
               padding: '12px 24px',
-              background: submitting || uploadingImages ? '#9ca3af' : '#f59e0b',
+              background: submitting || uploadingImages || uploadingLogo ? '#9ca3af' : '#f59e0b',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               fontSize: '16px',
               fontWeight: '600',
-              cursor: submitting || uploadingImages ? 'not-allowed' : 'pointer',
+              cursor: submitting || uploadingImages || uploadingLogo ? 'not-allowed' : 'pointer',
             }}
           >
-            {uploadingImages ? '📤 Uploading images...' : submitting ? '⏳ Saving...' : isEditing ? '💾 Update Portfolio' : '✨ Create Portfolio'}
+            {uploadingLogo ? '📤 Uploading logo...' : uploadingImages ? '📤 Uploading images...' : submitting ? '⏳ Saving...' : isEditing ? '💾 Update Portfolio' : '✨ Create Portfolio'}
           </button>
           <button
             type="button"

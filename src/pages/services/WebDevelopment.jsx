@@ -9,6 +9,7 @@ import { FloatingCTA } from '../../components/ui';
 import { IconBox } from '../../components/ui/Placeholders';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
+import { FaRocket, FaMobileAlt, FaLock, FaCloud, FaSyncAlt, FaChartBar } from 'react-icons/fa';
 
 /**
  * Web Development Service Page
@@ -28,32 +29,32 @@ const WebDevelopmentService = () => {
 
   const features = [
     {
-      icon: '🚀',
+      icon: FaRocket,
       title: 'High-Performance Apps',
       description: 'Lightning-fast load times with optimized code and modern frameworks',
     },
     {
-      icon: '📱',
+      icon: FaMobileAlt,
       title: 'Responsive Design',
       description: 'Seamless experience across all devices and screen sizes',
     },
     {
-      icon: '🔐',
+      icon: FaLock,
       title: 'Enterprise Security',
       description: 'Bank-grade security with encryption and compliance standards',
     },
     {
-      icon: '☁️',
+      icon: FaCloud,
       title: 'Cloud-Native',
       description: 'Scalable architecture built for the cloud from day one',
     },
     {
-      icon: '🔄',
+      icon: FaSyncAlt,
       title: 'CI/CD Pipeline',
       description: 'Automated testing and deployment for rapid iterations',
     },
     {
-      icon: '📊',
+      icon: FaChartBar,
       title: 'Analytics Built-in',
       description: 'Track user behavior and make data-driven decisions',
     },
@@ -279,7 +280,14 @@ const WebDevelopmentService = () => {
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="feature-card"
                 >
-                  <div className="feature-icon">{feature.icon}</div>
+                  {(() => {
+                    const Icon = feature.icon;
+                    return (
+                      <div className="feature-icon" style={{ color: '#3b82f6' }}>
+                        <Icon size={22} />
+                      </div>
+                    );
+                  })()}
                   <h3 className="feature-title">{feature.title}</h3>
                   <p className="feature-description">{feature.description}</p>
                 </motion.div>

@@ -21,6 +21,7 @@ const ModernPortfolio = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [galleryModal, setGalleryModal] = useState({ isOpen: false, project: null, currentIndex: 0 });
 
   useEffect(() => {
     fetchPortfolios();
@@ -33,7 +34,7 @@ const ModernPortfolio = () => {
       
       const portfoliosQuery = query(
         collection(db, 'portfolios'),
-        where('status', '==', 'completed'),
+        where('status', 'in', ['completed', 'in progress','in-progress']),
         orderBy('createdAt', 'desc')
       );
       
@@ -46,12 +47,15 @@ const ModernPortfolio = () => {
           category: mapCategory(data.category),
           type: data.category,
           description: data.description,
-          image: data.thumbnailUrl || (data.images && data.images[0]) || '',
+          image: data.logo || data.thumbnailUrl || (data.images && data.images[0]) || '',
+          images: data.images || [],
+          logo: data.logo || '',
           tags: data.technologies || [],
           client: data.client,
           year: extractYear(data.createdAt),
           featured: data.featured || false,
           displayOrder: data.displayOrder || 0,
+          status: data.status || 'completed',
           webAppUrl: data.webAppUrl || '',
           androidAppUrl: data.androidAppUrl || '',
           iosAppUrl: data.iosAppUrl || '',
@@ -389,52 +393,61 @@ const ModernPortfolio = () => {
                       className="portfolio-card"
                     >
                       {/* Project Image */}
-                      <div
-                        style={{
-                          aspectRatio: '16/10',
-                          overflow: 'hidden',
-                          position: 'relative',
-                        }}
+                      <Link
+                        to={`/portfolio/${project.id}`}
+                        style={{ textDecoration: 'none', display: 'block' }}
                       >
-                        <img
-                          src={project.image}
-                          alt={project.title}
+                        <div
                           style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            transition: 'transform 0.5s ease',
+                            aspectRatio: '2/1',
+                            overflow: 'hidden',
+                            position: 'relative',
+                            background: project.logo ? '#f9fafb' : 'transparent',
+                            cursor: 'pointer',
                           }}
-                          className="portfolio-image"
-                        />
-                        {project.featured && (
-                          <span
+                        >
+                          <img
+                            src={project.image}
+                            alt={project.title}
                             style={{
-                              position: 'absolute',
-                              top: '16px',
-                              right: '16px',
-                              padding: '6px 16px',
-                              background: '#3b82f6',
-                              borderRadius: '100px',
-                              fontSize: '12px',
-                              fontWeight: '600',
-                              color: '#ffffff',
+                              width: '100%',
+                              height: '100%',
+                              objectFit: project.logo ? 'contain' : 'cover',
+                              transition: 'transform 0.5s ease',
+                              padding: project.logo ? '20px' : '0',
                             }}
-                          >
-                            Featured
-                          </span>
-                        )}
-                      </div>
+                            className="portfolio-image"
+                          />
+                          {project.featured && (
+                            <span
+                              style={{
+                                position: 'absolute',
+                                top: '16px',
+                                right: '16px',
+                                padding: '6px 16px',
+                                background: '#3b82f6',
+                                borderRadius: '100px',
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                color: '#ffffff',
+                              }}
+                            >
+                              Featured
+                            </span>
+                          )}
+                        </div>
+                      </Link>
 
                       {/* Project Content */}
                       <div style={{ padding: '28px' }}>
-                        {/* Type Badge */}
+                        {/* Type and Status Badges */}
                         <div
                           style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
                             marginBottom: '12px',
+                            flexWrap: 'wrap',
                           }}
                         >
                           <span
@@ -452,31 +465,82 @@ const ModernPortfolio = () => {
                           <span style={{ fontSize: '13px', color: '#9ca3af' }}>
                             {project.year}
                           </span>
+                          {/* Status Badge */}
+                          <span
+                            style={{
+                              padding: '4px 12px',
+                              background: project.status === 'in progress' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+                              borderRadius: '100px',
+                              fontSize: '11px',
+                              fontWeight: '600',
+                              textTransform: 'uppercase',
+                              color: project.status === 'in progress' ? '#3b82f6' : '#22c55e',
+                              letterSpacing: '0.5px',
+                            }}
+                          >
+                            {project.status}
+                          </span>
                         </div>
 
                         {/* Title */}
-                        <h3
-                          style={{
-                            fontSize: '1.5rem',
-                            fontWeight: '600',
-                            color: '#111827',
-                            marginBottom: '12px',
-                          }}
+                        <Link
+                          to={`/portfolio/${project.id}`}
+                          style={{ textDecoration: 'none', display: 'block' }}
                         >
-                          {project.title}
-                        </h3>
+                          <h3
+                            style={{
+                              fontSize: '1.5rem',
+                              fontWeight: '600',
+                              color: '#111827',
+                              marginBottom: '12px',
+                              cursor: 'pointer',
+                              transition: 'color 0.2s',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.color = '#3b82f6')}
+                            onMouseLeave={(e) => (e.currentTarget.style.color = '#111827')}
+                          >
+                            {project.title}
+                          </h3>
+                        </Link>
 
                         {/* Description */}
-                        <p
-                          style={{
-                            fontSize: '15px',
-                            color: '#6b7280',
-                            lineHeight: '1.7',
-                            marginBottom: '20px',
-                          }}
-                        >
-                          {project.description}
-                        </p>
+                        <div style={{ marginBottom: '20px' }}>
+                          <p
+                            style={{
+                              fontSize: '15px',
+                              color: '#6b7280',
+                              lineHeight: '1.7',
+                              marginBottom: project.description && project.description.split(' ').length > 30 ? '8px' : '0',
+                            }}
+                          >
+                            {project.description && project.description.split(' ').length > 30
+                              ? project.description.split(' ').slice(0, 30).join(' ') + '...'
+                              : project.description}
+                          </p>
+                          {project.description && project.description.split(' ').length > 30 && (
+                            <Link
+                              to={`/portfolio/${project.id}`}
+                              style={{
+                                display: 'inline-block',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                color: '#3b82f6',
+                                textDecoration: 'none',
+                                transition: 'all 0.2s',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.opacity = '0.8';
+                                e.currentTarget.style.textDecoration = 'underline';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.opacity = '1';
+                                e.currentTarget.style.textDecoration = 'none';
+                              }}
+                            >
+                              Learn More →
+                            </Link>
+                          )}
+                        </div>
 
                         {/* Tags */}
                         <div
@@ -502,6 +566,45 @@ const ModernPortfolio = () => {
                             </span>
                           ))}
                         </div>
+
+                        {/* Gallery Button */}
+                        {project.images && project.images.length > 0 && (
+                          <button
+                            onClick={() => setGalleryModal({ isOpen: true, project, currentIndex: 0 })}
+                            style={{
+                              width: '100%',
+                              padding: '10px 14px',
+                              borderRadius: '10px',
+                              border: 'none',
+                              background: '#8b5cf6',
+                              color: '#ffffff',
+                              fontSize: '13px',
+                              fontWeight: '500',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              marginBottom: '12px',
+                              transition: 'all 0.2s',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.opacity = '0.9';
+                              e.currentTarget.style.transform = 'scale(1.02)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.opacity = '1';
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                              <circle cx="8.5" cy="8.5" r="1.5"/>
+                              <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            View Gallery ({project.images.length})
+                          </button>
+                        )}
 
                         {/* App URL Buttons */}
                         {(project.webAppUrl || project.androidAppUrl || project.iosAppUrl) && (
@@ -803,6 +906,211 @@ const ModernPortfolio = () => {
       <ModernFooter onQuoteClick={openAI} />
       <FloatingCTA onQuoteClick={openAI} />
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
+
+      {/* Gallery Modal */}
+      {galleryModal.isOpen && galleryModal.project && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.95)',
+            zIndex: 10000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+          onClick={() => setGalleryModal({ isOpen: false, project: null, currentIndex: 0 })}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setGalleryModal({ isOpen: false, project: null, currentIndex: 0 })}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: 'none',
+              background: 'rgba(255, 255, 255, 0.1)',
+              color: '#ffffff',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+              backdropFilter: 'blur(10px)',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+          >
+            ×
+          </button>
+
+          {/* Image Counter */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '30px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              padding: '8px 16px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '100px',
+              color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: '500',
+            }}
+          >
+            {galleryModal.currentIndex + 1} / {galleryModal.project.images.length}
+          </div>
+
+          {/* Previous Button */}
+          {galleryModal.currentIndex > 0 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryModal(prev => ({ ...prev, currentIndex: prev.currentIndex - 1 }));
+              }}
+              style={{
+                position: 'absolute',
+                left: '20px',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                fontSize: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            >
+              ‹
+            </button>
+          )}
+
+          {/* Next Button */}
+          {galleryModal.currentIndex < galleryModal.project.images.length - 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryModal(prev => ({ ...prev, currentIndex: prev.currentIndex + 1 }));
+              }}
+              style={{
+                position: 'absolute',
+                right: '20px',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                fontSize: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            >
+              ›
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '90%',
+              maxHeight: '90%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            <img
+              src={galleryModal.project.images[galleryModal.currentIndex]}
+              alt={`${galleryModal.project.title} - Image ${galleryModal.currentIndex + 1}`}
+              style={{
+                maxWidth: '100%',
+                maxHeight: 'calc(90vh - 100px)',
+                objectFit: 'contain',
+                borderRadius: '12px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+              }}
+            />
+            <div
+              style={{
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: '500',
+                textAlign: 'center',
+              }}
+            >
+              {galleryModal.project.title}
+            </div>
+          </div>
+
+          {/* Thumbnail Strip */}
+          {galleryModal.project.images.length > 1 && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                bottom: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                gap: '8px',
+                padding: '12px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                maxWidth: '90%',
+                overflowX: 'auto',
+              }}
+            >
+              {galleryModal.project.images.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`Thumbnail ${idx + 1}`}
+                  onClick={() => setGalleryModal(prev => ({ ...prev, currentIndex: idx }))}
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    border: idx === galleryModal.currentIndex ? '2px solid #3b82f6' : '2px solid transparent',
+                    opacity: idx === galleryModal.currentIndex ? 1 : 0.6,
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = idx === galleryModal.currentIndex ? '1' : '0.6'}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Responsive Styles */}
       <style>{`

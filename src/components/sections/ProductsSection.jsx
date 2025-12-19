@@ -6,6 +6,8 @@ import { db } from '../../config/firebase';
 import { ProductGrid } from '../products';
 import productsData from '../../data/productsData';
 
+import { FaBox, FaRocket, FaMobileAlt, FaGlobe } from 'react-icons/fa';
+
 /**
  * ProductsSection Component
  * Full section displaying Solidev products from Firebase
@@ -163,22 +165,22 @@ const ProductsSection = ({
               { 
                 number: products.length, 
                 label: 'Total Products',
-                icon: '📦',
+                icon: FaBox,
               },
               { 
                 number: products.filter(p => p.featured).length, 
                 label: 'Featured Apps',
-                icon: '🚀',
+                icon: FaRocket,
               },
               { 
                 number: products.filter(p => p.category === 'Mobile App').length, 
                 label: 'Mobile Apps',
-                icon: '📱',
+                icon: FaMobileAlt,
               },
               { 
                 number: products.filter(p => p.category !== 'Mobile App').length, 
                 label: 'Web & Other',
-                icon: '🌐',
+                icon: FaGlobe,
               },
             ].map((stat, index) => (
               <div
@@ -192,7 +194,14 @@ const ProductsSection = ({
                   minWidth: '140px',
                 }}
               >
-                <div style={{ fontSize: '24px', marginBottom: '4px' }}>{stat.icon}</div>
+                {(() => {
+                  const Icon = stat.icon;
+                  return (
+                    <div style={{ marginBottom: '4px', color: isDark ? '#60a5fa' : '#3b82f6' }}>
+                      <Icon size={24} />
+                    </div>
+                  );
+                })()}
                 <div
                   style={{
                     fontSize: '2rem',

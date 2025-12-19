@@ -12,6 +12,7 @@ export { default as ModernAbout } from './ModernAbout';
 export { default as ModernPortfolio } from './ModernPortfolio';
 export { default as ModernProducts } from './ModernProducts';
 export { default as ProductDetails } from './ProductDetails';
+export { default as PortfolioDetails } from './PortfolioDetails';
 export { default as ServicesPage } from './ServicesPage';
 
 // Service Detail Pages

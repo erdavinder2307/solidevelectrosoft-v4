@@ -8,6 +8,7 @@ import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
+import { FaMobileAlt, FaPalette, FaBell, FaMapMarkerAlt, FaCreditCard, FaLink } from 'react-icons/fa';
 
 /**
  * Mobile App Development Service Page
@@ -26,32 +27,32 @@ const MobileAppService = () => {
 
   const features = [
     {
-      icon: '📱',
+      icon: FaMobileAlt,
       title: 'Native Performance',
       description: 'Apps that feel fast and responsive with native-like experiences',
     },
     {
-      icon: '🎨',
+      icon: FaPalette,
       title: 'Beautiful UI/UX',
       description: 'Intuitive interfaces following iOS and Android design guidelines',
     },
     {
-      icon: '🔔',
+      icon: FaBell,
       title: 'Push Notifications',
       description: 'Engage users with targeted notifications and updates',
     },
     {
-      icon: '📍',
+      icon: FaMapMarkerAlt,
       title: 'Location Services',
       description: 'GPS, geofencing, and location-based features',
     },
     {
-      icon: '💳',
+      icon: FaCreditCard,
       title: 'In-App Payments',
       description: 'Secure payment integration with Stripe, PayPal, and more',
     },
     {
-      icon: '🔗',
+      icon: FaLink,
       title: 'Offline Support',
       description: 'Apps that work seamlessly even without internet connection',
     },
@@ -280,7 +281,10 @@ const MobileAppService = () => {
                   style={{ textAlign: 'center' }}
                 >
                   <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-4)' }}>
-                    {feature.icon}
+                    {(() => {
+                      const Icon = feature.icon;
+                      return <Icon size={22} color="#8b5cf6" />;
+                    })()}
                   </div>
                   <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)' }}>
                     {feature.title}

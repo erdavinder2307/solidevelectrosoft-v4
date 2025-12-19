@@ -1,6 +1,20 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import {
+  FaGlobe,
+  FaMobileAlt,
+  FaBrain,
+  FaRocket,
+  FaPalette,
+  FaCloud,
+  FaCogs,
+  FaLink,
+  FaDatabase,
+  FaLock,
+  FaBolt,
+  FaTools,
+} from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
@@ -26,7 +40,7 @@ const Services = () => {
 
   const services = [
     {
-      icon: '🌐',
+      icon: FaGlobe,
       title: 'Web Application Development',
       description: 'Custom web applications built with modern frameworks. From enterprise portals to customer-facing platforms.',
       features: ['React / Next.js / Vue', 'Node.js / .NET / Python', 'Cloud-native architecture', 'API development'],
@@ -34,7 +48,7 @@ const Services = () => {
       color: '#3b82f6',
     },
     {
-      icon: '📱',
+      icon: FaMobileAlt,
       title: 'Mobile App Development',
       description: 'Native and cross-platform mobile apps for iOS and Android. Beautiful, performant, user-friendly.',
       features: ['React Native / Flutter', 'Native iOS (Swift)', 'Native Android (Kotlin)', 'App Store optimization'],
@@ -42,7 +56,7 @@ const Services = () => {
       color: '#8b5cf6',
     },
     {
-      icon: '🧠',
+      icon: FaBrain,
       title: 'AI & Machine Learning',
       description: 'Intelligent solutions powered by AI. Chatbots, analytics, computer vision, and automation.',
       features: ['Custom AI chatbots', 'Predictive analytics', 'Computer vision', 'Process automation'],
@@ -50,7 +64,7 @@ const Services = () => {
       color: '#06b6d4',
     },
     {
-      icon: '🚀',
+      icon: FaRocket,
       title: 'MVP Development',
       description: 'Launch your startup faster with our fixed-price MVP packages. From idea to market in weeks.',
       features: ['Fixed-price packages', '4-8 week delivery', 'Full source code ownership', 'Scale-ready architecture'],
@@ -60,14 +74,14 @@ const Services = () => {
   ];
 
   const additionalServices = [
-    { name: 'UI/UX Design', icon: '🎨' },
-    { name: 'Cloud Migration', icon: '☁️' },
-    { name: 'DevOps & CI/CD', icon: '⚙️' },
-    { name: 'API Development', icon: '🔗' },
-    { name: 'Database Design', icon: '🗄️' },
-    { name: 'Security Audits', icon: '🔒' },
-    { name: 'Performance Optimization', icon: '⚡' },
-    { name: 'Maintenance & Support', icon: '🛠️' },
+    { name: 'UI/UX Design', icon: FaPalette },
+    { name: 'Cloud Migration', icon: FaCloud },
+    { name: 'DevOps & CI/CD', icon: FaCogs },
+    { name: 'API Development', icon: FaLink },
+    { name: 'Database Design', icon: FaDatabase },
+    { name: 'Security Audits', icon: FaLock },
+    { name: 'Performance Optimization', icon: FaBolt },
+    { name: 'Maintenance & Support', icon: FaTools },
   ];
 
   return (
@@ -166,9 +180,14 @@ const Services = () => {
                         e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
                       }}
                     >
-                      <div style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}>
-                        {service.icon}
-                      </div>
+                      {(() => {
+                        const Icon = service.icon;
+                        return (
+                          <div style={{ marginBottom: 'var(--space-4)', color: service.color }}>
+                            <Icon size={48} />
+                          </div>
+                        );
+                      })()}
 
                       <h2 className="modern-h3" style={{ marginBottom: 'var(--space-3)' }}>
                         {service.title}
@@ -265,7 +284,10 @@ const Services = () => {
                   }}
                 >
                   <div style={{ fontSize: '2rem', marginBottom: 'var(--space-2)' }}>
-                    {service.icon}
+                    {(() => {
+                      const Icon = service.icon;
+                      return <Icon size={24} />;
+                    })()}
                   </div>
                   <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: '600' }}>
                     {service.name}

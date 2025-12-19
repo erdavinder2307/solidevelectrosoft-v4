@@ -8,6 +8,7 @@ import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
+import { FaRobot, FaChartLine, FaSearch, FaBolt } from 'react-icons/fa';
 
 /**
  * AI & Machine Learning Solutions Service Page
@@ -26,25 +27,25 @@ const AISolutionsService = () => {
 
   const solutions = [
     {
-      icon: '🤖',
+      icon: FaRobot,
       title: 'Custom AI Chatbots',
       description: 'Intelligent conversational AI for customer support, sales, and internal operations',
       features: ['Natural Language Processing', '24/7 Customer Support', 'Multi-language Support', 'CRM Integration'],
     },
     {
-      icon: '📊',
+      icon: FaChartLine,
       title: 'Predictive Analytics',
       description: 'Data-driven insights to forecast trends, optimize operations, and reduce costs',
       features: ['Sales Forecasting', 'Demand Prediction', 'Risk Assessment', 'Customer Churn Analysis'],
     },
     {
-      icon: '🔍',
+      icon: FaSearch,
       title: 'Computer Vision',
       description: 'Image and video analysis for quality control, security, and automation',
       features: ['Object Detection', 'Image Classification', 'OCR & Document Processing', 'Video Analytics'],
     },
     {
-      icon: '⚡',
+      icon: FaBolt,
       title: 'Process Automation',
       description: 'Intelligent automation to streamline workflows and eliminate repetitive tasks',
       features: ['Document Processing', 'Data Entry Automation', 'Workflow Optimization', 'Email Classification'],
@@ -258,7 +259,10 @@ const AISolutionsService = () => {
                   style={{ padding: 'var(--space-8)' }}
                 >
                   <div style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}>
-                    {solution.icon}
+                    {(() => {
+                      const Icon = solution.icon;
+                      return <Icon size={22} color="#8b5cf6" />;
+                    })()}
                   </div>
                   <h3 className="modern-h4" style={{ marginBottom: 'var(--space-2)' }}>
                     {solution.title}

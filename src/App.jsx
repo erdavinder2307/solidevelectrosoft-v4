@@ -18,8 +18,9 @@ import {
   MVPDevelopmentService
 } from './pages';
 
-// Import product details page
+// Import product and portfolio details pages
 import ProductDetails from './pages/ProductDetails';
+import PortfolioDetails from './pages/PortfolioDetails';
 
 // Import admin components
 import AdminLogin from './pages/admin/AdminLogin';
@@ -116,6 +117,7 @@ function App() {
             <Route path="/products" element={<ModernProducts />} />
             <Route path="/products.html" element={<ModernProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/portfolio/:id" element={<PortfolioDetails />} />
             
             {/* Services Routes */}
             <Route path="/services" element={<ServicesPage />} />
