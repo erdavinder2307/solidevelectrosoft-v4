@@ -16,17 +16,35 @@ const ProductGrid = ({ products, showFilter = true }) => {
   const filters = [
     { id: 'all', label: 'All Products' },
     { id: 'live', label: 'Live' },
-    { id: 'in-progress', label: 'In Progress' },
+    { id: 'coming-soon', label: 'Coming Soon' },
     { id: 'web', label: 'Web Apps' },
     { id: 'mobile', label: 'Mobile Apps' },
   ];
 
   const filteredProducts = products.filter((product) => {
     if (activeFilter === 'all') return true;
-    if (activeFilter === 'live') return product.status === 'LIVE';
-    if (activeFilter === 'in-progress') return product.status === 'IN PROGRESS';
-    if (activeFilter === 'web') return product.platform.includes('Web');
-    if (activeFilter === 'mobile') return product.platform.includes('Mobile');
+    
+    // Normalize status for comparison
+    const normalizedStatus = (product.status || 'active').toLowerCase();
+    
+    if (activeFilter === 'live') {
+      return normalizedStatus === 'active' || normalizedStatus === 'live';
+    }
+    if (activeFilter === 'coming-soon') {
+      return normalizedStatus === 'coming-soon' || normalizedStatus === 'coming soon';
+    }
+    if (activeFilter === 'web') {
+      // Check platform array or category
+      return product.platform?.includes('Web') || 
+             product.category?.toLowerCase().includes('web') ||
+             product.category === 'Web & Mobile';
+    }
+    if (activeFilter === 'mobile') {
+      // Check platform array or category
+      return product.platform?.includes('Mobile') || 
+             product.category?.toLowerCase().includes('mobile') ||
+             product.category === 'Web & Mobile';
+    }
     return true;
   });
 
@@ -105,7 +123,10 @@ const ProductGrid = ({ products, showFilter = true }) => {
                     color: activeFilter === filter.id ? '#ffffff' : '#166534',
                   }}
                 >
-                  {products.filter(p => p.status === 'LIVE').length}
+                  {products.filter(p => {
+                    const status = (p.status || 'active').toLowerCase();
+                    return status === 'active' || status === 'live';
+                  }).length}
                 </span>
               )}
             </button>

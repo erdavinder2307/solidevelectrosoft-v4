@@ -31,7 +31,8 @@ const ModernProducts = () => {
       
       const productsQuery = query(
         collection(db, 'products'),
-        where('status', '==', 'active'),
+        where('status', '!=', 'archived'),
+        orderBy('status'),
         orderBy('createdAt', 'desc')
       );
       

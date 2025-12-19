@@ -78,9 +78,9 @@ const ModernHeader = () => {
           right: 0,
           zIndex: 1000,
           transition: 'all var(--transition-default)',
-          background: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-          backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-          borderBottom: isScrolled ? '1px solid var(--border-light)' : 'none',
+          background: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(10, 10, 20, 0.9)',
+          backdropFilter: isScrolled ? 'blur(20px)' : 'blur(6px)',
+          borderBottom: isScrolled ? '1px solid var(--border-light)' : '1px solid rgba(255, 255, 255, 0.06)',
         }}
       >
         <nav className="modern-container">

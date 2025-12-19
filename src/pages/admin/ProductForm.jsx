@@ -5,7 +5,7 @@ import { db } from '../../config/firebase';
 import { validateProduct, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
-import { FaGlobe, FaGooglePlay, FaApple } from 'react-icons/fa';
+import { FaGlobe, FaGooglePlay, FaApple, FaDownload } from 'react-icons/fa';
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -30,6 +30,7 @@ const ProductForm = () => {
     webAppUrl: '',
     androidAppUrl: '',
     iosAppUrl: '',
+    directApkUrl: '',
     displayOrder: 0,
   });
 
@@ -54,10 +55,15 @@ const ProductForm = () => {
       const docSnap = await getDoc(doc(db, 'products', id));
       if (docSnap.exists()) {
         const data = docSnap.data();
+        const normalizedScreenshots = (data.screenshots || []).map((screenshot, index) => ({
+          ...screenshot,
+          id: screenshot.id || `existing-${index}-${screenshot.url || 'screenshot'}`,
+        }));
         setFormData({
           ...data,
-          screenshots: data.screenshots || [],
+          screenshots: normalizedScreenshots,
           logoFile: null,
+          directApkUrl: data.directApkUrl || '',
         });
       } else {
         setErrors({ general: 'Product not found' });
@@ -237,6 +243,7 @@ const ProductForm = () => {
         webAppUrl: formData.webAppUrl || '',
         androidAppUrl: formData.androidAppUrl || '',
         iosAppUrl: formData.iosAppUrl || '',
+        directApkUrl: formData.directApkUrl || '',
         displayOrder: formData.displayOrder || 0,
         updatedAt: new Date().toISOString(),
       };
@@ -397,6 +404,7 @@ const ProductForm = () => {
             <option value="">Select a category</option>
             <option value="Web Development">Web Development</option>
             <option value="Mobile App">Mobile App</option>
+            <option value="Web & Mobile">Web & Mobile</option>
             <option value="AI Solutions">AI Solutions</option>
             <option value="MVP Development">MVP Development</option>
             <option value="Custom Solutions">Custom Solutions</option>
@@ -828,7 +836,7 @@ const ProductForm = () => {
           {/* Android App URL */}
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <FaGooglePlay size={16} /> Android App URL (Play Store)
+              <FaGooglePlay size={16} /> Android App URL (Solidev Store)
             </label>
             <input
               type="url"
@@ -846,6 +854,32 @@ const ProductForm = () => {
                 boxSizing: 'border-box',
               }}
             />
+          </div>
+
+          {/* Direct APK Download URL */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaDownload size={16} /> Direct APK Download URL
+            </label>
+            <input
+              type="url"
+              name="directApkUrl"
+              value={formData.directApkUrl}
+              onChange={handleInputChange}
+              placeholder="https://cdn.example.com/app-latest.apk"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+            <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '6px' }}>
+              Add a direct download link for your APK (e.g., CDN or storage URL).
+            </p>
           </div>
 
           {/* iOS App URL */}
@@ -920,6 +954,7 @@ const ProductForm = () => {
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
+            <option value="coming-soon">Coming Soon</option>
             <option value="archived">Archived</option>
           </select>
         </div>

@@ -143,6 +143,13 @@ const ModernHome = () => {
         {/* Why Choose Us */}
         <WhyChooseUs />
 
+        {/* Our Products */}
+        <ProductsSection 
+          maxProducts={6}
+          showFilter={false}
+          showViewAll={true}
+        />
+
         {/* Our Work (Portfolios) */}
         <ModernPortfolio
           projects={portfolioProjects.length ? portfolioProjects.slice(0, 6) : null}
@@ -151,13 +158,6 @@ const ModernHome = () => {
 
         {/* Case Studies */}
         <CaseStudies />
-
-        {/* Our Products */}
-        <ProductsSection 
-          maxProducts={6}
-          showFilter={false}
-          showViewAll={true}
-        />
 
         {/* Mid-page CTA */}
         <CTABanner

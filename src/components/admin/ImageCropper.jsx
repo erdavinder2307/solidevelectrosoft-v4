@@ -4,13 +4,13 @@ import { blobToFile } from '../../utils/imageUtils';
 
 // Clean, single ImageCropper component with Crop and Fit modes
 const ImageCropper = ({ imageSrc, onCropComplete, onCancel, aspectRatio = 1 }) => {
-  const [mode, setMode] = useState('crop');
+  const [mode, setMode] = useState('fit');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentAspect, setCurrentAspect] = useState(aspectRatio);
-  const [bgTransparent, setBgTransparent] = useState(false);
+  const [bgTransparent, setBgTransparent] = useState(true);
   const [bgColor, setBgColor] = useState('#ffffff');
 
   const handleSave = () => {

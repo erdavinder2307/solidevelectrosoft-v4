@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaApple, FaGooglePlay, FaGlobe } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaApple, FaGooglePlay, FaGlobe, FaDownload } from 'react-icons/fa';
 import PlaceholderImage from './PlaceholderImage';
 
 /**
@@ -12,6 +13,7 @@ import PlaceholderImage from './PlaceholderImage';
 const ProductCard = ({ product, onViewScreenshots }) => {
   const [iconError, setIconError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const {
     title,
@@ -28,6 +30,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     webAppUrl,
     androidAppUrl,
     iosAppUrl,
+    directApkUrl,
   } = product;
 
   // Use title or name (Firestore uses 'title', legacy might use 'name')
@@ -38,7 +41,36 @@ const ProductCard = ({ product, onViewScreenshots }) => {
   const isLive = displayStatus === 'ACTIVE' || displayStatus === 'LIVE';
   
   // Check for any available links
-  const hasLink = links?.websiteUrl || links?.appStoreUrl || links?.playStoreUrl || webAppUrl || androidAppUrl || iosAppUrl;
+  const hasLink = links?.websiteUrl || links?.appStoreUrl || links?.playStoreUrl || webAppUrl || androidAppUrl || iosAppUrl || directApkUrl;
+
+  // Count available buttons for responsive layout
+  const hasScreenshots = screenshots && screenshots.length > 0;
+  const availableButtons = [
+    webAppUrl ? 1 : 0,
+    androidAppUrl ? 1 : 0,
+    directApkUrl ? 1 : 0,
+    iosAppUrl ? 1 : 0,
+    hasScreenshots ? 1 : 0,
+  ].reduce((a, b) => a + b, 0);
+
+  // Mobile detection
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mediaQuery.matches);
+
+    const handleChange = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  const getButtonGridCols = () => {
+    if (availableButtons <= 2) return 'repeat(2, 1fr)';
+    if (availableButtons === 3) return 'repeat(3, 1fr)';
+    if (availableButtons === 4) return 'repeat(4, 1fr)';
+    // For 5 buttons, use 3 columns so they wrap into 2 rows (3 + 2)
+    return 'repeat(3, 1fr)';
+  };
 
   const getMainLink = () => {
     if (webAppUrl) return webAppUrl;
@@ -49,6 +81,18 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     if (links?.appStoreUrl) return links.appStoreUrl;
     return null;
   };
+
+  const truncateText = (text, wordLimit = 20) => {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return text;
+  };
+
+  const truncatedDescription = truncateText(description, 25);
+  const isDescriptionTruncated = description && description.split(' ').length > 25;
 
   return (
     <motion.div
@@ -90,19 +134,30 @@ const ProductCard = ({ product, onViewScreenshots }) => {
           }}
         >
           {/* Product Logo */}
-          <div
+          <Link
+            to={`/product/${product.id}`}
             style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              background: `${color}10`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: `2px solid ${color}20`,
+              textDecoration: 'none',
+              display: 'block',
             }}
           >
+            <div
+              style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                background: `${color}10`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: `2px solid ${color}20`,
+                cursor: 'pointer',
+                transition: 'transform 0.2s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            >
             {logo ? (
               <img
                 src={logo}
@@ -133,6 +188,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               />
             )}
           </div>
+          </Link>
 
           {/* Status Badge */}
           <span
@@ -152,29 +208,66 @@ const ProductCard = ({ product, onViewScreenshots }) => {
         </div>
 
         {/* Product Name */}
-        <h3
+        <Link
+          to={`/product/${product.id}`}
           style={{
-            fontSize: '1.25rem',
-            fontWeight: '600',
-            color: '#111827',
-            marginBottom: '8px',
+            textDecoration: 'none',
+            display: 'block',
           }}
         >
-          {displayName}
-        </h3>
+          <h3
+            style={{
+              fontSize: '1.25rem',
+              fontWeight: '600',
+              color: '#111827',
+              marginBottom: '8px',
+              cursor: 'pointer',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = color)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#111827')}
+          >
+            {displayName}
+          </h3>
+        </Link>
 
         {/* Description */}
-        <p
-          style={{
-            fontSize: '14px',
-            color: '#6b7280',
-            lineHeight: '1.6',
-            marginBottom: '16px',
-            minHeight: '44px',
-          }}
-        >
-          {description}
-        </p>
+        <div style={{ marginBottom: '16px' }}>
+          <p
+            style={{
+              fontSize: '14px',
+              color: '#6b7280',
+              lineHeight: '1.6',
+              marginBottom: isDescriptionTruncated ? '8px' : '0',
+              minHeight: '44px',
+            }}
+          >
+            {truncatedDescription}
+          </p>
+          {isDescriptionTruncated && (
+            <a
+              href={`/product/${product.id}`}
+              style={{
+                display: 'inline-block',
+                fontSize: '13px',
+                fontWeight: '500',
+                color: color,
+                textDecoration: 'none',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.8';
+                e.currentTarget.style.textDecoration = 'underline';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.textDecoration = 'none';
+              }}
+            >
+              Learn More →
+            </a>
+          )}
+        </div>
 
         {/* Platform Badges */}
         <div
@@ -221,54 +314,19 @@ const ProductCard = ({ product, onViewScreenshots }) => {
         {/* Action Buttons */}
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
             paddingTop: '16px',
             borderTop: '1px solid #e5e7eb',
           }}
         >
-          {/* Screenshots Button (if available) */}
-          {screenshots && screenshots.length > 0 && (
-            <button
-              onClick={() => onViewScreenshots(product)}
+          {/* App URL Buttons */}
+          {(webAppUrl || androidAppUrl || iosAppUrl || directApkUrl || hasScreenshots) && (
+            <div
               style={{
-                width: '100%',
-                padding: '12px 16px',
-                borderRadius: '10px',
-                border: '1px solid #e5e7eb',
-                background: '#ffffff',
-                color: '#374151',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f9fafb';
-                e.currentTarget.style.borderColor = '#d1d5db';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : getButtonGridCols(),
+                gap: '8px',
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              Screenshots ({screenshots.length})
-            </button>
-          )}
-
-          {/* App URL Buttons */}
-          {(webAppUrl || androidAppUrl || iosAppUrl) && (
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {/* Web App Button */}
               {webAppUrl && (
                 <a
@@ -276,8 +334,6 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    flex: '1 1 auto',
-                    minWidth: 'calc(50% - 4px)',
                     padding: '10px 14px',
                     borderRadius: '10px',
                     border: 'none',
@@ -303,19 +359,17 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   }}
                 >
                   <FaGlobe size={14} />
-                  Web App
+                  Web
                 </a>
               )}
 
-              {/* Android Button */}
+              {/* Android Button (Solidev Store) */}
               {androidAppUrl && (
                 <a
                   href={androidAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    flex: '1 1 auto',
-                    minWidth: 'calc(50% - 4px)',
                     padding: '10px 14px',
                     borderRadius: '10px',
                     border: 'none',
@@ -341,7 +395,43 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   }}
                 >
                   <FaGooglePlay size={14} />
-                  Android
+                  Store
+                </a>
+              )}
+
+              {/* Direct Download APK Button */}
+              {directApkUrl && (
+                <a
+                  href={directApkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: '#0f766e',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                >
+                  <FaDownload size={14} />
+                  APK
                 </a>
               )}
 
@@ -352,8 +442,6 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    flex: '1 1 auto',
-                    minWidth: 'calc(50% - 4px)',
                     padding: '10px 14px',
                     borderRadius: '10px',
                     border: 'none',
@@ -382,11 +470,48 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   iOS
                 </a>
               )}
+
+              {/* Gallery Button */}
+              {hasScreenshots && (
+                <button
+                  onClick={() => onViewScreenshots(product)}
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: '#8b5cf6',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                  Gallery
+                </button>
+              )}
             </div>
           )}
 
           {/* Legacy Open App Button - Only show if no new URL fields but has legacy links */}
-          {!webAppUrl && !androidAppUrl && !iosAppUrl && hasLink ? (
+          {!webAppUrl && !androidAppUrl && !iosAppUrl && !directApkUrl && !hasScreenshots && hasLink && (
             <a
               href={getMainLink()}
               target="_blank"
@@ -424,7 +549,10 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                 <line x1="10" y1="14" x2="21" y2="3"/>
               </svg>
             </a>
-          ) : !hasLink ? (
+          )}
+
+          {/* Coming Soon - Only show if absolutely no buttons/links available */}
+          {!webAppUrl && !androidAppUrl && !iosAppUrl && !directApkUrl && !hasScreenshots && !hasLink && (
             <button
               disabled
               style={{
@@ -445,7 +573,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
             >
               Coming Soon
             </button>
-          ) : null}
+          )}
         </div>
       </div>
     </motion.div>
