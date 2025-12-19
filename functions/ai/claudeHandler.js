@@ -46,8 +46,8 @@ Rules for suggestions:
 - Keep each option under 50 characters
 - Options should directly answer the question you just asked
 - Make them natural conversation responses
+- When asking about budget, use these exact options: ["Under $999", "$999 to $1,999", "$1,999 to $4,599", "Above $4,599"]
 - If conversation is complete ([REQUIREMENTS_COMPLETE]), use: {"suggestions":[]}`;
-
 /**
  * Call Claude Sonnet API
  * @param {string} userMessage - User's current message

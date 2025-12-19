@@ -197,7 +197,7 @@ const MVPDevelopmentService = () => {
     },
     {
       title: 'Startup DNA',
-      description: 'We\'ve helped 20+ startups launch. We understand lean methodology and pivots.',
+      description: 'We understand the startup journey. Lean methodologies, rapid iterations, and strategic pivots built into every project.',
       icon: FaRocket,
       bgGradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
       accentColor: '#f59e0b',
@@ -335,7 +335,7 @@ const MVPDevelopmentService = () => {
                   borderTop: '1px solid rgba(255,255,255,0.1)',
                 }}
               >
-                <div style={{ textAlign: 'center' }}>
+                {/* <div style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 'var(--text-2xl)', fontWeight: '700', color: 'white' }}>
                     20+
                   </div>
@@ -358,7 +358,7 @@ const MVPDevelopmentService = () => {
                   <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-neutral-500)' }}>
                     Raised by Our Clients
                   </div>
-                </div>
+                </div> */}
               </motion.div>
             </div>
           </div>

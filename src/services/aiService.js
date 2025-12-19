@@ -11,9 +11,10 @@ const FIREBASE_FUNCTIONS_URL = import.meta.env.VITE_FIREBASE_FUNCTIONS_URL || 'h
  * Send message to AI assistant
  * @param {string} userMessage - User's message
  * @param {Array} conversationHistory - Previous messages
+ * @param {Object} selectedStage - Selected MVP stage (optional)
  * @returns {Promise<Object>} - { message: string, isComplete: boolean }
  */
-export async function sendMessageToAI(userMessage, conversationHistory = []) {
+export async function sendMessageToAI(userMessage, conversationHistory = [], selectedStage = null) {
   try {
     const response = await fetch(`${FIREBASE_FUNCTIONS_URL}/aiRequest`, {
       method: 'POST',
@@ -23,6 +24,7 @@ export async function sendMessageToAI(userMessage, conversationHistory = []) {
       body: JSON.stringify({
         userMessage,
         conversationHistory,
+        selectedStage,
       }),
     });
 
@@ -45,9 +47,9 @@ export async function sendMessageToAI(userMessage, conversationHistory = []) {
  * @param {string} data.requirementsSummary - Final summary
  * @param {Array} data.conversationHistory - Full conversation
  * @param {string} data.userEmail - User's email (optional)
- * @returns {Promise<Object>} - { success: boolean, messageId: string }
+ * @returns {Promise<Object>} - { success: boolean, messageId: string, adminEmail: string }
  */
-export async function sendRequirementsToEmail({ requirementsSummary, conversationHistory, userEmail }) {
+export async function sendRequirementsToEmail({ requirementsSummary, conversationHistory, userEmail, selectedStage = 'Custom Project' }) {
   try {
     const response = await fetch(`${FIREBASE_FUNCTIONS_URL}/sendRequirements`, {
       method: 'POST',
@@ -58,6 +60,7 @@ export async function sendRequirementsToEmail({ requirementsSummary, conversatio
         requirementsSummary,
         conversationHistory,
         userEmail,
+        selectedStage,
       }),
     });
 

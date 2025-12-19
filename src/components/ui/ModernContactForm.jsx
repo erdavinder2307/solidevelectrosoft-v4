@@ -32,11 +32,12 @@ const ModernContactForm = ({
 
   const budgetRanges = [
     { value: '', label: 'Select budget range' },
-    { value: 'under-5k', label: 'Under $5,000' },
-    { value: '5k-10k', label: '$5,000 - $10,000' },
-    { value: '10k-25k', label: '$10,000 - $25,000' },
-    { value: '25k-50k', label: '$25,000 - $50,000' },
-    { value: 'over-50k', label: 'Over $50,000' },
+    { value: 'under-499', label: 'Under $499' },
+    { value: '499-999', label: '$499 - $999' },
+    { value: '999-1999', label: '$999 - $1,999' },
+    { value: '1999-4999', label: '$1,999 - $4,999' },
+    { value: '4999-9999', label: '$4,999 - $9,999' },
+    { value: 'over-9999', label: 'Over $9,999' },
     { value: 'not-sure', label: 'Not sure yet' },
   ];
 

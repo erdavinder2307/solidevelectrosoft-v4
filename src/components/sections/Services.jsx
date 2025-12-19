@@ -1,73 +1,58 @@
 import React from 'react';
+import './Services.css';
 
 const Services = () => {
   const services = [
     {
       icon: "pe-7s-arc",
       title: "Web Applications",
-      description: "In the fatest growing market, every business required to get cloud space to reachout their customers. We are here to provide all type of web applications that meet your business requirement like Microsoft Technologies (Asp.net MVC, Asp.net core, Asp.net Core), Java web development, Angular 5, Reactjs"
+      description: "Cloud-based web solutions built with modern technologies including ASP.NET Core, Java, Angular, and React to meet your business requirements and scale with your growth."
     },
     {
       icon: "pe-7s-cloud-download",
       title: "Mobile Applications",
-      description: "Its Era of mobility and everyone want to get services on the go. We provide software applications which meet the requirment of all mobile devices operating systems with various resolutions like IOS for IPhone and IPad, Android for android devices etc."
+      description: "Native and cross-platform mobile solutions for iOS and Android devices, delivering seamless experiences across all resolutions and operating systems."
     },
     {
-      icon: "pe-7s-cloud-download",
-      title: "Planning Application",
-      description: "From the start of software development life cycle, development, testing, delivery to customer, maintenance and fixes, everything is in timeline."
+      icon: "pe-7s-note2",
+      title: "Planning & Strategy",
+      description: "Comprehensive SDLC management from planning and development through testing, delivery, and maintenance with timeline-driven execution."
     },
     {
-      icon: "pe-7s-hammer",
-      title: "Software Support",
-      description: "24x7 Support for the maintenance and fixes of customer's software application."
+      icon: "pe-7s-tools",
+      title: "24/7 Support",
+      description: "Round-the-clock maintenance and technical support ensuring your applications run smoothly with minimal downtime."
     }
   ];
 
   return (
-    <div className="tp-service-ara grey-bg-4 pt-140 pb-140">
+    <div className="services-section pt-140 pb-140">
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <div className="tp-section-wrapper text-center mb-60">
-              <h2 className="tp-section-title mb-70">Explore Our Services</h2>
+            <div className="section-header text-center mb-80">
+              <span className="section-subtitle">What We Offer</span>
+              <h2 className="section-title">Our Core Services</h2>
+              <p className="section-description">Comprehensive software development solutions tailored to your business needs</p>
             </div>
           </div>
         </div>
         <div className="row">
           {services.map((service, index) => (
-            <div key={index} className="col-xl-3 col-md-6 d-flex" style={{ overflow: 'hidden' }}>
-              <div className="tp-service text-center white-bg pt-60 pb-45 pl-25 pr-25 mb-30 w-100" style={{
-                height: '450px',
-                boxSizing: 'border-box',
-                overflow: 'hidden',
-                wordWrap: 'break-word',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <div className="tp-service__icon">
-                  <i className={service.icon}></i>
+            <div key={index} className="col-lg-3 col-md-6 mb-40">
+              <div className="service-card">
+                <div className="service-icon-wrapper">
+                  <div className="service-icon-bg"></div>
+                  <i className={`${service.icon} service-icon`}></i>
                 </div>
-                <h3 className="tp-service__title pt-40 pb-25">
-                  <a href="#" style={{ wordWrap: 'break-word' }}>{service.title}</a>
-                </h3>
-                <p style={{ 
-                  wordWrap: 'break-word', 
-                  overflowWrap: 'break-word',
-                  hyphens: 'auto',
-                  flex: '1',
-                  display: 'flex',
-                  alignItems: 'flex-start'
-                }}>
-                  {service.description}
-                </p>
+                <h3 className="service-title">{service.title}</h3>
+                <p className="service-description">{service.description}</p>
+                <div className="service-arrow">
+                  <i className="pe-7s-angle-right-circle"></i>
+                </div>
               </div>
             </div>
           ))}
-        </div>
-        <div className="text-center mt-30">
-          {/* Future: Add "All Services" button if needed */}
         </div>
       </div>
     </div>

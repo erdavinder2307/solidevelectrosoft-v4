@@ -33,11 +33,12 @@ async function sendContactFormEmail({ name, email, phone, projectType, budget, m
   };
 
   const budgetMap = {
-    'under-5k': 'Under $5,000',
-    '5k-10k': '$5,000 - $10,000',
-    '10k-25k': '$10,000 - $25,000',
-    '25k-50k': '$25,000 - $50,000',
-    'over-50k': 'Over $50,000',
+    'under-499': 'Under $499',
+    '499-999': '$499 - $999',
+    '999-1999': '$999 - $1,999',
+    '1999-4999': '$1,999 - $4,999',
+    '4999-9999': '$4,999 - $9,999',
+    'over-9999': 'Over $9,999',
     'not-sure': 'Not sure yet',
   };
 
