@@ -31,9 +31,9 @@ const ModernHeader = () => {
   // Service dropdown items
   const serviceItems = [
     { path: '/services/web-development', label: 'Web App Development' },
-    { path: '/services/mobile-development', label: 'Mobile App Development' },
+    { path: '/services/mobile-app-development', label: 'Mobile App Development' },
     { path: '/services/ai-solutions', label: 'AI-Powered Solutions' },
-    { path: '/services/mvp-packages', label: 'MVP Development' },
+    { path: '/services/mvp-development', label: 'MVP Development' },
   ];
 
   useEffect(() => {

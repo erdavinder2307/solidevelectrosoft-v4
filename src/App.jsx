@@ -129,7 +129,7 @@ function App() {
 
             {/* Legacy route aliases for SEO */}
             <Route path="/web-development" element={<WebDevelopmentService />} />
-            <Route path="/mobile-development" element={<MobileAppService />} />
+            <Route path="/mobile-app-development" element={<MobileAppService />} />
             <Route path="/ai-ml-solutions" element={<AISolutionsService />} />
             <Route path="/startup-mvp" element={<MVPDevelopmentService />} />
 

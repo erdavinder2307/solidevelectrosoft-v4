@@ -8,7 +8,8 @@ import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
-import { FaMobileAlt, FaPalette, FaBell, FaMapMarkerAlt, FaCreditCard, FaLink } from 'react-icons/fa';
+import { FaMobileAlt, FaPalette, FaBell, FaMapMarkerAlt, FaCreditCard, FaLink, FaReact, FaApple } from 'react-icons/fa';
+import { SiFlutter, SiKotlin } from 'react-icons/si';
 
 /**
  * Mobile App Development Service Page
@@ -63,21 +64,37 @@ const MobileAppService = () => {
       name: 'React Native',
       description: 'Build once, deploy to iOS and Android with near-native performance.',
       badge: 'Cross-Platform',
+      icon: FaReact,
+      bgGradient: 'linear-gradient(135deg, #61dafb 0%, #61dafb 100%)',
+      badgeColor: '#61dafb',
+      accentColor: '#087ea4',
     },
     {
       name: 'Flutter',
       description: 'Google\'s UI toolkit for beautiful, natively compiled applications.',
       badge: 'Cross-Platform',
+      icon: SiFlutter,
+      bgGradient: 'linear-gradient(135deg, #02569b 0%, #0ea5e9 100%)',
+      badgeColor: '#0ea5e9',
+      accentColor: '#02569b',
     },
     {
       name: 'Swift/SwiftUI',
       description: 'Native iOS development for maximum Apple ecosystem integration.',
       badge: 'iOS Native',
+      icon: FaApple,
+      bgGradient: 'linear-gradient(135deg, #000000 0%, #555555 100%)',
+      badgeColor: '#ffffff',
+      accentColor: '#000000',
     },
     {
       name: 'Kotlin',
       description: 'Modern Android development with Google\'s preferred language.',
       badge: 'Android Native',
+      icon: SiKotlin,
+      bgGradient: 'linear-gradient(135deg, #7f52ff 0%, #6b20a8 100%)',
+      badgeColor: '#7f52ff',
+      accentColor: '#6b20a8',
     },
   ];
 
@@ -223,7 +240,7 @@ const MobileAppService = () => {
                   borderTop: '1px solid rgba(255,255,255,0.1)',
                 }}
               >
-                <div>
+                {/* <div>
                   <div style={{ fontSize: 'var(--text-3xl)', fontWeight: '700', color: 'white' }}>
                     50+
                   </div>
@@ -246,7 +263,7 @@ const MobileAppService = () => {
                   <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-neutral-500)' }}>
                     Users Served
                   </div>
-                </div>
+                </div> */}
               </motion.div>
             </div>
           </div>
@@ -269,7 +286,7 @@ const MobileAppService = () => {
               </p>
             </motion.div>
 
-            <div className="modern-grid-3">
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
@@ -277,19 +294,52 @@ const MobileAppService = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card"
-                  style={{ textAlign: 'center' }}
+                  whileHover={{ y: -8 }}
+                  style={{
+                    padding: 'var(--space-8)',
+                    background: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-xl)',
+                    border: '1px solid var(--border-light)',
+                    boxShadow: 'var(--shadow-md)',
+                    transition: 'all var(--transition-default)',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                  }}
+                  className="feature-card-mobile"
                 >
-                  <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-4)' }}>
-                    {(() => {
-                      const Icon = feature.icon;
-                      return <Icon size={22} color="#8b5cf6" />;
-                    })()}
-                  </div>
-                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)' }}>
+                  {(() => {
+                    const Icon = feature.icon;
+                    return (
+                      <div
+                        style={{
+                          width: '56px',
+                          height: '56px',
+                          borderRadius: 'var(--radius-lg)',
+                          background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginBottom: 'var(--space-4)',
+                          boxShadow: '0 8px 16px rgba(168, 85, 247, 0.2)',
+                          margin: '0 auto var(--space-4)',
+                        }}
+                      >
+                        <Icon size={28} color="#ffffff" />
+                      </div>
+                    );
+                  })()}
+                  <h3
+                    style={{
+                      fontSize: 'var(--text-lg)',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      marginBottom: 'var(--space-2)',
+                      lineHeight: 1.3,
+                    }}
+                  >
                     {feature.title}
                   </h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 1.6 }}>
                     {feature.description}
                   </p>
                 </motion.div>
@@ -297,6 +347,14 @@ const MobileAppService = () => {
             </div>
           </div>
         </section>
+
+        {/* Add CSS for hover effects */}
+        <style>{`
+          .feature-card-mobile:hover {
+            border-color: #a855f7;
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15);
+          }
+        `}</style>
 
         {/* Platforms */}
         <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
@@ -316,40 +374,142 @@ const MobileAppService = () => {
             </motion.div>
 
             <div className="modern-grid-2" style={{ gap: 'var(--space-6)' }}>
-              {platforms.map((platform, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card"
-                >
-                  <span
+              {platforms.map((platform, index) => {
+                const Icon = platform.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                    className="platform-card"
                     style={{
-                      display: 'inline-block',
-                      padding: 'var(--space-1) var(--space-2)',
-                      background: 'var(--color-primary-100)',
-                      color: 'var(--color-primary-700)',
-                      fontSize: 'var(--text-xs)',
-                      fontWeight: '600',
-                      borderRadius: 'var(--radius-sm)',
-                      marginBottom: 'var(--space-3)',
+                      background: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-xl)',
+                      padding: 'var(--space-8)',
+                      border: '1px solid var(--border-light)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'all var(--transition-default)',
                     }}
                   >
-                    {platform.badge}
-                  </span>
-                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-2)' }}>
-                    {platform.name}
-                  </h3>
-                  <p style={{ color: 'var(--text-secondary)' }}>
-                    {platform.description}
-                  </p>
-                </motion.div>
-              ))}
+                    {/* Gradient accent background */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: '120px',
+                        height: '120px',
+                        borderRadius: '50%',
+                        opacity: 0.08,
+                        background: platform.bgGradient,
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Icon Container */}
+                    <div
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: 'var(--radius-lg)',
+                        background: platform.bgGradient,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: 'var(--space-4)',
+                        boxShadow: `0 12px 24px ${platform.accentColor}20`,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      <Icon size={32} color="#ffffff" />
+                    </div>
+
+                    {/* Badge */}
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        padding: 'var(--space-1) var(--space-3)',
+                        background: `${platform.badgeColor}15`,
+                        color: platform.badgeColor,
+                        fontSize: 'var(--text-xs)',
+                        fontWeight: '700',
+                        borderRadius: 'var(--radius-full)',
+                        marginBottom: 'var(--space-4)',
+                        border: `1px solid ${platform.badgeColor}30`,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {platform.badge}
+                    </div>
+
+                    {/* Content */}
+                    <h3
+                      style={{
+                        fontSize: 'var(--text-xl)',
+                        fontWeight: '700',
+                        color: 'var(--text-primary)',
+                        marginBottom: 'var(--space-3)',
+                        lineHeight: 1.2,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {platform.name}
+                    </h3>
+                    <p
+                      style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: 'var(--text-sm)',
+                        lineHeight: 1.7,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {platform.description}
+                    </p>
+
+                    {/* Bottom accent line */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        height: '3px',
+                        width: '100%',
+                        background: platform.bgGradient,
+                        opacity: 0,
+                        transition: 'opacity var(--transition-default)',
+                      }}
+                      className="platform-accent"
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
+
+        {/* Enhanced hover styles */}
+        <style>{`
+          .platform-card:hover {
+            border-color: var(--color-primary-500);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+          }
+          
+          .platform-card:hover .platform-accent {
+            opacity: 1;
+          }
+        `}</style>
 
         {/* App Types */}
         <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-primary)' }}>

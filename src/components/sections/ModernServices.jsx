@@ -30,7 +30,7 @@ const ModernServices = ({
       link: "/services/web-development",
     },
     {
-      id: 'mobile-development',
+      id: 'mobile-app-development',
       icon: (
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
@@ -40,7 +40,7 @@ const ModernServices = ({
       title: "Mobile Application Development",
       description: "Native iOS/Android and cross-platform apps with Flutter. Designed for reliability and seamless user experience.",
       features: ["Native iOS & Android", "Flutter Cross-Platform", "Offline-First Architecture", "Payment Integration"],
-      link: "/services/mobile-development",
+      link: "/services/mobile-app-development",
     },
     {
       id: 'cloud-solutions',
@@ -64,7 +64,7 @@ const ModernServices = ({
       title: "MVP & Product Development",
       description: "Rapid product development with senior-level engineering. Ship faster without compromising on quality or architecture.",
       features: ["Rapid Prototyping", "Scalable Foundation", "Production-Ready Code", "Technical Due Diligence"],
-      link: "/services/mvp-packages",
+      link: "/services/mvp-development",
     },
   ];
 

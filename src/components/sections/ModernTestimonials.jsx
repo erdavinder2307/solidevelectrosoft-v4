@@ -113,7 +113,22 @@ const ModernTestimonials = ({
           </span>
           <h2 className="modern-h2 modern-mb-4">
             {title}{' '}
-            <span className="modern-text-brand">{titleHighlight}</span>
+            {(() => {
+              const words = String(titleHighlight).split(' ');
+              const first = words[0] || '';
+              const rest = words.slice(1).join(' ');
+              return (
+                <>
+                  <span className="modern-text-brand">{first}</span>
+                  {rest && (
+                    <>
+                      <br />
+                      <span className="modern-text-brand">{rest}</span>
+                    </>
+                  )}
+                </>
+              );
+            })()}
           </h2>
           <p className="modern-lead">{subtitle}</p>
         </motion.div>
@@ -128,7 +143,12 @@ const ModernTestimonials = ({
           style={{ gap: 'var(--space-6)' }}
         >
           {testimonialList.map((testimonial) => (
-            <motion.div key={testimonial.id} variants={cardVariants}>
+            <motion.div
+              key={testimonial.id}
+              variants={cardVariants}
+              whileHover={{ y: -4 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               <div
                 className="modern-card"
                 style={{
@@ -136,32 +156,70 @@ const ModernTestimonials = ({
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-md)',
+                  background: '#ffffff',
                 }}
               >
                 {/* Rating Stars */}
                 <div
                   style={{
                     display: 'flex',
+                    alignItems: 'center',
                     gap: 'var(--space-1)',
                     marginBottom: 'var(--space-4)',
                   }}
                 >
                   {renderStars(testimonial.rating)}
+                  <span style={{
+                    marginLeft: 'var(--space-2)',
+                    fontSize: 'var(--text-xs)',
+                    color: 'var(--text-tertiary)'
+                  }}>
+                    {testimonial.rating}.0
+                  </span>
                 </div>
 
                 {/* Quote */}
-                <blockquote
+                <div
                   style={{
-                    fontSize: 'var(--text-base)',
-                    lineHeight: '1.7',
-                    color: 'var(--text-secondary)',
-                    margin: 0,
-                    flex: 1,
+                    position: 'relative',
+                    background: '#ffffff',
+                    border: '1px solid var(--border-light)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: 'var(--space-6)',
                     marginBottom: 'var(--space-6)',
+                    flex: 1,
                   }}
                 >
-                  "{testimonial.quote}"
-                </blockquote>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    width="32"
+                    height="32"
+                    style={{
+                      position: 'absolute',
+                      top: 'var(--space-4)',
+                      right: 'var(--space-4)',
+                      opacity: 0.15,
+                      color: 'var(--text-brand, #2f66ff)'
+                    }}
+                  >
+                    <path fill="currentColor" d="M7 6h5v6H9.5C8.12 12 7 13.12 7 14.5V18H3v-3.5C3 11.46 4.96 9.5 7 9.5V6zm10 0h5v6h-2.5c-1.38 0-2.5 1.12-2.5 2.5V18h-4v-3.5c0-3.04 1.96-5 4-5V6z"/>
+                  </svg>
+                  <blockquote
+                    style={{
+                      fontSize: 'var(--text-base)',
+                      lineHeight: '1.7',
+                      color: 'var(--text-secondary)',
+                      margin: 0,
+                      background: 'transparent',
+                      padding: 0,
+                    }}
+                  >
+                    “{testimonial.quote}”
+                  </blockquote>
+                </div>
 
                 {/* Author */}
                 <div

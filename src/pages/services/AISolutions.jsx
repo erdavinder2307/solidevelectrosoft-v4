@@ -8,7 +8,7 @@ import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
-import { FaRobot, FaChartLine, FaSearch, FaBolt } from 'react-icons/fa';
+import { FaRobot, FaChartLine, FaSearch, FaBolt, FaHospital, FaMoneyBillWave, FaStore, FaWrench } from 'react-icons/fa';
 
 /**
  * AI & Machine Learning Solutions Service Page
@@ -31,43 +31,71 @@ const AISolutionsService = () => {
       title: 'Custom AI Chatbots',
       description: 'Intelligent conversational AI for customer support, sales, and internal operations',
       features: ['Natural Language Processing', '24/7 Customer Support', 'Multi-language Support', 'CRM Integration'],
+      bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+      accentColor: '#8b5cf6',
+      shadowColor: '#8b5cf620',
     },
     {
       icon: FaChartLine,
       title: 'Predictive Analytics',
       description: 'Data-driven insights to forecast trends, optimize operations, and reduce costs',
       features: ['Sales Forecasting', 'Demand Prediction', 'Risk Assessment', 'Customer Churn Analysis'],
+      bgGradient: 'linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%)',
+      accentColor: '#06b6d4',
+      shadowColor: '#06b6d420',
     },
     {
       icon: FaSearch,
       title: 'Computer Vision',
       description: 'Image and video analysis for quality control, security, and automation',
       features: ['Object Detection', 'Image Classification', 'OCR & Document Processing', 'Video Analytics'],
+      bgGradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
+      accentColor: '#ec4899',
+      shadowColor: '#ec489920',
     },
     {
       icon: FaBolt,
       title: 'Process Automation',
       description: 'Intelligent automation to streamline workflows and eliminate repetitive tasks',
       features: ['Document Processing', 'Data Entry Automation', 'Workflow Optimization', 'Email Classification'],
+      bgGradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+      accentColor: '#f59e0b',
+      shadowColor: '#f59e0b20',
     },
   ];
 
   const useCases = [
     {
       industry: 'Healthcare',
+      icon: FaHospital,
       examples: ['Patient triage chatbots', 'Medical image analysis', 'Appointment scheduling AI'],
+      bgGradient: 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)',
+      accentColor: '#ef4444',
+      shadowColor: '#ef444420',
     },
     {
       industry: 'Finance',
+      icon: FaMoneyBillWave,
       examples: ['Fraud detection', 'Credit scoring', 'Automated compliance'],
+      bgGradient: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+      accentColor: '#3b82f6',
+      shadowColor: '#3b82f620',
     },
     {
       industry: 'Retail',
+      icon: FaStore,
       examples: ['Product recommendations', 'Inventory optimization', 'Dynamic pricing'],
+      bgGradient: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+      accentColor: '#10b981',
+      shadowColor: '#10b98120',
     },
     {
       industry: 'Manufacturing',
+      icon: FaWrench,
       examples: ['Quality control', 'Predictive maintenance', 'Supply chain optimization'],
+      bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+      accentColor: '#8b5cf6',
+      shadowColor: '#8b5cf620',
     },
   ];
 
@@ -248,48 +276,157 @@ const AISolutionsService = () => {
             </motion.div>
 
             <div className="modern-grid-2" style={{ gap: 'var(--space-6)' }}>
-              {solutions.map((solution, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card"
-                  style={{ padding: 'var(--space-8)' }}
-                >
-                  <div style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}>
-                    {(() => {
-                      const Icon = solution.icon;
-                      return <Icon size={22} color="#8b5cf6" />;
-                    })()}
-                  </div>
-                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-2)' }}>
-                    {solution.title}
-                  </h3>
-                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
-                    {solution.description}
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-                    {solution.features.map((feature, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          padding: 'var(--space-1) var(--space-3)',
-                          background: 'var(--bg-tertiary)',
-                          borderRadius: 'var(--radius-full)',
-                          fontSize: 'var(--text-xs)',
-                          color: 'var(--text-secondary)',
-                        }}
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+              {solutions.map((solution, index) => {
+                const Icon = solution.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                    className="solution-card"
+                    style={{
+                      padding: 'var(--space-8)',
+                      background: 'var(--bg-secondary)',
+                      borderRadius: 'var(--radius-xl)',
+                      border: '1px solid var(--border-light)',
+                      boxShadow: `0 4px 12px ${solution.shadowColor}`,
+                      position: 'relative',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'all var(--transition-default)',
+                    }}
+                  >
+                    {/* Gradient accent background */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: -40,
+                        right: -40,
+                        width: '200px',
+                        height: '200px',
+                        borderRadius: '50%',
+                        opacity: 0.08,
+                        background: solution.bgGradient,
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Icon Container */}
+                    <div
+                      style={{
+                        width: '72px',
+                        height: '72px',
+                        borderRadius: 'var(--radius-lg)',
+                        background: solution.bgGradient,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: 'var(--space-6)',
+                        boxShadow: `0 16px 32px ${solution.shadowColor}`,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      <Icon size={36} color="#ffffff" />
+                    </div>
+
+                    {/* Content */}
+                    <h3
+                      style={{
+                        fontSize: 'var(--text-xl)',
+                        fontWeight: '700',
+                        color: 'var(--text-primary)',
+                        marginBottom: 'var(--space-3)',
+                        lineHeight: 1.2,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {solution.title}
+                    </h3>
+                    <p
+                      style={{
+                        color: 'var(--text-secondary)',
+                        marginBottom: 'var(--space-6)',
+                        fontSize: 'var(--text-sm)',
+                        lineHeight: 1.7,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {solution.description}
+                    </p>
+
+                    {/* Features Tags */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 'var(--space-2)',
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {solution.features.map((feature, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            padding: 'var(--space-2) var(--space-3)',
+                            background: `${solution.accentColor}15`,
+                            color: solution.accentColor,
+                            borderRadius: 'var(--radius-full)',
+                            fontSize: 'var(--text-xs)',
+                            fontWeight: '600',
+                            border: `1px solid ${solution.accentColor}30`,
+                            transition: 'all 0.2s',
+                            whiteSpace: 'nowrap',
+                          }}
+                          className="feature-tag"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Bottom accent border */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        height: '4px',
+                        width: '100%',
+                        background: solution.bgGradient,
+                        opacity: 0,
+                        transition: 'opacity var(--transition-default)',
+                      }}
+                      className="solution-accent"
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
+
+          {/* Enhanced hover styles */}
+          <style>{`
+            .solution-card:hover {
+              border-color: var(--color-primary-500);
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .solution-card:hover .solution-accent {
+              opacity: 1;
+            }
+
+            .solution-card:hover .feature-tag {
+              background-color: var(--bg-tertiary);
+              transform: translateY(-2px);
+            }
+          `}</style>
         </section>
 
         {/* Use Cases by Industry */}
@@ -310,42 +447,153 @@ const AISolutionsService = () => {
             </motion.div>
 
             <div className="modern-grid-4">
-              {useCases.map((useCase, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  style={{
-                    padding: 'var(--space-6)',
-                    background: 'var(--bg-primary)',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '1px solid var(--border-color)',
-                  }}
-                >
-                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-4)', color: 'var(--color-primary-500)' }}>
-                    {useCase.industry}
-                  </h3>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                    {useCase.examples.map((example, i) => (
-                      <li
-                        key={i}
-                        style={{
-                          padding: 'var(--space-2) 0',
-                          borderBottom: i < useCase.examples.length - 1 ? '1px solid var(--border-color)' : 'none',
-                          fontSize: 'var(--text-sm)',
-                          color: 'var(--text-secondary)',
-                        }}
-                      >
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+              {useCases.map((useCase, index) => {
+                const Icon = useCase.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                    className="industry-card"
+                    style={{
+                      padding: 'var(--space-6)',
+                      background: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-xl)',
+                      border: '1px solid var(--border-light)',
+                      boxShadow: `0 4px 12px ${useCase.shadowColor}`,
+                      position: 'relative',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'all var(--transition-default)',
+                    }}
+                  >
+                    {/* Gradient accent background */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: -30,
+                        right: -30,
+                        width: '150px',
+                        height: '150px',
+                        borderRadius: '50%',
+                        opacity: 0.08,
+                        background: useCase.bgGradient,
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Icon Container */}
+                    <div
+                      style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: 'var(--radius-lg)',
+                        background: useCase.bgGradient,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: 'var(--space-4)',
+                        boxShadow: `0 12px 24px ${useCase.shadowColor}`,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      <Icon size={28} color="#ffffff" />
+                    </div>
+
+                    {/* Title */}
+                    <h3
+                      style={{
+                        fontSize: 'var(--text-lg)',
+                        fontWeight: '700',
+                        color: 'var(--text-primary)',
+                        marginBottom: 'var(--space-4)',
+                        lineHeight: 1.2,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {useCase.industry}
+                    </h3>
+
+                    {/* Examples List */}
+                    <ul
+                      style={{
+                        listStyle: 'none',
+                        padding: 0,
+                        margin: 0,
+                        position: 'relative',
+                        zIndex: 1,
+                      }}
+                    >
+                      {useCase.examples.map((example, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            padding: 'var(--space-3) 0',
+                            borderBottom: i < useCase.examples.length - 1 ? `1px solid ${useCase.accentColor}20` : 'none',
+                            fontSize: 'var(--text-sm)',
+                            color: 'var(--text-secondary)',
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: 'var(--space-2)',
+                            transition: 'color 0.3s',
+                          }}
+                          className="example-item"
+                        >
+                          <span
+                            style={{
+                              color: useCase.accentColor,
+                              marginTop: '2px',
+                              flexShrink: 0,
+                              fontSize: '12px',
+                            }}
+                          >
+                            ✓
+                          </span>
+                          <span>{example}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Bottom accent border */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        height: '3px',
+                        width: '100%',
+                        background: useCase.bgGradient,
+                        opacity: 0,
+                        transition: 'opacity var(--transition-default)',
+                      }}
+                      className="industry-accent"
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
+
+          {/* Enhanced hover styles */}
+          <style>{`
+            .industry-card:hover {
+              border-color: var(--color-primary-500);
+              box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+            }
+
+            .industry-card:hover .industry-accent {
+              opacity: 1;
+            }
+
+            .industry-card:hover .example-item {
+              color: var(--text-primary);
+            }
+          `}</style>
         </section>
 
         {/* Technology Stack */}

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 // Import logo for proper Vite bundling
 import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
@@ -11,18 +13,69 @@ import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
  */
 const ModernFooter = ({ onQuoteClick = null }) => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState(''); // 'loading', 'success', 'error'
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      setSubscribeStatus('error');
+      setSubscribeMessage('Please enter a valid email address');
+      return;
+    }
+
+    setSubscribeStatus('loading');
+    setSubscribeMessage('');
+
+    try {
+      // Check if email already exists
+      const subscribersRef = collection(db, 'subscribedUsers');
+      const q = query(subscribersRef, where('email', '==', email.toLowerCase()));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        setSubscribeStatus('error');
+        setSubscribeMessage('This email is already subscribed');
+        return;
+      }
+
+      // Add new subscriber
+      await addDoc(subscribersRef, {
+        email: email.toLowerCase(),
+        subscribedAt: serverTimestamp(),
+        status: 'active',
+        source: 'footer',
+      });
+
+      setSubscribeStatus('success');
+      setSubscribeMessage('Successfully subscribed! Thank you.');
+      setEmail('');
+
+      // Reset message after 5 seconds
+      setTimeout(() => {
+        setSubscribeStatus('');
+        setSubscribeMessage('');
+      }, 5000);
+    } catch (error) {
+      console.error('Error subscribing:', error);
+      setSubscribeStatus('error');
+      setSubscribeMessage('Failed to subscribe. Please try again.');
+    }
+  };
 
   const footerLinks = {
     services: [
       { label: 'Web App Development', path: '/services/web-development' },
-      { label: 'Mobile App Development', path: '/services/mobile-development' },
+      { label: 'Mobile App Development', path: '/services/mobile-app-development' },
       { label: 'AI-Powered Solutions', path: '/services/ai-solutions' },
-      { label: 'MVP Development', path: '/services/mvp-packages' },
+      { label: 'MVP Development', path: '/services/mvp-development' },
     ],
     company: [
       { label: 'About Us', path: '/about' },
       { label: 'Portfolio', path: '/portfolio' },
-      { label: 'Case Studies', path: '/case-studies' },
+      { label: 'Products', path: '/products' },
       { label: 'Contact', path: '/contact' },
     ],
     resources: [
@@ -98,6 +151,7 @@ const ModernFooter = ({ onQuoteClick = null }) => {
         color: 'var(--text-inverse)',
         paddingTop: 'var(--section-md)',
       }}
+      className="modern-footer"
     >
       <div className="modern-container">
         {/* Top Section with CTA */}
@@ -192,11 +246,14 @@ const ModernFooter = ({ onQuoteClick = null }) => {
                 gap: 'var(--space-3)',
               }}
               className="newsletter-form"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleNewsletterSubmit}
             >
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={subscribeStatus === 'loading'}
                 style={{
                   flex: 1,
                   padding: 'var(--space-3) var(--space-4)',
@@ -206,15 +263,28 @@ const ModernFooter = ({ onQuoteClick = null }) => {
                   color: 'var(--text-inverse)',
                   fontSize: 'var(--text-sm)',
                   minHeight: '48px',
+                  opacity: subscribeStatus === 'loading' ? 0.6 : 1,
                 }}
               />
               <button
                 type="submit"
                 className="modern-btn modern-btn-primary"
                 style={{ whiteSpace: 'nowrap' }}
+                disabled={subscribeStatus === 'loading'}
               >
-                Subscribe
+                {subscribeStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
               </button>
+              {subscribeMessage && (
+                <p
+                  style={{
+                    fontSize: 'var(--text-xs)',
+                    color: subscribeStatus === 'success' ? '#10b981' : '#ef4444',
+                    margin: 0,
+                  }}
+                >
+                  {subscribeMessage}
+                </p>
+              )}
             </form>
           </div>
         </motion.div>
@@ -430,6 +500,10 @@ const ModernFooter = ({ onQuoteClick = null }) => {
 
       {/* Responsive Styles */}
       <style>{`
+        .modern-footer {
+          padding-top: var(--space-16);
+        }
+        
         .footer-link:hover {
           color: var(--text-inverse) !important;
         }
@@ -439,6 +513,83 @@ const ModernFooter = ({ onQuoteClick = null }) => {
           color: var(--text-inverse) !important;
         }
         
+        /* Mobile optimizations */
+        @media (max-width: 767px) {
+          .modern-footer {
+            padding-top: var(--space-12);
+          }
+          
+          .footer-top {
+            gap: var(--space-6) !important;
+            padding-bottom: var(--space-8) !important;
+          }
+          
+          .footer-top h3 {
+            font-size: 1.5rem !important;
+            line-height: 1.3 !important;
+          }
+          
+          .footer-top p {
+            font-size: 0.875rem !important;
+            line-height: 1.6 !important;
+          }
+          
+          .footer-brand {
+            margin-bottom: var(--space-6);
+          }
+          
+          .footer-brand img {
+            height: 80px !important;
+            margin-bottom: var(--space-3) !important;
+          }
+          
+          .footer-brand p {
+            font-size: 0.875rem !important;
+            line-height: 1.6 !important;
+            max-width: 100% !important;
+          }
+          
+          .footer-links {
+            grid-template-columns: 1fr !important;
+            gap: var(--space-6) !important;
+            padding: var(--space-8) 0 !important;
+          }
+          
+          .footer-links > div {
+            width: 100%;
+          }
+          
+          .footer-links h4 {
+            font-size: 0.75rem !important;
+            margin-bottom: var(--space-3) !important;
+          }
+          
+          .footer-links ul li {
+            margin-bottom: var(--space-2) !important;
+          }
+          
+          .footer-links ul li a,
+          .footer-links address {
+            font-size: 0.875rem !important;
+            line-height: 1.6 !important;
+          }
+          
+          .footer-links address p {
+            margin-bottom: var(--space-2) !important;
+          }
+          
+          .footer-bottom {
+            padding: var(--space-5) 0 !important;
+            gap: var(--space-4) !important;
+          }
+          
+          .footer-bottom p {
+            font-size: 0.75rem !important;
+            line-height: 1.5 !important;
+            padding: 0 var(--space-2);
+          }
+        }
+        
         @media (min-width: 480px) {
           .newsletter-form {
             flex-direction: row !important;
@@ -446,6 +597,10 @@ const ModernFooter = ({ onQuoteClick = null }) => {
         }
         
         @media (min-width: 768px) {
+          .modern-footer {
+            padding-top: var(--section-md);
+          }
+          
           .footer-top {
             grid-template-columns: 1fr 1fr !important;
           }

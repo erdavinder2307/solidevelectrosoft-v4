@@ -270,7 +270,7 @@ const WebDevelopmentService = () => {
               </p>
             </motion.div>
 
-            <div className="features-grid">
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
@@ -278,23 +278,65 @@ const WebDevelopmentService = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="feature-card"
+                  whileHover={{ y: -8 }}
+                  style={{
+                    padding: 'var(--space-8)',
+                    background: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-xl)',
+                    border: '1px solid var(--border-light)',
+                    boxShadow: 'var(--shadow-md)',
+                    transition: 'all var(--transition-default)',
+                    cursor: 'pointer',
+                  }}
+                  className="feature-card-enhanced"
                 >
                   {(() => {
                     const Icon = feature.icon;
                     return (
-                      <div className="feature-icon" style={{ color: '#3b82f6' }}>
-                        <Icon size={22} />
+                      <div
+                        style={{
+                          width: '56px',
+                          height: '56px',
+                          borderRadius: 'var(--radius-lg)',
+                          background: 'linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginBottom: 'var(--space-4)',
+                          boxShadow: '0 8px 16px rgba(59, 130, 246, 0.2)',
+                        }}
+                      >
+                        <Icon size={28} color="#ffffff" />
                       </div>
                     );
                   })()}
-                  <h3 className="feature-title">{feature.title}</h3>
-                  <p className="feature-description">{feature.description}</p>
+                  <h3
+                    style={{
+                      fontSize: 'var(--text-lg)',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      marginBottom: 'var(--space-2)',
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {feature.title}
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 1.6 }}>
+                    {feature.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
+
+        {/* Add CSS for hover effects */}
+        <style>{`
+          .feature-card-enhanced:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+          }
+        `}</style>
 
         {/* Technology Stack */}
         <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>

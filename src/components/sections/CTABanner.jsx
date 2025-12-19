@@ -151,10 +151,20 @@ const CTABanner = ({
             {showSecondary && (
               <Link
                 to={secondaryCTA.link}
-                className="modern-btn modern-btn-ghost"
+                className="modern-btn modern-btn-outline"
                 style={{
+                  borderColor: styles.textColor,
                   color: styles.textColor,
                   minWidth: '200px',
+                  transition: 'all var(--transition-default)',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = styles.textColor;
+                  e.target.style.color = variant === 'gradient' ? '#4f46e5' : '#ffffff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = styles.textColor;
                 }}
               >
                 {secondaryCTA.text}
