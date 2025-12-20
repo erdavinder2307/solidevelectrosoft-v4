@@ -102,9 +102,10 @@ const Team = () => {
         <div className="row">
           <div className="col-12">
             <div className="tp-section-wrapper text-center">
-              <h2 className="tp-section-title">
-                All the people behind the <br /> latest project
-              </h2>
+              <h2 className="tp-section-title">Our People</h2>
+              <p className="tp-section-desc" style={{ maxWidth: '800px', margin: '10px auto 0', color: '#6b7280' }}>
+                We work with a group of skilled professionals who bring diverse experience and perspectives to deliver high-quality software solutions.
+              </p>
             </div>
           </div>
         </div>
