@@ -74,6 +74,8 @@ function App() {
     gtag('js', new Date());
     gtag('config', 'GT-KFNT9K9X');
     gtag('config', 'GT-MBLK2C2Q');
+    // Google Ads configuration
+    gtag('config', 'AW-17044850693');
 
     // Set document class
     document.documentElement.className = USE_MODERN_DESIGN ? '' : 'no-js';
