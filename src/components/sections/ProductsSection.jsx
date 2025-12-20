@@ -21,6 +21,7 @@ const ProductsSection = ({
   maxProducts = null, // null = show all
   showViewAll = false,
   variant = 'light', // 'light' | 'dark'
+  onViewScreenshots,
 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -225,7 +226,13 @@ const ProductsSection = ({
         )}
 
         {/* Products Grid */}
-        {!loading && <ProductGrid products={displayProducts} showFilter={showFilter} />}
+        {!loading && (
+          <ProductGrid 
+            products={displayProducts} 
+            showFilter={showFilter}
+            onViewScreenshots={onViewScreenshots}
+          />
+        )}
 
         {/* View All Button */}
         {showViewAll && maxProducts && productsData.length > maxProducts && (

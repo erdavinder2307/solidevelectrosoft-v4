@@ -23,6 +23,7 @@ const ModernHome = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const [portfolioProjects, setPortfolioProjects] = useState([]);
   const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [galleryModal, setGalleryModal] = useState({ isOpen: false, product: null, currentIndex: 0 });
 
   const mapCategory = (firestoreCategory) => {
     const categoryMap = {
@@ -148,6 +149,7 @@ const ModernHome = () => {
           maxProducts={6}
           showFilter={false}
           showViewAll={true}
+          onViewScreenshots={(product) => setGalleryModal({ isOpen: true, product, currentIndex: 0 })}
         />
 
         {/* Our Work (Portfolios) */}
@@ -200,6 +202,214 @@ const ModernHome = () => {
       
       {/* AI Project Requirements Assistant */}
       <AIProjectAssistant isOpen={isAIOpen} onClose={closeAI} />
+
+      {/* Gallery Modal */}
+      {galleryModal.isOpen && galleryModal.product && galleryModal.product.screenshots && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.95)',
+            zIndex: 10000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+          onClick={() => setGalleryModal({ isOpen: false, product: null, currentIndex: 0 })}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setGalleryModal({ isOpen: false, product: null, currentIndex: 0 })}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: 'none',
+              background: 'rgba(255, 255, 255, 0.1)',
+              color: '#ffffff',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+              backdropFilter: 'blur(10px)',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+          >
+            ×
+          </button>
+
+          {/* Image Counter */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '30px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              padding: '8px 16px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '100px',
+              color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: '500',
+            }}
+          >
+            {galleryModal.currentIndex + 1} / {galleryModal.product.screenshots.length}
+          </div>
+
+          {/* Previous Button */}
+          {galleryModal.currentIndex > 0 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryModal(prev => ({ ...prev, currentIndex: prev.currentIndex - 1 }));
+              }}
+              style={{
+                position: 'absolute',
+                left: '20px',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                fontSize: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            >
+              ‹
+            </button>
+          )}
+
+          {/* Next Button */}
+          {galleryModal.currentIndex < galleryModal.product.screenshots.length - 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setGalleryModal(prev => ({ ...prev, currentIndex: prev.currentIndex + 1 }));
+              }}
+              style={{
+                position: 'absolute',
+                right: '20px',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                fontSize: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            >
+              ›
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '90%',
+              maxHeight: '90%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
+            }}
+          >
+            <img
+              src={galleryModal.product.screenshots[galleryModal.currentIndex].url || galleryModal.product.screenshots[galleryModal.currentIndex]}
+              alt={`${galleryModal.product.title || galleryModal.product.name} - Screenshot ${galleryModal.currentIndex + 1}`}
+              style={{
+                maxWidth: '100%',
+                maxHeight: 'calc(90vh - 100px)',
+                objectFit: 'contain',
+                borderRadius: '12px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+              }}
+            />
+            <div
+              style={{
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: '500',
+                textAlign: 'center',
+              }}
+            >
+              {galleryModal.product.title || galleryModal.product.name}
+            </div>
+          </div>
+
+          {/* Thumbnail Strip */}
+          {galleryModal.product.screenshots.length > 1 && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                bottom: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                gap: '8px',
+                padding: '12px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                maxWidth: '90%',
+                overflowX: 'auto',
+              }}
+            >
+              {galleryModal.product.screenshots.map((screenshot, idx) => {
+                const imgUrl = screenshot.url || screenshot;
+                return (
+                  <img
+                    key={idx}
+                    src={imgUrl}
+                    alt={`Thumbnail ${idx + 1}`}
+                    onClick={() => setGalleryModal(prev => ({ ...prev, currentIndex: idx }))}
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      objectFit: 'cover',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      border: idx === galleryModal.currentIndex ? '2px solid #667eea' : '2px solid transparent',
+                      opacity: idx === galleryModal.currentIndex ? 1 : 0.6,
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = idx === galleryModal.currentIndex ? '1' : '0.6'}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

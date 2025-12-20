@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaApple, FaGooglePlay, FaGlobe, FaDownload } from 'react-icons/fa';
 import PlaceholderImage from './PlaceholderImage';
 
@@ -14,6 +14,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
   const [iconError, setIconError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   const {
     title,
@@ -474,7 +475,13 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               {/* Gallery Button */}
               {hasScreenshots && (
                 <button
-                  onClick={() => onViewScreenshots(product)}
+                  onClick={() => {
+                    if (typeof onViewScreenshots === 'function') {
+                      onViewScreenshots(product);
+                    } else {
+                      navigate(`/product/${product.id}`);
+                    }
+                  }}
                   style={{
                     padding: '10px 14px',
                     borderRadius: '10px',
