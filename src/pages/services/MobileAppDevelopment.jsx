@@ -10,6 +10,9 @@ import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 import { FaMobileAlt, FaPalette, FaBell, FaMapMarkerAlt, FaCreditCard, FaLink, FaReact, FaApple } from 'react-icons/fa';
 import { SiFlutter, SiKotlin } from 'react-icons/si';
+import { useSEO } from '../../hooks/useSEO';
+import { pageSEO } from '../../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema, generateServiceSchema } from '../../utils/structuredData';
 
 /**
  * Mobile App Development Service Page
@@ -17,12 +20,35 @@ import { SiFlutter, SiKotlin } from 'react-icons/si';
 const MobileAppService = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.servicesMobileApp.title,
+    description: pageSEO.servicesMobileApp.description,
+    keywords: pageSEO.servicesMobileApp.keywords,
+    canonical: pageSEO.servicesMobileApp.canonical,
+    ogType: pageSEO.servicesMobileApp.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateServiceSchema({
+        name: 'Mobile App Development',
+        description: 'Native and cross-platform mobile app development for iOS and Android. Expert React Native and Flutter development services.',
+        offerings: [
+          { name: 'Native iOS Apps', description: 'Swift-based native iOS applications' },
+          { name: 'Native Android Apps', description: 'Kotlin-based native Android applications' },
+          { name: 'React Native Apps', description: 'Cross-platform mobile apps using React Native' },
+          { name: 'Flutter Apps', description: 'Beautiful cross-platform apps with Flutter' },
+          { name: 'App Store Optimization', description: 'Launch and optimize your app on app stores' },
+        ],
+      }),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Services', url: 'https://www.solidevelectrosoft.com/services' },
+        { name: 'Mobile App Development', url: 'https://www.solidevelectrosoft.com/services/mobile-app-development' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'Mobile App Development | iOS & Android | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Build native and cross-platform mobile apps for iOS and Android. React Native, Flutter experts delivering high-performance mobile solutions.');
-    }
     window.scrollTo(0, 0);
   }, []);
 
@@ -197,8 +223,16 @@ const MobileAppService = () => {
                 }}
               >
                 From startup MVPs to enterprise solutions, we build iOS and Android apps 
-                that delight users and drive business growth. Native performance, 
-                beautiful design, seamless experience.
+                that delight users and drive business growth. Need a{' '}
+                <Link to="/services/web-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  backend API
+                </Link>? Want{' '}
+                <Link to="/services/ai-solutions" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  AI features
+                </Link>? View our{' '}
+                <Link to="/portfolio" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  mobile portfolio
+                </Link>.
               </motion.p>
 
               <motion.div
@@ -561,6 +595,122 @@ const MobileAppService = () => {
         </section>
 
         <SocialProof title="Trusted by innovative companies" />
+
+        {/* Related Services */}
+        <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
+          <div className="modern-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              style={{ textAlign: 'center', marginBottom: 'var(--space-12)' }}
+            >
+              <h2 className="modern-h2" style={{ marginBottom: 'var(--space-4)' }}>
+                Complete Your Digital Ecosystem
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', maxWidth: '600px', margin: '0 auto' }}>
+                Complement your mobile app with our other services
+              </p>
+            </motion.div>
+
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <Link
+                  to="/services/web-development"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Web Application
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Build a web dashboard or admin panel to complement your mobile app
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <Link
+                  to="/services/ai-solutions"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    AI Integration
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Add intelligent features like chatbots, recommendations, and predictions
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link
+                  to="/portfolio"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Mobile Apps We've Built
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    See successful mobile apps we've delivered for clients worldwide
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>View Portfolio →</span>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          <style>{`
+            .related-service-card:hover {
+              transform: translateY(-4px);
+              box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+              border-color: var(--primary);
+            }
+          `}</style>
+        </section>
 
         <CTABanner
           variant="gradient"

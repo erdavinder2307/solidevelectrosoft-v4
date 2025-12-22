@@ -8,6 +8,8 @@ import ModernFooter from '../components/layout/ModernFooter';
 import { db } from '../config/firebase';
 import PlaceholderImage from '../components/products/PlaceholderImage';
 import { trackProductViewed, trackProductScreenshotsOpened, trackExternalLinkClicked } from '../utils/analytics';
+import { useSEO } from '../hooks/useSEO';
+import { generateSoftwareApplicationSchema, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Product Details Page
@@ -58,15 +60,26 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
-      document.title = `${product.title} | Solidev Electrosoft`;
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', product.description || '');
-      }
-      
       // GA4 EVENT: Track product view
       // Business value: Measures which products get the most attention
       trackProductViewed(product.id, product.title);
+      
+      // SEO: Update meta tags dynamically
+      useSEO({
+        title: product.title,
+        description: product.description || `${product.title} - Custom software application by Solidev Electrosoft`,
+        canonical: `/product/${product.id}`,
+        ogImage: product.thumbnailUrl || product.logo,
+        ogType: 'product',
+        schemas: [
+          generateSoftwareApplicationSchema(product),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+            { name: 'Products', url: 'https://www.solidevelectrosoft.com/products' },
+            { name: product.title, url: `https://www.solidevelectrosoft.com/product/${product.id}` },
+          ]),
+        ],
+      });
     }
   }, [product]);
 

@@ -9,6 +9,9 @@ import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 import { FaRobot, FaChartLine, FaSearch, FaBolt, FaHospital, FaMoneyBillWave, FaStore, FaWrench } from 'react-icons/fa';
+import { useSEO } from '../../hooks/useSEO';
+import { pageSEO } from '../../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema, generateServiceSchema } from '../../utils/structuredData';
 
 /**
  * AI & Machine Learning Solutions Service Page
@@ -16,12 +19,35 @@ import { FaRobot, FaChartLine, FaSearch, FaBolt, FaHospital, FaMoneyBillWave, Fa
 const AISolutionsService = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.servicesAI.title,
+    description: pageSEO.servicesAI.description,
+    keywords: pageSEO.servicesAI.keywords,
+    canonical: pageSEO.servicesAI.canonical,
+    ogType: pageSEO.servicesAI.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateServiceSchema({
+        name: 'AI & Machine Learning Solutions',
+        description: 'Custom AI and machine learning solutions including chatbots, predictive analytics, computer vision, and natural language processing.',
+        offerings: [
+          { name: 'Custom AI Chatbots', description: 'Intelligent conversational AI for customer support and sales' },
+          { name: 'Predictive Analytics', description: 'Data-driven insights to forecast trends and optimize operations' },
+          { name: 'Computer Vision', description: 'Image and video analysis for automation and quality control' },
+          { name: 'Natural Language Processing', description: 'Text analysis, sentiment detection, and language understanding' },
+          { name: 'Machine Learning Models', description: 'Custom ML models trained on your data' },
+        ],
+      }),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Services', url: 'https://www.solidevelectrosoft.com/services' },
+        { name: 'AI Solutions', url: 'https://www.solidevelectrosoft.com/services/ai-solutions' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'AI & Machine Learning Solutions | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Transform your business with AI. Custom machine learning models, intelligent automation, chatbots, and predictive analytics solutions.');
-    }
     window.scrollTo(0, 0);
   }, []);
 
@@ -226,8 +252,16 @@ const AISolutionsService = () => {
                 }}
               >
                 From intelligent chatbots to predictive analytics, we help businesses 
-                leverage AI to automate processes, gain insights, and create competitive 
-                advantages.
+                leverage AI to automate processes and gain insights. Integrate into{' '}
+                <Link to="/services/web-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  web apps
+                </Link>,{' '}
+                <Link to="/services/mobile-app-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  mobile apps
+                </Link>, or start an{' '}
+                <Link to="/services/mvp-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  AI-powered MVP
+                </Link>.
               </motion.p>
 
               <motion.div
@@ -643,6 +677,122 @@ const AISolutionsService = () => {
         </section>
 
         <SocialProof title="Trusted by forward-thinking companies" />
+
+        {/* Related Services */}
+        <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
+          <div className="modern-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              style={{ textAlign: 'center', marginBottom: 'var(--space-12)' }}
+            >
+              <h2 className="modern-h2" style={{ marginBottom: 'var(--space-4)' }}>
+                Build the Complete Solution
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', maxWidth: '600px', margin: '0 auto' }}>
+                AI works best when integrated with solid infrastructure
+              </p>
+            </motion.div>
+
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <Link
+                  to="/services/web-development"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Web Application
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Build the web platform to host and manage your AI solutions
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <Link
+                  to="/services/mobile-app-development"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Mobile Apps
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Deploy AI-powered features in iOS and Android apps
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link
+                  to="/products"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    AI Products
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Explore our AI-powered software products and platforms
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>View Products →</span>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          <style>{`
+            .related-service-card:hover {
+              transform: translateY(-4px);
+              box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+              border-color: var(--primary);
+            }
+          `}</style>
+        </section>
 
         <CTABanner
           variant="dark"

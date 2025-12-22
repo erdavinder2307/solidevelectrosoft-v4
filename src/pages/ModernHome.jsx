@@ -14,6 +14,9 @@ import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
 import { db } from '../config/firebase';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Modern Home Page
@@ -24,6 +27,21 @@ const ModernHome = () => {
   const [portfolioProjects, setPortfolioProjects] = useState([]);
   const [portfolioLoading, setPortfolioLoading] = useState(true);
   const [galleryModal, setGalleryModal] = useState({ isOpen: false, product: null, currentIndex: 0 });
+
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.home.title,
+    description: pageSEO.home.description,
+    keywords: pageSEO.home.keywords,
+    canonical: pageSEO.home.canonical,
+    ogType: pageSEO.home.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+      ]),
+    ],
+  });
 
   const mapCategory = (firestoreCategory) => {
     const categoryMap = {
@@ -76,40 +94,6 @@ const ModernHome = () => {
       setPortfolioLoading(false);
     }
   };
-
-  useEffect(() => {
-    // SEO
-    document.title = 'Solidev Electrosoft | Custom Software Development Company';
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 
-        'Transform your business with custom web apps, mobile apps, and AI solutions. ' +
-        'Expert software development for startups and enterprises. Based in India, serving globally.'
-      );
-    }
-
-    // Canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/');
-
-    // Analytics
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_title: 'Home',
-        page_location: window.location.href,
-        page_path: '/',
-      });
-    }
-
-    // Scroll to top
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     fetchPortfolioProjects();

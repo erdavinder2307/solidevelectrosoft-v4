@@ -7,6 +7,9 @@ import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
 import { trackContactPageViewed } from '../utils/analytics';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Modern Contact Page
@@ -14,36 +17,27 @@ import { trackContactPageViewed } from '../utils/analytics';
  */
 const ModernContact = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.contact.title,
+    description: pageSEO.contact.description,
+    keywords: pageSEO.contact.keywords,
+    canonical: pageSEO.contact.canonical,
+    ogType: pageSEO.contact.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Contact', url: 'https://www.solidevelectrosoft.com/contact' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'Contact Us | Get a Free Quote | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Get in touch for a free consultation. Custom software development quotes within 24 hours. Web apps, mobile apps, AI solutions.');
-    }
-    
-    // Canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/contact');
-
     // GA4 EVENT: Track contact page view
     // Business value: Measures conversion funnel entry
     trackContactPageViewed();
-
-    // Analytics (legacy - now handled by RouteTracker in App.jsx)
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_title: 'Contact',
-        page_location: window.location.href,
-        page_path: '/contact',
-      });
-    }
-    
-    window.scrollTo(0, 0);
   }, []);
 
   const contactMethods = [

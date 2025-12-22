@@ -1,0 +1,33 @@
+# Solidev Electrosoft - Robots.txt
+# Updated: December 22, 2025
+
+# Allow all crawlers
+User-agent: *
+
+# Allow indexing of all public content
+Allow: /
+
+# Disallow admin and authentication pages
+Disallow: /admin/
+Disallow: /admin
+Disallow: /login
+
+# Disallow private API routes (if any)
+Disallow: /api/
+
+# Allow specific important pages (explicit)
+Allow: /services/
+Allow: /products/
+Allow: /portfolio/
+Allow: /contact
+Allow: /about
+
+# Sitemap location
+Sitemap: https://www.solidevelectrosoft.com/sitemap.xml
+
+# Crawl-delay (optional, helps with server load)
+# Crawl-delay: 1
+
+# Block bad bots (optional, add as needed)
+# User-agent: BadBot
+# Disallow: /

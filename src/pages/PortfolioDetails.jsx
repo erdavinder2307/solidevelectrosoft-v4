@@ -7,6 +7,8 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { db } from '../config/firebase';
 import { trackPortfolioViewed, trackExternalLinkClicked } from '../utils/analytics';
+import { useSEO } from '../hooks/useSEO';
+import { generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Portfolio Details Page
@@ -40,7 +42,7 @@ const PortfolioDetails = () => {
       const docSnap = await getDoc(doc(db, 'portfolios', id));
       if (docSnap.exists()) {
         const data = docSnap.data();
-        setProject({
+        const projectData = {
           id: docSnap.id,
           title: data.projectName,
           description: data.description,
@@ -58,8 +60,9 @@ const PortfolioDetails = () => {
           features: data.features || [],
           challenges: data.challenges || '',
           solution: data.solution || '',
-          results: data.results || [],
-        });
+          results: data.results || []
+        };
+        setProject(projectData);
       } else {
         setError('Project not found');
       }
@@ -70,6 +73,30 @@ const PortfolioDetails = () => {
       setLoading(false);
     }
   };
+
+  // Dynamic SEO based on project data
+  useSEO({
+    title: project ? `${project.title} | Portfolio` : 'Portfolio Project',
+    description: project?.description || 'View this software development project from Solidev Electrosoft',
+    canonical: `/portfolio/${id}`,
+    ogImage: project?.thumbnailUrl || project?.logo,
+    ogType: 'article',
+    schemas: project ? [
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Portfolio', url: 'https://www.solidevelectrosoft.com/portfolio' },
+        { name: project.title, url: `https://www.solidevelectrosoft.com/portfolio/${id}` },
+      ]),
+    ] : [],
+  });
+
+  useEffect(() => {
+    if (project) {
+      // GA4 EVENT: Track portfolio project view
+      // Business value: Measures which projects generate the most interest
+      trackPortfolioViewed(project.id);
+    }
+  }, [project]);
 
   useEffect(() => {
     if (project) {

@@ -10,6 +10,9 @@ import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Modern Portfolio Page
@@ -22,6 +25,22 @@ const ModernPortfolio = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [galleryModal, setGalleryModal] = useState({ isOpen: false, project: null, currentIndex: 0 });
+
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.portfolio.title,
+    description: pageSEO.portfolio.description,
+    keywords: pageSEO.portfolio.keywords,
+    canonical: pageSEO.portfolio.canonical,
+    ogType: pageSEO.portfolio.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Portfolio', url: 'https://www.solidevelectrosoft.com/portfolio' },
+      ]),
+    ],
+  });
 
   useEffect(() => {
     fetchPortfolios();
@@ -315,7 +334,10 @@ const ModernPortfolio = () => {
                 }}
               >
                 We've helped startups and enterprises build products that users love. 
-                Explore our collection of successful projects.
+                Explore our collection of successful projects.{' '}
+                <Link to="/services" style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: '600' }}>
+                  See our services
+                </Link>.
               </p>
             </motion.div>
           </div>

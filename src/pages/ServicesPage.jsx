@@ -22,6 +22,9 @@ import SocialProof from '../components/sections/SocialProof';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Services Landing Page
@@ -29,12 +32,24 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
  */
 const Services = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.services.title,
+    description: pageSEO.services.description,
+    keywords: pageSEO.services.keywords,
+    canonical: pageSEO.services.canonical,
+    ogType: pageSEO.services.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Services', url: 'https://www.solidevelectrosoft.com/services' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'Our Services | Web, Mobile, AI Development | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Full-stack software development services. Custom web apps, mobile apps, AI solutions, and MVP development for startups and enterprises.');
-    }
     window.scrollTo(0, 0);
   }, []);
 
@@ -195,6 +210,15 @@ const Services = () => {
 
                       <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 1.7 }}>
                         {service.description}
+                        {index === 0 && ' See our '}
+                        {index === 0 && <Link to="/products" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>web applications</Link>}
+                        {index === 0 && ' in production.'}
+                        {index === 2 && ' View '}
+                        {index === 2 && <Link to="/portfolio" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>AI projects</Link>}
+                        {index === 2 && ' we\'ve delivered.'}
+                        {index === 3 && ' Check our '}
+                        {index === 3 && <Link to="/products" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>startup success stories</Link>}
+                        {index === 3 && '.'}
                       </p>
 
                       <div

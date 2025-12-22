@@ -8,6 +8,9 @@ import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { FaRocket, FaBullseye, FaChartLine, FaCrown, FaLock, FaCode, FaArrowUp, FaLightbulb, FaRegClipboard, FaCompass, FaCubes } from 'react-icons/fa';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
+import { useSEO } from '../../hooks/useSEO';
+import { pageSEO } from '../../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema, generateServiceSchema } from '../../utils/structuredData';
 
 /**
  * MVP Development & Startup Packages Service Page
@@ -15,12 +18,35 @@ import { useAIAssistant } from '../../hooks/useAIAssistant';
 const MVPDevelopmentService = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.servicesMVP.title,
+    description: pageSEO.servicesMVP.description,
+    keywords: pageSEO.servicesMVP.keywords,
+    canonical: pageSEO.servicesMVP.canonical,
+    ogType: pageSEO.servicesMVP.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateServiceSchema({
+        name: 'MVP Development for Startups',
+        description: 'Fast, cost-effective MVP development to validate your startup idea. Get to market quickly with our proven MVP development process.',
+        offerings: [
+          { name: 'Idea Validation Package', description: 'AI-assisted idea discussion and feasibility check' },
+          { name: 'Web MVP Package', description: '4-week rapid web MVP development' },
+          { name: 'Mobile MVP Package', description: '6-week rapid mobile app MVP' },
+          { name: 'Full Stack MVP', description: 'Complete web and mobile MVP solution' },
+          { name: 'Post-MVP Support', description: 'Maintenance and iteration after launch' },
+        ],
+      }),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Services', url: 'https://www.solidevelectrosoft.com/services' },
+        { name: 'MVP Development', url: 'https://www.solidevelectrosoft.com/services/mvp-development' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'MVP Development for Startups | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Launch your startup faster with our MVP development packages. From idea to market in 4-8 weeks. Fixed-price packages for web and mobile MVPs.');
-    }
     window.scrollTo(0, 0);
   }, []);
 
@@ -290,8 +316,19 @@ const MVPDevelopmentService = () => {
                   lineHeight: 1.7,
                 }}
               >
-                Start validating your idea today for just $99. Whether you're exploring a concept 
-                or building a full-scale MVP, we have a plan to help you move forward with confidence.
+                Start validating your idea today for just $99. Need a{' '}
+                <Link to="/services/web-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  web MVP
+                </Link>,{' '}
+                <Link to="/services/mobile-app-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  mobile MVP
+                </Link>, or{' '}
+                <Link to="/services/ai-solutions" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  AI features
+                </Link>? See{' '}
+                <Link to="/portfolio" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  startups we've launched
+                </Link>.
               </motion.p>
 
               <motion.div
@@ -858,6 +895,122 @@ const MVPDevelopmentService = () => {
 
             .benefit-card:hover .benefit-accent {
               opacity: 1;
+            }
+          `}</style>
+        </section>
+
+        {/* Related Services */}
+        <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
+          <div className="modern-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              style={{ textAlign: 'center', marginBottom: 'var(--space-12)' }}
+            >
+              <h2 className="modern-h2" style={{ marginBottom: 'var(--space-4)' }}>
+                Grow Beyond Your MVP
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', maxWidth: '600px', margin: '0 auto' }}>
+                Scale your successful MVP with our full-service development
+              </p>
+            </motion.div>
+
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <Link
+                  to="/services/web-development"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Full Web Development
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Scale your MVP into a production-ready web application
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <Link
+                  to="/services/mobile-app-development"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    Mobile Apps
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Expand to iOS and Android with native mobile apps
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link
+                  to="/services/ai-solutions"
+                  style={{
+                    display: 'block',
+                    padding: 'var(--space-6)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  className="related-service-card"
+                >
+                  <h3 className="modern-h4" style={{ marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+                    AI Features
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
+                    Add intelligent automation and AI-powered features
+                  </p>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More →</span>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          <style>{`
+            .related-service-card:hover {
+              transform: translateY(-4px);
+              box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+              border-color: var(--primary);
             }
           `}</style>
         </section>

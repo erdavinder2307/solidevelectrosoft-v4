@@ -9,6 +9,9 @@ import CTABanner from '../components/sections/CTABanner';
 import TechStack from '../components/sections/TechStack';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 // Import team images
 import team1 from '../assets/img/team/team1.png';
@@ -40,37 +43,23 @@ const ModernAbout = () => {
   const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];
   const randomTeamImage = teamImages[Math.floor(Math.random() * teamImages.length)];
   
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.about.title,
+    description: pageSEO.about.description,
+    keywords: pageSEO.about.keywords,
+    canonical: pageSEO.about.canonical,
+    ogType: pageSEO.about.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'About', url: 'https://www.solidevelectrosoft.com/about' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    // SEO
-    document.title = 'About Solidev Electrosoft | Custom Software Development Company';
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 
-        'Learn about Solidev Electrosoft - a leading software development company since 2018. ' +
-        'Expert team specializing in web, mobile, and AI solutions. Based in India, serving globally.'
-      );
-    }
-
-    // Canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/about');
-
-    // Analytics
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_title: 'About',
-        page_location: window.location.href,
-        page_path: '/about',
-      });
-    }
-
-    // Scroll to top
     window.scrollTo(0, 0);
   }, []);
 

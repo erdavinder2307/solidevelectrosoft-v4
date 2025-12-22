@@ -10,6 +10,9 @@ import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 /**
  * Modern Products Page
@@ -21,6 +24,22 @@ const ModernProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [galleryModal, setGalleryModal] = useState({ isOpen: false, product: null, currentIndex: 0 });
+
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.products.title,
+    description: pageSEO.products.description,
+    keywords: pageSEO.products.keywords,
+    canonical: pageSEO.products.canonical,
+    ogType: pageSEO.products.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Products', url: 'https://www.solidevelectrosoft.com/products' },
+      ]),
+    ],
+  });
 
   useEffect(() => {
     fetchProducts();
@@ -281,7 +300,10 @@ const ModernProducts = () => {
                 }}
               >
                 Explore the apps and platforms we have built for real users. 
-                From healthcare to fitness, we create solutions that make a difference.
+                From healthcare to fitness, we create solutions that make a difference.{' '}
+                <Link to="/services" style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: '600' }}>
+                  Learn about our development process
+                </Link>.
               </p>
             </motion.div>
 

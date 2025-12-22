@@ -8,6 +8,9 @@ import {
 } from '../components/ui';
 import Breadcrumb from '../components/sections/Breadcrumb';
 import emailService from '../services/emailService';
+import { useSEO } from '../hooks/useSEO';
+import { pageSEO } from '../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema, generateFAQSchema } from '../utils/structuredData';
 
 const Faq = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +21,34 @@ const Faq = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [showResponse, setShowResponse] = useState(false);
+
+  // FAQ data for schema
+  const faqs = [
+    { question: 'What kind of service do you provide?', answer: 'We are a web and Mobile applications development company that specializes in creating customized web applications, Mobile applications and software solutions. Our services include web development, mobile app development, software automation, UI/UX design, and maintenance/support for existing applications.' },
+    { question: 'How long does it take to build a Software application?', answer: 'It depends on the complexity and scale of the project. But since we have experienced developers in our ranks, we can meet your deadline, regardless of the complexity.' },
+    { question: 'How much does a software application cost?', answer: 'The cost of a new website can vary significantly depending on several factors including the complexity of the design, the number of pages and features required, the level of customization needed, and the specific requirements of the project.' },
+    { question: 'Will my application be mobile-friendly?', answer: 'Absolutely! Ensuring mobile-friendliness is a priority for us. We design and develop your application with responsive design principles in mind, making it accessible and optimized for a seamless user experience across different mobile devices.' },
+    { question: 'How do I start my project with you?', answer: 'You can reach out to us by sending an email to admin@solidevelectrosoft.com or visit our website and use the provided contact form. Our team will review your message and respond promptly to discuss the next steps.' },
+    { question: 'What are your hiring models?', answer: 'You can hire our highly qualified experts on full-time, part-time, hourly, monthly and weekly basis as per your convenience.' },
+    { question: 'Can you handle ongoing maintenance?', answer: 'Absolutely! We offer ongoing maintenance services to ensure the continued smooth operation and optimal performance of your application. Our maintenance services can be tailored to meet your specific requirements.' },
+  ];
+
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.faq.title,
+    description: pageSEO.faq.description,
+    keywords: pageSEO.faq.keywords,
+    canonical: pageSEO.faq.canonical,
+    ogType: pageSEO.faq.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateFAQSchema(faqs),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'FAQ', url: 'https://www.solidevelectrosoft.com/faq' },
+      ]),
+    ],
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +102,7 @@ const Faq = () => {
       setIsSubmitting(false);
     }
   };
+  
   useEffect(() => {
     const gtag = (...args) => {
       window.dataLayer = window.dataLayer || [];
@@ -82,22 +114,6 @@ const Faq = () => {
     gtag('config', 'GT-MBLK2C2Q');
 
     document.documentElement.className = 'no-js';
-    document.title = 'FAQ - Frequently Asked Questions About Web & Mobile Development Services';
-
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.content = 'Get answers to frequently asked questions about our web development, mobile app development, and software services.';
-    }
-
-    const existingCanonical = document.querySelector('link[rel="canonical"]');
-    if (existingCanonical) {
-      existingCanonical.href = 'https://solidevelectrosoft.com/faq.html';
-    } else {
-      const c = document.createElement('link');
-      c.rel = 'canonical';
-      c.href = 'https://solidevelectrosoft.com/faq.html';
-      document.head.appendChild(c);
-    }
   }, []);
 
   return (

@@ -10,6 +10,9 @@ import { IconBox } from '../../components/ui/Placeholders';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 import { FaRocket, FaMobileAlt, FaLock, FaCloud, FaSyncAlt, FaChartBar } from 'react-icons/fa';
+import { useSEO } from '../../hooks/useSEO';
+import { pageSEO } from '../../utils/seo';
+import { getCommonSchemas, generateBreadcrumbSchema, generateServiceSchema } from '../../utils/structuredData';
 
 /**
  * Web Development Service Page
@@ -18,12 +21,35 @@ import { FaRocket, FaMobileAlt, FaLock, FaCloud, FaSyncAlt, FaChartBar } from 'r
 const WebDevelopmentService = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   
+  // SEO Configuration
+  useSEO({
+    title: pageSEO.servicesWebDev.title,
+    description: pageSEO.servicesWebDev.description,
+    keywords: pageSEO.servicesWebDev.keywords,
+    canonical: pageSEO.servicesWebDev.canonical,
+    ogType: pageSEO.servicesWebDev.ogType,
+    schemas: [
+      ...getCommonSchemas(),
+      generateServiceSchema({
+        name: 'Web Application Development',
+        description: 'Custom web application development using modern frameworks like React, Node.js, and .NET Core. Build scalable, high-performance applications.',
+        offerings: [
+          { name: 'Custom Web Applications', description: 'Tailored web apps built for your specific business needs' },
+          { name: 'SaaS Platform Development', description: 'Scalable software-as-a-service platforms' },
+          { name: 'Progressive Web Apps', description: 'Fast, reliable web apps that work offline' },
+          { name: 'Enterprise Portals', description: 'Internal systems and employee portals' },
+          { name: 'API Development', description: 'RESTful and GraphQL API design and implementation' },
+        ],
+      }),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Services', url: 'https://www.solidevelectrosoft.com/services' },
+        { name: 'Web Development', url: 'https://www.solidevelectrosoft.com/services/web-development' },
+      ]),
+    ],
+  });
+  
   useEffect(() => {
-    document.title = 'Custom Web Application Development | Solidev Electrosoft';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 'Transform your business with custom web applications. React, Node.js, cloud-native solutions built for scale and performance.');
-    }
     window.scrollTo(0, 0);
   }, []);
 
@@ -220,8 +246,15 @@ const WebDevelopmentService = () => {
                 }}
               >
                 From complex enterprise portals to sleek customer-facing applications, 
-                we craft web solutions that drive results. Modern technology, 
-                scalable architecture, exceptional user experience.
+                we craft web solutions that drive results. Need a mobile companion? Check our{' '}
+                <Link to="/services/mobile-app-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  mobile app development
+                </Link>{' '}
+                services. View our{' '}
+                <Link to="/portfolio" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
+                  portfolio
+                </Link>{' '}
+                of successful projects.
               </motion.p>
 
               {/* CTAs */}
@@ -448,6 +481,90 @@ const WebDevelopmentService = () => {
 
         {/* Social Proof */}
         <SocialProof title="Trusted by industry leaders" />
+
+        {/* Related Services */}
+        <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
+          <div className="modern-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              style={{ textAlign: 'center', marginBottom: 'var(--space-12)' }}
+            >
+              <h2 className="modern-h2" style={{ marginBottom: 'var(--space-4)' }}>
+                Related Services
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
+                Expand your digital presence with our complementary services
+              </p>
+            </motion.div>
+
+            <div className="modern-grid-3" style={{ gap: 'var(--space-6)' }}>
+              <Link to="/services/mobile-app-development" style={{ textDecoration: 'none' }}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  style={{
+                    padding: 'var(--space-8)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    height: '100%',
+                  }}
+                >
+                  <div style={{ fontSize: '2rem', marginBottom: 'var(--space-4)' }}>📱</div>
+                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)', color: 'var(--text-primary)' }}>
+                    Mobile App Development
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+                    Build native iOS and Android apps or cross-platform solutions with React Native
+                  </p>
+                </motion.div>
+              </Link>
+
+              <Link to="/services/ai-solutions" style={{ textDecoration: 'none' }}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  style={{
+                    padding: 'var(--space-8)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    height: '100%',
+                  }}
+                >
+                  <div style={{ fontSize: '2rem', marginBottom: 'var(--space-4)' }}>🧠</div>
+                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)', color: 'var(--text-primary)' }}>
+                    AI & ML Solutions
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+                    Add intelligence to your web apps with custom AI models and automation
+                  </p>
+                </motion.div>
+              </Link>
+
+              <Link to="/products" style={{ textDecoration: 'none' }}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  style={{
+                    padding: 'var(--space-8)',
+                    background: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border-color)',
+                    height: '100%',
+                  }}
+                >
+                  <div style={{ fontSize: '2rem', marginBottom: 'var(--space-4)' }}>🚀</div>
+                  <h3 className="modern-h5" style={{ marginBottom: 'var(--space-2)', color: 'var(--text-primary)' }}>
+                    View Our Products
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+                    Explore web applications we've built for clients worldwide
+                  </p>
+                </motion.div>
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* FAQ Section */}
         <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-primary)' }}>
