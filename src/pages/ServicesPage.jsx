@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FaGlobe,
   FaMobileAlt,
@@ -32,6 +32,7 @@ import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredD
  */
 const Services = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const navigate = useNavigate();
   
   // SEO Configuration
   useSEO({
@@ -210,15 +211,48 @@ const Services = () => {
 
                       <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 1.7 }}>
                         {service.description}
-                        {index === 0 && ' See our '}
-                        {index === 0 && <Link to="/products" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>web applications</Link>}
-                        {index === 0 && ' in production.'}
-                        {index === 2 && ' View '}
-                        {index === 2 && <Link to="/portfolio" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>AI projects</Link>}
-                        {index === 2 && ' we\'ve delivered.'}
-                        {index === 3 && ' Check our '}
-                        {index === 3 && <Link to="/products" style={{ color: service.color, textDecoration: 'none', fontWeight: '600' }}>startup success stories</Link>}
-                        {index === 3 && '.'}
+                        {index === 0 && (
+                          <>
+                            {' '}See our{' '}
+                            <span
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/products'); }}
+                              style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
+                              role="link"
+                              aria-label="View web applications in production"
+                            >
+                              web applications
+                            </span>
+                            {' '}in production.
+                          </>
+                        )}
+                        {index === 2 && (
+                          <>
+                            {' '}View{' '}
+                            <span
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/portfolio'); }}
+                              style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
+                              role="link"
+                              aria-label="View AI projects we have delivered"
+                            >
+                              AI projects
+                            </span>
+                            {' '}we've delivered.
+                          </>
+                        )}
+                        {index === 3 && (
+                          <>
+                            {' '}Check our{' '}
+                            <span
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/products'); }}
+                              style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
+                              role="link"
+                              aria-label="View startup success stories"
+                            >
+                              startup success stories
+                            </span>
+                            .
+                          </>
+                        )}
                       </p>
 
                       <div
