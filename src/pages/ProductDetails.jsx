@@ -63,25 +63,29 @@ const ProductDetails = () => {
       // GA4 EVENT: Track product view
       // Business value: Measures which products get the most attention
       trackProductViewed(product.id, product.title);
-      
-      // SEO: Update meta tags dynamically
-      useSEO({
-        title: product.title,
-        description: product.description || `${product.title} - Custom software application by Solidev Electrosoft`,
-        canonical: `/product/${product.id}`,
-        ogImage: product.thumbnailUrl || product.logo,
-        ogType: 'product',
-        schemas: [
+    }
+  }, [product]);
+
+  // SEO: always call hook at top-level with dynamic data
+  useSEO({
+    title: product ? product.title : 'Product Details',
+    description: product
+      ? (product.description || `${product.title} - Custom software application by Solidev Electrosoft`)
+      : 'Detailed view of a software product by Solidev Electrosoft.',
+    canonical: product ? `/product/${product?.id}` : '/products',
+    ogImage: product?.thumbnailUrl || product?.logo,
+    ogType: 'product',
+    schemas: product
+      ? [
           generateSoftwareApplicationSchema(product),
           generateBreadcrumbSchema([
             { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
             { name: 'Products', url: 'https://www.solidevelectrosoft.com/products' },
             { name: product.title, url: `https://www.solidevelectrosoft.com/product/${product.id}` },
           ]),
-        ],
-      });
-    }
-  }, [product]);
+        ]
+      : [],
+  });
 
   if (loading) {
     return (
