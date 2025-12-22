@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { trackContactFormStarted, trackContactFormSubmitted, trackWhatsAppClicked } from '../../utils/analytics';
 
 /**
  * Modern Contact Form Component
@@ -9,6 +10,7 @@ const ModernContactForm = ({
   onSubmit,
   whatsappNumber = "919115866828",
   showWhatsAppOption = true,
+  source = 'direct', // Track where the form submission came from
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +22,7 @@ const ModernContactForm = ({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const formStartedRef = useRef(false); // Track if user started form
 
   const projectTypes = [
     { value: '', label: 'Select project type' },
@@ -44,6 +47,13 @@ const ModernContactForm = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // GA4 EVENT: Track form start on first interaction
+    // Business value: Measures conversion funnel entry
+    if (!formStartedRef.current && value.trim()) {
+      formStartedRef.current = true;
+      trackContactFormStarted(source);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -82,6 +92,10 @@ const ModernContactForm = ({
         await onSubmit(formData);
       }
 
+      // GA4 EVENT: Track successful form submission
+      // Business value: PRIMARY CONVERSION METRIC
+      trackContactFormSubmitted(source);
+
       setSubmitStatus('success');
       setFormData({
         name: '',
@@ -91,6 +105,7 @@ const ModernContactForm = ({
         budget: '',
         message: '',
       });
+      formStartedRef.current = false; // Reset for next submission
 
       // Clear success message after 5 seconds
       setTimeout(() => {
@@ -381,6 +396,11 @@ const ModernContactForm = ({
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                // GA4 EVENT: Track WhatsApp clicks
+                // Business value: Measures alternative contact preference
+                trackWhatsAppClicked();
+              }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

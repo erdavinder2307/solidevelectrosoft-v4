@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { trackCTAClick } from '../../utils/analytics';
 
 /**
  * CTA Banner Component
@@ -121,7 +122,12 @@ const CTABanner = ({
           >
             {primaryCTA.isButton ? (
               <button
-                onClick={primaryCTA.onClick}
+                onClick={() => {
+                  // GA4 EVENT: Track CTA button clicks
+                  // Business value: Measures which CTAs drive conversions
+                  trackCTAClick(primaryCTA.text, 'cta_banner');
+                  if (primaryCTA.onClick) primaryCTA.onClick();
+                }}
                 className={`modern-btn ${variant === 'gradient' ? 'modern-btn-white' : 'modern-btn-primary'}`}
                 style={{
                   minWidth: '200px',
@@ -136,6 +142,7 @@ const CTABanner = ({
             ) : (
               <Link
                 to={primaryCTA.link}
+                onClick={() => trackCTAClick(primaryCTA.text, 'cta_banner')}
                 className={`modern-btn ${variant === 'gradient' ? 'modern-btn-white' : 'modern-btn-primary'}`}
                 style={{
                   minWidth: '200px',
@@ -151,6 +158,7 @@ const CTABanner = ({
             {showSecondary && (
               <Link
                 to={secondaryCTA.link}
+                onClick={() => trackCTAClick(secondaryCTA.text, 'cta_banner_secondary')}
                 className="modern-btn modern-btn-outline"
                 style={{
                   borderColor: styles.textColor,

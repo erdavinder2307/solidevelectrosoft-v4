@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackWhatsAppClicked, trackCTAClick } from '../../utils/analytics';
 
 /**
  * Floating CTA Component
@@ -68,6 +69,11 @@ const FloatingCTA = ({
                     href={whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      // GA4 EVENT: Track WhatsApp clicks from floating CTA
+                      // Business value: Measures alternative contact preference
+                      trackWhatsAppClicked();
+                    }}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -105,6 +111,9 @@ const FloatingCTA = ({
                     <button
                       onClick={() => {
                         setIsExpanded(false);
+                        // GA4 EVENT: Track AI assistant CTA click from floating button
+                        // Business value: Measures AI assistant adoption
+                        trackCTAClick('AI Assistant', 'floating_cta');
                         onQuoteClick();
                       }}
                       style={{

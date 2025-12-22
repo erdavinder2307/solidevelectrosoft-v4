@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { trackAdminLogin } from '../../utils/analytics';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,11 @@ const AdminLogin = () => {
 
     try {
       await login(email, password);
+      
+      // GA4 EVENT: Track admin login (internal tracking)
+      // Business value: Internal security monitoring
+      trackAdminLogin();
+      
       navigate('/admin/dashboard');
     } catch (err) {
       setError('Invalid email or password');

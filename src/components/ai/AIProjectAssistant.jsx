@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendMessageToAI, sendRequirementsToEmail } from '../../services/aiService';
+import { 
+  trackAISessionStarted, 
+  trackAIQuestionAnswered, 
+  trackAISessionCompleted 
+} from '../../utils/analytics';
 
 /**
  * AI Project Requirements Assistant
@@ -184,6 +189,11 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
 
       if (selectedStageObj) {
         setSelectedStage(selectedStageObj);
+        
+        // GA4 EVENT: Track AI session start when stage is selected
+        // Business value: Measures AI assistant adoption by plan type
+        trackAISessionStarted(selectedStageObj.name, window.location.pathname);
+        
         // Add context message about the selected stage
         const stageConfirmation = {
           role: 'assistant',
@@ -224,6 +234,11 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
       // Call AI backend with stage context
       const aiResponse = await sendMessageToAI(userMessage, conversationHistory, selectedStage);
 
+      // GA4 EVENT: Track each question answered
+      // Business value: Measures engagement depth in AI conversation
+      const questionIndex = conversationHistory.filter(msg => msg.role === 'user').length;
+      trackAIQuestionAnswered(questionIndex, selectedStage?.name || selectedStage || 'unknown');
+
       // Add AI response to UI
       const assistantMessage = {
         role: 'assistant',
@@ -236,6 +251,10 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
       if (aiResponse.isComplete) {
         setIsComplete(true);
         setRequirementsSummary(aiResponse.message);
+        
+        // GA4 EVENT: Track session completion
+        // Business value: Measures completion rate vs abandonment
+        trackAISessionCompleted(selectedStage?.name || selectedStage || 'unknown', 'success');
       }
     } catch (error) {
       console.error('AI Error:', error);
@@ -290,12 +309,20 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
    * Close modal and reset state
    */
   const handleClose = () => {
+    // GA4 EVENT: Track session abandonment if closed before completion
+    // Business value: Measures where users drop off
+    if (selectedStage && messages.length > 2 && !isComplete) {
+      trackAISessionCompleted(selectedStage?.name || selectedStage || 'unknown', 'abandoned');
+    }
+    
     setMessages([]);
     setInputValue('');
     setIsComplete(false);
     setRequirementsSummary('');
     setUserEmail('');
     setSubmitSuccess(false);
+    setSelectedMode(null);
+    setSelectedStage(null);
     onClose();
   };
 

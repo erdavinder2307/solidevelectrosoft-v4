@@ -6,6 +6,7 @@ import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { db } from '../config/firebase';
+import { trackPortfolioViewed, trackExternalLinkClicked } from '../utils/analytics';
 
 /**
  * Portfolio Details Page
@@ -77,6 +78,10 @@ const PortfolioDetails = () => {
       if (metaDesc) {
         metaDesc.setAttribute('content', project.description || '');
       }
+      
+      // GA4 EVENT: Track portfolio project view
+      // Business value: Measures which projects generate the most interest
+      trackPortfolioViewed(project.id);
     }
   }, [project]);
 
@@ -238,6 +243,7 @@ const PortfolioDetails = () => {
                       href={project.webAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('website')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -267,6 +273,7 @@ const PortfolioDetails = () => {
                       href={project.androidAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('app_store')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -296,6 +303,7 @@ const PortfolioDetails = () => {
                       href={project.iosAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('app_store')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',

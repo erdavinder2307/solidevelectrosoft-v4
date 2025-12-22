@@ -7,6 +7,7 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { db } from '../config/firebase';
 import PlaceholderImage from '../components/products/PlaceholderImage';
+import { trackProductViewed, trackProductScreenshotsOpened, trackExternalLinkClicked } from '../utils/analytics';
 
 /**
  * Product Details Page
@@ -62,6 +63,10 @@ const ProductDetails = () => {
       if (metaDesc) {
         metaDesc.setAttribute('content', product.description || '');
       }
+      
+      // GA4 EVENT: Track product view
+      // Business value: Measures which products get the most attention
+      trackProductViewed(product.id, product.title);
     }
   }, [product]);
 
@@ -209,6 +214,11 @@ const ProductDetails = () => {
                       href={product.webAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        // GA4 EVENT: Track external link clicks
+                        // Business value: Measures interest in live demos
+                        trackExternalLinkClicked('website');
+                      }}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -238,6 +248,7 @@ const ProductDetails = () => {
                       href={product.androidAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('app_store')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -267,6 +278,7 @@ const ProductDetails = () => {
                       href={product.directApkUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('direct_download')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -296,6 +308,7 @@ const ProductDetails = () => {
                       href={product.iosAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('app_store')}
                       style={{
                         width: '100%',
                         padding: '14px 20px',
@@ -368,7 +381,14 @@ const ProductDetails = () => {
                       {screenshots.map((screenshot, idx) => (
                         <button
                           key={idx}
-                          onClick={() => setSelectedScreenshot(idx)}
+                          onClick={() => {
+                            setSelectedScreenshot(idx);
+                            // GA4 EVENT: Track screenshot engagement (first click only)
+                            // Business value: Measures deep product interest
+                            if (idx !== selectedScreenshot && idx === 1) {
+                              trackProductScreenshotsOpened(product.id);
+                            }
+                          }}
                           style={{
                             flex: '0 0 88px',
                             width: '88px',

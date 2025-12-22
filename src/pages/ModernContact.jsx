@@ -6,6 +6,7 @@ import ModernContactForm from '../components/ui/ModernContactForm';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { trackContactPageViewed } from '../utils/analytics';
 
 /**
  * Modern Contact Page
@@ -29,7 +30,11 @@ const ModernContact = () => {
     }
     canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/contact');
 
-    // Analytics
+    // GA4 EVENT: Track contact page view
+    // Business value: Measures conversion funnel entry
+    trackContactPageViewed();
+
+    // Analytics (legacy - now handled by RouteTracker in App.jsx)
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'page_view', {
         page_title: 'Contact',

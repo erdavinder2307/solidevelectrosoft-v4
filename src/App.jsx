@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
+// Import analytics utility
+import { initializeAnalytics, trackPageView } from './utils/analytics';
 
 // Import legacy pages (for backwards compatibility)
 import { Home, About, Project, Contact, Faq } from './pages';
@@ -53,6 +56,22 @@ import './components/styles/react-app.css';
 // Feature flag: Set to true to use modern design, false for legacy
 const USE_MODERN_DESIGN = true;
 
+/**
+ * RouteTracker Component
+ * Tracks page_view events on route changes for SPA
+ */
+function RouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Track page view on route change
+    const pageTitle = document.title;
+    trackPageView(location.pathname, pageTitle);
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   useEffect(() => {
     // Add Google Analytics scripts
@@ -76,6 +95,9 @@ function App() {
     gtag('config', 'GT-MBLK2C2Q');
     // Google Ads configuration
     gtag('config', 'AW-17044850693');
+
+    // Initialize analytics utility
+    initializeAnalytics();
 
     // Set document class
     document.documentElement.className = USE_MODERN_DESIGN ? '' : 'no-js';
@@ -103,6 +125,8 @@ function App() {
     <AuthProvider>
       <Router basename="/">
         <div className="App">
+          {/* Track page views on route changes */}
+          <RouteTracker />
           <Routes>
             {/* Main Routes */}
             <Route path="/" element={<HomePage />} />
