@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import { Disclaimer } from '../ui';
 
 // Text-only Clients section, backed by Firestore `client_engagements`
 const Clients = () => {
@@ -101,11 +102,9 @@ const Clients = () => {
           </div>
         </div>
 
-        {/* Legal note */}
+        {/* Legal Disclaimer */}
         <div className="pt-20 pb-60">
-          <p style={{ fontSize: '12px', color: '#6b7280', textAlign: 'center', margin: 0 }}>
-            Company names are mentioned solely to describe past project engagements.
-          </p>
+          <Disclaimer variant="clients" />
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import { db } from '../config/firebase';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
-import { FloatingCTA } from '../components/ui';
+import { FloatingCTA, Disclaimer } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
 import { useSEO } from '../hooks/useSEO';
@@ -802,6 +802,9 @@ const ModernPortfolio = () => {
                 <p style={{ fontSize: '1.125rem' }}>No projects found in this category.</p>
               </motion.div>
             )}
+
+            {/* Legal Disclaimer */}
+            <Disclaimer variant="portfolio" style={{ marginTop: '24px' }} />
           </div>
         </section>
 

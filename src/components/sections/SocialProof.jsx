@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import ClientDetailsDialog from '../ui/ClientDetailsDialog';
+import { Disclaimer } from '../ui';
 
 /**
  * Social Proof Section (Text-only)
@@ -182,11 +183,7 @@ const SocialProof = ({
         </motion.div>
 
         {/* Legal Disclaimer */}
-        <div style={{ marginTop: 'var(--space-8)' }}>
-          <p style={{ fontSize: 'var(--text-xs)', color: styles.titleColor, textAlign: 'center', margin: 0 }}>
-            Company names are mentioned solely to describe past project engagements.
-          </p>
-        </div>
+        <Disclaimer variant="clients" style={{ marginTop: 'var(--space-8)' }} color={styles.titleColor} />
       </div>
       {/* Details Dialog */}
       <ClientDetailsDialog isOpen={isDialogOpen} onClose={closeDetails} client={selectedClient} />

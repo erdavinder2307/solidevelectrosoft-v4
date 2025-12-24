@@ -16,3 +16,6 @@ export {
   Skeleton, 
   IconBox 
 } from './Placeholders';
+
+// Legal/UX
+export { default as Disclaimer } from './Disclaimer';
