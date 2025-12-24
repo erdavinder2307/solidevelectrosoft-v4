@@ -19,3 +19,4 @@ export {
 
 // Legal/UX
 export { default as Disclaimer } from './Disclaimer';
+export { default as ConfidentialPlaceholder } from './ConfidentialPlaceholder';

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import ProjectLogo from '../components/ui/ProjectLogo';
+import { ConfidentialPlaceholder } from '../components/ui';
 import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
@@ -412,21 +413,7 @@ const PortfolioDetails = () => {
                     </div>
                   </>
                 ) : (
-                  <div
-                    style={{
-                      width: '100%',
-                      aspectRatio: '16/9',
-                      borderRadius: '16px',
-                      background: '#f3f4f6',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#9ca3af',
-                      fontSize: '14px',
-                    }}
-                  >
-                    No images available
-                  </div>
+                  <ConfidentialPlaceholder variant="gallery" />
                 )}
               </motion.div>
             </div>
