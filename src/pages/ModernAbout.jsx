@@ -734,7 +734,7 @@ const ModernAbout = () => {
 
         {/* Social Proof */}
         <SocialProof 
-          title="Trusted by innovative companies worldwide" 
+          title="Representative past client engagements" 
           variant="default"
         />
 

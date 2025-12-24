@@ -116,9 +116,9 @@ const ModernHome = () => {
           }}
         />
 
-        {/* Social Proof - Client Logos */}
+        {/* Social Proof - Past Client Engagements (Text-only) */}
         <SocialProof 
-          title="Trusted by innovative companies worldwide" 
+          title="Representative past client engagements" 
           variant="default"
         />
 

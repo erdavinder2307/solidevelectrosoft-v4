@@ -1,103 +1,111 @@
-import React from 'react';
-import Slider from 'react-slick';
+import React, { useEffect, useState } from 'react';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
+// Text-only Clients section, backed by Firestore `client_engagements`
 const Clients = () => {
-  const clientsOriginal = [
-    // {
-    //   name: "LexisNexis",
-    //   logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp"
-    // },
-    {
-      name: "9am Software Solutions",
-      logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/9am-software-sol.webp"
-    },
-    {
-      name: "Airvolution",
-      logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/airvolution.svg"
-    },
-    {
-      name: "Edify",
-      logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/edify.webp"
-    },
-    {
-      name: "Fairway Independent",
-      logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/fairway-independent.webp"
-    }
-  ];
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Shuffle array randomly
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const clients = shuffleArray(clientsOriginal);
-
-  // Brand/Clients carousel settings - 5 slides on desktop, responsive
-  const brandSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1400,
-        settings: {
-          slidesToShow: 5,
-        }
-      },
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 4,
-        }
-      },
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1,
-        }
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        // Filter by visibility only to avoid composite index; sort client-side
+        const q = query(
+          collection(db, 'client_engagements'),
+          where('isVisible', '==', true)
+        );
+        const snap = await getDocs(q);
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        data.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+        setClients(data);
+      } catch (e) {
+        console.error('Error loading client engagements:', e);
+      } finally {
+        setLoading(false);
       }
-    ]
-  };
+    };
+    fetchClients();
+  }, []);
+
+  if (loading) {
+    return (
+      <div id="clients" className="tp-brand-area">
+        <div className="container">
+          <div className="pt-60 pb-60 text-center">
+            <span>Loading client engagements...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!clients.length) {
+    // No visible clients → render nothing to keep page clean
+    return null;
+  }
 
   return (
     <div id="clients" className="tp-brand-area">
       <div className="container">
-        <div className="tp-brand-slider tp-brand-silder-actiive tp-brand-border pt-60 pb-60">
-          <Slider {...brandSettings}>
-            {clients.map((client, index) => (
-              <div key={index}>
-                <div className="tp-brand-item text-center scale-1">
-                  <img 
-                    loading="lazy"
-                    src={client.logo}
-                    alt={client.name}
+        <div className="tp-brand-slider tp-brand-silder-actiive tp-brand-border pt-60 pb-30">
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '16px',
+              justifyContent: 'center',
+            }}
+          >
+            {clients.map((client) => (
+              <div key={client.id} className="tp-brand-item text-center scale-1">
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 18px',
+                    borderRadius: '999px',
+                    border: '1px solid #dbeafe',
+                    background: 'linear-gradient(180deg, #F8FAFF 0%, #EEF2FF 100%)',
+                    color: '#1f2937',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 2px 6px rgba(102, 126, 234, 0.10)',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.18)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 2px 6px rgba(102, 126, 234, 0.10)';
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: '#667eea',
+                      boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.15)',
+                    }}
                   />
-                </div>
+                  <span>{client.companyName}</span>
+                </span>
               </div>
             ))}
-          </Slider>
+          </div>
+        </div>
+
+        {/* Legal note */}
+        <div className="pt-20 pb-60">
+          <p style={{ fontSize: '12px', color: '#6b7280', textAlign: 'center', margin: 0 }}>
+            Company names are mentioned solely to describe past project engagements.
+          </p>
         </div>
       </div>
     </div>

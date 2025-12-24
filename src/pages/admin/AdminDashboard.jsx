@@ -7,6 +7,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState({
     products: 0,
     portfolios: 0,
+    clients: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -15,10 +16,12 @@ const AdminDashboard = () => {
       try {
         const productsSnap = await getDocs(collection(db, 'products'));
         const portfoliosSnap = await getDocs(collection(db, 'portfolios'));
+        const clientsSnap = await getDocs(collection(db, 'client_engagements'));
 
         setStats({
           products: productsSnap.size,
           portfolios: portfoliosSnap.size,
+          clients: clientsSnap.size,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -44,6 +47,13 @@ const AdminDashboard = () => {
       icon: '💼',
       color: '#f59e0b',
       link: '/admin/portfolios',
+    },
+    {
+      title: 'Client Engagements',
+      value: stats.clients,
+      icon: '🤝',
+      color: '#10b981',
+      link: '/admin/clients',
     },
   ];
 
@@ -182,6 +192,26 @@ const AdminDashboard = () => {
             onMouseLeave={(e) => (e.target.style.background = '#f59e0b')}
           >
             <span>➕</span> Add New Portfolio
+          </Link>
+          <Link
+            to="/admin/clients/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 20px',
+              background: '#10b981',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = '#059669')}
+            onMouseLeave={(e) => (e.target.style.background = '#10b981')}
+          >
+            <span>➕</span> Add Client Engagement
           </Link>
         </div>
       </div>

@@ -6,6 +6,8 @@ import ProductsList from '../../pages/admin/ProductsList';
 import ProductForm from '../../pages/admin/ProductForm';
 import PortfoliosList from '../../pages/admin/PortfoliosList';
 import PortfolioForm from '../../pages/admin/PortfolioForm';
+import ClientEngagements from '../../pages/admin/ClientEngagements';
+import ClientEngagementForm from '../../pages/admin/ClientEngagementForm';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -25,6 +27,7 @@ const AdminLayout = () => {
     { path: '/admin/dashboard', icon: '📊', label: 'Dashboard' },
     { path: '/admin/products', icon: '📦', label: 'Products' },
     { path: '/admin/portfolios', icon: '💼', label: 'Portfolios' },
+    { path: '/admin/clients', icon: '🤝', label: 'Client Engagements' },
   ];
 
   const linkStyle = {
@@ -169,6 +172,9 @@ const AdminLayout = () => {
             <Route path="portfolios" element={<PortfoliosList />} />
             <Route path="portfolios/new" element={<PortfolioForm />} />
             <Route path="portfolios/:id" element={<PortfolioForm />} />
+            <Route path="clients" element={<ClientEngagements />} />
+            <Route path="clients/new" element={<ClientEngagementForm />} />
+            <Route path="clients/:id" element={<ClientEngagementForm />} />
           </Routes>
         </main>
       </div>

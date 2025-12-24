@@ -1,35 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PlaceholderLogo } from '../ui/Placeholders';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import ClientDetailsDialog from '../ui/ClientDetailsDialog';
 
 /**
- * Social Proof / Client Logos Section
- * Showcase trusted clients
+ * Social Proof Section (Text-only)
+ * Displays visible client engagements from Firestore
  */
 const SocialProof = ({
-  title = "Trusted by innovative companies",
-  clients = null,
+  title = "Representative past client engagements",
   variant = 'default', // 'default', 'dark', 'minimal'
 }) => {
-  const clientLogos = {
-    // lexisnexis: new URL('../../assets/img/client/lexisnexis.webp', import.meta.url).href,
-    nineam: new URL('../../assets/img/client/9am-software-sol.png', import.meta.url).href,
-    airvolution: new URL('../../assets/img/client/airvolution.svg', import.meta.url).href,
-    edify: new URL('../../assets/img/client/edify.webp', import.meta.url).href,
-    fairway: new URL('../../assets/img/client/fairway-independent.webp', import.meta.url).href,
-    // spirensavvy: new URL('../../assets/img/client/spirensavvy.png', import.meta.url).href,
-  };
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const defaultClients = [
-    // { name: 'LexisNexis', logo: clientLogos.lexisnexis },
-    { name: '9am Software Solutions', logo: clientLogos.nineam },
-    { name: 'Airvolution', logo: clientLogos.airvolution },
-    { name: 'Edify', logo: clientLogos.edify },
-    { name: 'Fairway Independent', logo: clientLogos.fairway },
-    // { name: 'Spire N Savvy', logo: clientLogos.spirensavvy },
-  ];
-
-  const clientList = clients || defaultClients;
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        // Avoid composite index requirements: filter then sort client-side
+        const q = query(
+          collection(db, 'client_engagements'),
+          where('isVisible', '==', true)
+        );
+        const snap = await getDocs(q);
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        data.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+        setClients(data);
+      } catch (e) {
+        console.error('Error loading client engagements:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClients();
+  }, []);
 
   const variantStyles = {
     default: {
@@ -47,6 +54,16 @@ const SocialProof = ({
   };
 
   const styles = variantStyles[variant] || variantStyles.default;
+
+  const openDetails = (client) => {
+    setSelectedClient(client);
+    setIsDialogOpen(true);
+  };
+
+  const closeDetails = () => {
+    setIsDialogOpen(false);
+    setSelectedClient(null);
+  };
 
   return (
     <section
@@ -75,7 +92,7 @@ const SocialProof = ({
           {title}
         </motion.p>
 
-        {/* Client Logos */}
+        {/* Client Names (Text-only) */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -86,64 +103,93 @@ const SocialProof = ({
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 'var(--space-8)',
+            gap: 'var(--space-6)',
+            rowGap: 'var(--space-6)',
           }}
         >
-          {clientList.map((client, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {client.logo ? (
-                <div
+          {loading ? (
+            <span style={{ color: styles.titleColor }}>Loading...</span>
+          ) : (
+            clients.map((client, index) => (
+              <motion.div
+                key={client.id}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.04 }}
+              >
+                <span
                   style={{
-                    width: '140px',
-                    height: '80px',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 'var(--space-2)',
-                    background: 'white',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    gap: '8px',
+                    padding: '12px 18px',
+                    borderRadius: '999px',
+                    border: '1px solid #dbeafe',
+                    background: 'linear-gradient(180deg, #F8FAFF 0%, #EEF2FF 100%)',
+                    color: '#1f2937',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 2px 6px rgba(102, 126, 234, 0.10)',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    cursor: 'pointer',
+                  }}
+                  role="button"
+                  aria-haspopup="dialog"
+                  aria-label={`View engagement details for ${client.companyName}`}
+                  tabIndex={0}
+                  onClick={() => openDetails(client)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openDetails(client);
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.18)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 2px 6px rgba(102, 126, 234, 0.10)';
                   }}
                 >
-                  <img
-                    src={client.logo}
-                    alt={client.name}
+                  <span
+                    aria-hidden
                     style={{
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      width: 'auto',
-                      height: 'auto',
-                      objectFit: 'contain',
-                      filter: variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)',
-                      transition: 'all var(--transition-default)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(1)' : 'grayscale(0%) opacity(1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.filter = variant === 'dark' ? 'brightness(0) invert(1) opacity(0.6)' : 'grayscale(100%) opacity(0.6)';
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: '#667eea',
+                      boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.15)',
                     }}
                   />
-                </div>
-              ) : (
-                <PlaceholderLogo name={client.name} width={100} height={40} />
-              )}
-            </motion.div>
-          ))}
+                  <span>{client.companyName}</span>
+                  {client.engagementType === 'via_partner' && client.partnerName ? (
+                    <span style={{
+                      marginLeft: 6,
+                      color: '#6b7280',
+                      fontWeight: 600,
+                    }}>
+                      (via {client.partnerName})
+                    </span>
+                  ) : null}
+                </span>
+              </motion.div>
+            ))
+          )}
         </motion.div>
+
+        {/* Legal Disclaimer */}
+        <div style={{ marginTop: 'var(--space-8)' }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: styles.titleColor, textAlign: 'center', margin: 0 }}>
+            Company names are mentioned solely to describe past project engagements.
+          </p>
+        </div>
       </div>
+      {/* Details Dialog */}
+      <ClientDetailsDialog isOpen={isDialogOpen} onClose={closeDetails} client={selectedClient} />
     </section>
   );
 };
