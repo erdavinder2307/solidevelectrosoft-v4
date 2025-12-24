@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaApple, FaGooglePlay, FaGlobe, FaDownload } from 'react-icons/fa';
+import { FaApple, FaGooglePlay, FaGlobe, FaDownload, FaGithub, FaCheck } from 'react-icons/fa';
 import PlaceholderImage from './PlaceholderImage';
 
 /**
@@ -14,6 +14,8 @@ const ProductCard = ({ product, onViewScreenshots }) => {
   const [iconError, setIconError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showCloneDropdown, setShowCloneDropdown] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -32,6 +34,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     androidAppUrl,
     iosAppUrl,
     directApkUrl,
+    gitRepoUrl,
   } = product;
 
   // Use title or name (Firestore uses 'title', legacy might use 'name')
@@ -51,6 +54,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     androidAppUrl ? 1 : 0,
     directApkUrl ? 1 : 0,
     iosAppUrl ? 1 : 0,
+    gitRepoUrl ? 1 : 0,
     hasScreenshots ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
@@ -65,11 +69,26 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showCloneDropdown && !event.target.closest('[data-clone-dropdown]')) {
+        setShowCloneDropdown(false);
+      }
+    };
+
+    if (showCloneDropdown) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [showCloneDropdown]);
+
   const getButtonGridCols = () => {
     if (availableButtons <= 2) return 'repeat(2, 1fr)';
     if (availableButtons === 3) return 'repeat(3, 1fr)';
     if (availableButtons === 4) return 'repeat(4, 1fr)';
-    // For 5 buttons, use 3 columns so they wrap into 2 rows (3 + 2)
+    if (availableButtons === 5) return 'repeat(3, 1fr)';
+    // For 6 buttons, use 3 columns so they wrap into 2 rows (3 + 3)
     return 'repeat(3, 1fr)';
   };
 
@@ -320,7 +339,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
           }}
         >
           {/* App URL Buttons */}
-          {(webAppUrl || androidAppUrl || iosAppUrl || directApkUrl || hasScreenshots) && (
+          {(webAppUrl || androidAppUrl || iosAppUrl || directApkUrl || gitRepoUrl || hasScreenshots) && (
             <div
               style={{
                 display: 'grid',
@@ -470,6 +489,178 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   <FaApple size={14} />
                   iOS
                 </a>
+              )}
+
+              {/* Git Repository Button with Clone Dropdown */}
+              {gitRepoUrl && (
+                <div style={{ position: 'relative' }} data-clone-dropdown>
+                  <button
+                    id="git-repo-button"
+                    onClick={() => setShowCloneDropdown(!showCloneDropdown)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: 'none',
+                      background: '#24292e',
+                      color: '#ffffff',
+                      fontSize: '13px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#1a1e22';
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#24292e';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <FaGithub size={14} />
+                    Repo
+                  </button>
+                  
+                  {/* Clone Dropdown (GitHub Style) - Using Portal */}
+                  {showCloneDropdown && (
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        right: '0',
+                        bottom: '0',
+                        pointerEvents: 'none',
+                        zIndex: 9999,
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'absolute',
+                          background: '#ffffff',
+                          border: '1px solid #d0d7de',
+                          borderRadius: '12px',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                          minWidth: '320px',
+                          padding: '12px',
+                          pointerEvents: 'auto',
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        ref={(el) => {
+                          if (el && showCloneDropdown) {
+                            const button = document.getElementById('git-repo-button');
+                            if (button) {
+                              const rect = button.getBoundingClientRect();
+                              el.style.top = `${rect.bottom + 8}px`;
+                              el.style.left = `${rect.left + rect.width / 2 - 160}px`;
+                            }
+                          }
+                        }}
+                      >
+                        {/* Header */}
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#24292e',
+                          marginBottom: '10px',
+                          paddingBottom: '8px',
+                          borderBottom: '1px solid #e1e4e8',
+                        }}>
+                          Clone Repository
+                        </div>
+                        
+                        {/* HTTPS URL */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          marginBottom: '8px',
+                        }}>
+                          <input
+                            type="text"
+                            value={gitRepoUrl}
+                            readOnly
+                            style={{
+                              flex: 1,
+                              padding: '6px 10px',
+                              border: '1px solid #d0d7de',
+                              borderRadius: '6px',
+                              fontSize: '12px',
+                              fontFamily: 'monospace',
+                              color: '#24292e',
+                              background: '#f6f8fa',
+                            }}
+                          />
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(gitRepoUrl);
+                              setCopiedUrl(true);
+                              setTimeout(() => setCopiedUrl(false), 2000);
+                            }}
+                            style={{
+                              padding: '6px 12px',
+                              border: '1px solid #d0d7de',
+                              borderRadius: '6px',
+                              background: copiedUrl ? '#2da44e' : '#f6f8fa',
+                              color: copiedUrl ? '#ffffff' : '#24292e',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              transition: 'all 0.2s',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {copiedUrl ? (
+                              <>
+                                <FaCheck size={12} />
+                                Copied
+                              </>
+                            ) : (
+                              'Copy'
+                            )}
+                          </button>
+                        </div>
+                        
+                        {/* Open in Browser Button */}
+                        <a
+                          href={gitRepoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            padding: '8px',
+                            border: '1px solid #d0d7de',
+                            borderRadius: '6px',
+                            background: '#f6f8fa',
+                            color: '#24292e',
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            textAlign: 'center',
+                            textDecoration: 'none',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#e1e4e8';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = '#f6f8fa';
+                          }}
+                        >
+                          Open in Browser
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
 
               {/* Gallery Button */}

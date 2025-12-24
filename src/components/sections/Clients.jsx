@@ -3,10 +3,10 @@ import Slider from 'react-slick';
 
 const Clients = () => {
   const clientsOriginal = [
-    {
-      name: "LexisNexis",
-      logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp"
-    },
+    // {
+    //   name: "LexisNexis",
+    //   logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp"
+    // },
     {
       name: "9am Software Solutions",
       logo: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/9am-software-sol.webp"

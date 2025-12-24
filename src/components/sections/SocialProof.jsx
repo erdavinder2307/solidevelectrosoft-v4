@@ -12,21 +12,21 @@ const SocialProof = ({
   variant = 'default', // 'default', 'dark', 'minimal'
 }) => {
   const clientLogos = {
-    lexisnexis: new URL('../../assets/img/client/lexisnexis.webp', import.meta.url).href,
+    // lexisnexis: new URL('../../assets/img/client/lexisnexis.webp', import.meta.url).href,
     nineam: new URL('../../assets/img/client/9am-software-sol.png', import.meta.url).href,
     airvolution: new URL('../../assets/img/client/airvolution.svg', import.meta.url).href,
     edify: new URL('../../assets/img/client/edify.webp', import.meta.url).href,
     fairway: new URL('../../assets/img/client/fairway-independent.webp', import.meta.url).href,
-    spirensavvy: new URL('../../assets/img/client/spirensavvy.png', import.meta.url).href,
+    // spirensavvy: new URL('../../assets/img/client/spirensavvy.png', import.meta.url).href,
   };
 
   const defaultClients = [
-    { name: 'LexisNexis', logo: clientLogos.lexisnexis },
+    // { name: 'LexisNexis', logo: clientLogos.lexisnexis },
     { name: '9am Software Solutions', logo: clientLogos.nineam },
     { name: 'Airvolution', logo: clientLogos.airvolution },
     { name: 'Edify', logo: clientLogos.edify },
     { name: 'Fairway Independent', logo: clientLogos.fairway },
-    { name: 'Spire N Savvy', logo: clientLogos.spirensavvy },
+    // { name: 'Spire N Savvy', logo: clientLogos.spirensavvy },
   ];
 
   const clientList = clients || defaultClients;
