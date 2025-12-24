@@ -32,6 +32,7 @@ const PortfolioForm = () => {
     projectUrl: '',
     duration: '',
     teamSize: 1,
+    year: '',
     featured: false,
     status: 'completed',
     webAppUrl: '',
@@ -65,6 +66,9 @@ const PortfolioForm = () => {
           technologies: data.technologies || [],
           logo: data.logo || '',
           logoFile: null,
+          year: (data.year !== undefined && data.year !== null)
+            ? String(data.year)
+            : (data.createdAt ? String(new Date(data.createdAt).getFullYear()) : ''),
         });
       } else {
         setErrors({ general: 'Portfolio not found' });
@@ -245,6 +249,7 @@ const PortfolioForm = () => {
         projectUrl: formData.projectUrl,
         duration: formData.duration,
         teamSize: parseInt(formData.teamSize),
+        year: formData.year ? String(formData.year).trim() : null,
         featured: formData.featured,
         status: formData.status,
         webAppUrl: formData.webAppUrl || '',
@@ -505,23 +510,45 @@ const PortfolioForm = () => {
                 ✅ Current logo (will be replaced if you select a new one)
               </p>
               {isEditing && (
-                <button
-                  type="button"
-                  onClick={() => setChangingLogo((v) => !v)}
-                  style={{
-                    marginTop: '8px',
-                    padding: '6px 12px',
-                    background: changingLogo ? '#f3f4f6' : '#fef3c7',
-                    color: '#374151',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '12px',
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                  }}
-                >
-                  {changingLogo ? 'Cancel' : 'Change Logo'}
-                </button>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setChangingLogo((v) => !v)}
+                    style={{
+                      padding: '6px 12px',
+                      background: changingLogo ? '#f3f4f6' : '#fef3c7',
+                      color: '#374151',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                    }}
+                  >
+                    {changingLogo ? 'Cancel' : 'Change Logo'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (confirm('Remove the current logo? This can be added again later.')) {
+                        setFormData(prev => ({ ...prev, logo: '' }));
+                        setChangingLogo(false);
+                      }
+                    }}
+                    style={{
+                      padding: '6px 12px',
+                      background: '#fee2e2',
+                      color: '#991b1b',
+                      border: '1px solid #fca5a5',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      fontWeight: '600',
+                    }}
+                  >
+                    Remove Logo
+                  </button>
+                </div>
               )}
             </div>
           ) : null}
@@ -545,7 +572,7 @@ const PortfolioForm = () => {
         {/* Images */}
         <div style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
-            Project Images {!isEditing && '*'} (Multiple images supported)
+            Project Images (optional, multiple supported)
           </label>
           
           <ImageUploader
@@ -871,6 +898,32 @@ const PortfolioForm = () => {
               </p>
             )}
           </div>
+        </div>
+
+        {/* Year (optional, alphanumeric allowed) */}
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#374151' }}>
+            Year (optional)
+          </label>
+          <input
+            type="text"
+            name="year"
+            value={formData.year}
+            onChange={handleInputChange}
+            placeholder="e.g., 2024, 2023-24, Q1 2025"
+            style={{
+              width: '100%',
+              padding: '12px 16px',
+              border: '1px solid #d1d5db',
+              borderRadius: '8px',
+              fontSize: '14px',
+              outline: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
+          <p style={{ color: '#6b7280', fontSize: '12px', marginTop: '6px' }}>
+            Leave empty to auto-derive from created date.
+          </p>
         </div>
 
         {/* App URLs */}

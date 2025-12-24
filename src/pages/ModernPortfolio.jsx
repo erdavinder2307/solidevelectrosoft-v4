@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ProjectLogo from '../components/ui/ProjectLogo';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { FaApple, FaGooglePlay, FaGlobe } from 'react-icons/fa';
 import { db } from '../config/firebase';
@@ -71,7 +72,7 @@ const ModernPortfolio = () => {
           logo: data.logo || '',
           tags: data.technologies || [],
           client: data.client,
-          year: extractYear(data.createdAt),
+          year: String(data.year || extractYear(data.createdAt)),
           featured: data.featured || false,
           displayOrder: data.displayOrder || 0,
           status: data.status || 'completed',
@@ -414,31 +415,27 @@ const ModernPortfolio = () => {
                       }}
                       className="portfolio-card"
                     >
-                      {/* Project Image */}
+                      {/* Project Logo or Name-based Fallback */}
                       <Link
                         to={`/portfolio/${project.id}`}
                         style={{ textDecoration: 'none', display: 'block' }}
                       >
                         <div
                           style={{
-                            aspectRatio: '2/1',
-                            overflow: 'hidden',
                             position: 'relative',
-                            background: project.logo ? '#f9fafb' : 'transparent',
                             cursor: 'pointer',
+                            background: '#f9fafb',
+                            borderBottom: '1px solid #e5e7eb',
+                            aspectRatio: '16/10',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                           }}
                         >
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: project.logo ? 'contain' : 'cover',
-                              transition: 'transform 0.5s ease',
-                              padding: project.logo ? '20px' : '0',
-                            }}
-                            className="portfolio-image"
+                          <ProjectLogo
+                            name={project.title}
+                            logoUrl={project.logo || ''}
+                            style={{ width: '45%', maxWidth: '200px' }}
                           />
                           {project.featured && (
                             <span

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PlaceholderImage } from '../ui/Placeholders';
+import ProjectLogo from '../ui/ProjectLogo';
 
 /**
  * Modern Portfolio Section
@@ -156,35 +157,22 @@ const ModernPortfolio = ({
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  {/* Project Image */}
+                  {/* Project Logo (image or name-based) in fixed media area */}
                   <div
                     style={{
-                      aspectRatio: project.isLogo ? '2/1' : '16/10',
-                      overflow: 'hidden',
+                      aspectRatio: '16/10',
                       background: 'var(--color-neutral-800)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: project.isLogo ? 'contain' : 'cover',
-                          transition: 'transform var(--transition-slow)',
-                          padding: project.isLogo ? '20px' : '0',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'scale(1.05)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'scale(1)';
-                        }}
-                      />
-                    ) : (
-                      <PlaceholderImage width="100%" height="100%" />
-                    )}
+                    <ProjectLogo
+                      name={project.title}
+                      logoUrl={project.isLogo ? project.image : null}
+                      style={{ width: '45%', maxWidth: '200px' }}
+                    />
                   </div>
 
                   {/* Project Content */}

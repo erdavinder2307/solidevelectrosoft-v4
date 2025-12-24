@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
+import ProjectLogo from '../components/ui/ProjectLogo';
 import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
@@ -52,7 +53,7 @@ const PortfolioDetails = () => {
           images: data.images || [],
           technologies: data.technologies || [],
           client: data.client || '',
-          year: data.createdAt ? new Date(data.createdAt).getFullYear().toString() : new Date().getFullYear().toString(),
+          year: (data.year ? String(data.year) : (data.createdAt ? new Date(data.createdAt).getFullYear().toString() : new Date().getFullYear().toString())),
           status: data.status || 'completed',
           webAppUrl: data.webAppUrl || '',
           androidAppUrl: data.androidAppUrl || '',
@@ -190,30 +191,9 @@ const PortfolioDetails = () => {
                 transition={{ duration: 0.5 }}
                 style={{ textAlign: isMobile ? 'center' : 'left' }}
               >
-                {/* Project Logo */}
-                <div
-                  style={{
-                    width: 'clamp(96px, 18vw, 120px)',
-                    height: 'clamp(96px, 18vw, 120px)',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    background: '#f3f4f6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: isMobile ? '0 auto 24px' : '0 0 24px 0',
-                    border: '2px solid #e5e7eb',
-                  }}
-                >
-                  {mainImage ? (
-                    <img
-                      src={mainImage}
-                      alt={project.title}
-                      style={{ width: '100%', height: '100%', objectFit: project.logo ? 'contain' : 'cover' }}
-                    />
-                  ) : (
-                    <div style={{ fontSize: '48px', color: '#9ca3af' }}>📁</div>
-                  )}
+                {/* Project Logo (image or name-based) */}
+                <div style={{ width: 'clamp(96px, 18vw, 120px)', margin: isMobile ? '0 auto 24px' : '0 0 24px 0' }}>
+                  <ProjectLogo name={project.title} logoUrl={project.logo || ''} />
                 </div>
 
                 {/* Title and Category */}

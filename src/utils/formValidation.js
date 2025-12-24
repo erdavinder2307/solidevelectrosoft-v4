@@ -73,14 +73,10 @@ export const validatePortfolio = (data) => {
   }
 
   // Images validation (at least one required for new portfolios)
-  if ((!data.images || data.images.length === 0) && data.isNew) {
-    errors.images = 'At least one project image is required';
-  }
+  // Images are optional; no validation required
 
   // Thumbnail validation (required for new portfolios)
-  if (!data.thumbnailUrl && data.isNew) {
-    errors.thumbnailUrl = 'Thumbnail image is required';
-  }
+  // Thumbnail is optional; no validation required
 
   // Technologies validation
   if (!Array.isArray(data.technologies) || data.technologies.length === 0) {
