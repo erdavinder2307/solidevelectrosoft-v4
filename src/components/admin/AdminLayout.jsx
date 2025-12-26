@@ -12,6 +12,8 @@ import TeamMembersList from '../../pages/admin/TeamMembersList';
 import TeamMemberForm from '../../pages/admin/TeamMemberForm';
 import StoryImagesList from '../../pages/admin/StoryImagesList';
 import StoryImageForm from '../../pages/admin/StoryImageForm';
+import TestimonialsList from '../../pages/admin/TestimonialsList';
+import TestimonialForm from '../../pages/admin/TestimonialForm';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -32,6 +34,7 @@ const AdminLayout = () => {
     { path: '/admin/products', icon: '📦', label: 'Products' },
     { path: '/admin/portfolios', icon: '💼', label: 'Portfolios' },
     { path: '/admin/team-members', icon: '👥', label: 'Team Members' },
+    { path: '/admin/testimonials', icon: '⭐', label: 'Testimonials' },
     { path: '/admin/story-images', icon: '🖼️', label: 'Story Images' },
     { path: '/admin/clients', icon: '🤝', label: 'Client Engagements' },
   ];
@@ -184,6 +187,9 @@ const AdminLayout = () => {
             <Route path="story-images" element={<StoryImagesList />} />
             <Route path="story-images/new" element={<StoryImageForm />} />
             <Route path="story-images/:id" element={<StoryImageForm />} />
+            <Route path="testimonials" element={<TestimonialsList />} />
+            <Route path="testimonials/new" element={<TestimonialForm />} />
+            <Route path="testimonials/:id" element={<TestimonialForm />} />
             <Route path="clients" element={<ClientEngagements />} />
             <Route path="clients/new" element={<ClientEngagementForm />} />
             <Route path="clients/:id" element={<ClientEngagementForm />} />

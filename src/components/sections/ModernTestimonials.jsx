@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PlaceholderAvatar } from '../ui/Placeholders';
+import { fetchPublishedTestimonials } from '../../services/testimonialsService';
 
 /**
  * Modern Testimonials Section
@@ -13,47 +14,32 @@ const ModernTestimonials = ({
   subtitle = "Don't just take our word for it. Here's what our clients have to say about working with us.",
   testimonials = null,
 }) => {
-  // Using existing testimonial data
-  const defaultTestimonials = [
-    {
-      id: 1,
-      quote: "The work has been completed in smooth process and delivered the high quality software. He has multiple coding skills. Highly recommend to others.",
-      author: "Naga Vankadari",
-      role: "Project Manager",
-      company: "USA",
-      rating: 5,
-      avatar: null, // TODO: Add actual avatar
-    },
-    {
-      id: 2,
-      quote: "As per customer our work was great and relevant to their product. With regard of appreciation client increased per hour rate after six months of commitment.",
-      author: "Prabhakaran S",
-      role: "Technical Lead",
-      company: "Edify Technologies, Dacra Tech Core360",
-      rating: 5,
-      avatar: null,
-    },
-    {
-      id: 3,
-      quote: "As per customer our work is excellent and provided them value. Code quality is great and meeting deadlines for work.",
-      author: "Ngwenze Ayanda",
-      role: "Development Manager",
-      company: "LexisNexis, South Africa",
-      rating: 5,
-      avatar: null,
-    },
-    {
-      id: 3,
-      quote: "The work has been completed in smooth process and delivered the high quality software. He has multiple coding skills. Highly recommend to others.",
-      author: "Nagaraju Bittu",
-      role: "Business Owner",
-      company: "USA",
-      rating: 4,
-      avatar: null,
-    },
-  ];
+  const [loadedTestimonials, setLoadedTestimonials] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const testimonialList = testimonials || defaultTestimonials;
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      if (testimonials && Array.isArray(testimonials)) return; // external prop controls content
+      try {
+        setLoading(true);
+        setError('');
+        const data = await fetchPublishedTestimonials();
+        if (!mounted) return;
+        setLoadedTestimonials(data);
+      } catch (err) {
+        console.error('Testimonials load failed:', err);
+        if (mounted) setError('');
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
+    return () => { mounted = false; };
+  }, [testimonials]);
+
+  const testimonialList = testimonials || loadedTestimonials;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -77,21 +63,34 @@ const ModernTestimonials = ({
     },
   };
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <svg
-        key={i}
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill={i < rating ? 'var(--color-warning)' : 'none'}
-        stroke={i < rating ? 'var(--color-warning)' : 'var(--border-default)'}
-        strokeWidth="2"
-      >
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    ));
+  const renderStars = (rating = 5) => {
+    const r = Math.min(5, Math.max(0, Number(rating) || 5));
+    return (
+      <div role="img" aria-label={`${r} out of 5 stars`} style={{ display: 'inline-flex' }}>
+        {Array.from({ length: 5 }, (_, i) => (
+          <svg
+            key={i}
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill={i < r ? 'var(--color-warning)' : 'none'}
+            stroke={i < r ? 'var(--color-warning)' : 'var(--border-default)'}
+            strokeWidth="2"
+          >
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        ))}
+      </div>
+    );
   };
+
+  if (loading && !testimonials) {
+    return null; // Don't show loading UI unless Firestore fetch is running
+  }
+
+  if (!loading && testimonialList.length === 0) {
+    return null; // Hide section entirely if no testimonials
+  }
 
   return (
     <section className="modern-section-lg">
@@ -217,7 +216,7 @@ const ModernTestimonials = ({
                       padding: 0,
                     }}
                   >
-                    “{testimonial.quote}”
+                    “{testimonial.testimonialText || testimonial.quote}”
                   </blockquote>
                 </div>
 
@@ -231,10 +230,11 @@ const ModernTestimonials = ({
                     borderTop: '1px solid var(--border-light)',
                   }}
                 >
-                  {testimonial.avatar ? (
+                  {testimonial.clientImageUrl ? (
                     <img
-                      src={testimonial.avatar}
-                      alt={testimonial.author}
+                      src={testimonial.clientImageUrl}
+                      alt={testimonial.clientName}
+                      loading="lazy"
                       style={{
                         width: '48px',
                         height: '48px',
@@ -243,7 +243,7 @@ const ModernTestimonials = ({
                       }}
                     />
                   ) : (
-                    <PlaceholderAvatar name={testimonial.author} size={48} />
+                    <PlaceholderAvatar name={testimonial.clientInitials || testimonial.clientName} size={48} />
                   )}
                   <div>
                     <div
@@ -253,7 +253,7 @@ const ModernTestimonials = ({
                         color: 'var(--text-primary)',
                       }}
                     >
-                      {testimonial.author}
+                      {testimonial.clientName || testimonial.author}
                     </div>
                     <div
                       style={{
@@ -261,7 +261,7 @@ const ModernTestimonials = ({
                         color: 'var(--text-tertiary)',
                       }}
                     >
-                      {testimonial.role} • {testimonial.company}
+                      {[testimonial.clientRole || testimonial.role, [testimonial.clientCompany, testimonial.country].filter(Boolean).join(', ')].filter(Boolean).join(' • ')}
                     </div>
                   </div>
                 </div>

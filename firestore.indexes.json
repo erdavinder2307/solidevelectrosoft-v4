@@ -46,6 +46,16 @@
   //     ]
   //   },
   // ]
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "testimonials",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isPublished", "mode": "ASCENDING" },
+        { "fieldPath": "isDeleted", "mode": "ASCENDING" },
+        { "fieldPath": "displayOrder", "mode": "ASCENDING" }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }

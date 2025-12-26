@@ -8,6 +8,9 @@ const AdminDashboard = () => {
     products: 0,
     portfolios: 0,
     clients: 0,
+    teamMembers: 0,
+    testimonials: 0,
+    storyImages: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -17,11 +20,17 @@ const AdminDashboard = () => {
         const productsSnap = await getDocs(collection(db, 'products'));
         const portfoliosSnap = await getDocs(collection(db, 'portfolios'));
         const clientsSnap = await getDocs(collection(db, 'client_engagements'));
+        const teamSnap = await getDocs(collection(db, 'team_members'));
+        const testimonialsSnap = await getDocs(collection(db, 'testimonials'));
+        const storySnap = await getDocs(collection(db, 'story_images'));
 
         setStats({
           products: productsSnap.size,
           portfolios: portfoliosSnap.size,
           clients: clientsSnap.size,
+          teamMembers: teamSnap.size,
+          testimonials: testimonialsSnap.size,
+          storyImages: storySnap.size,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -47,6 +56,27 @@ const AdminDashboard = () => {
       icon: '💼',
       color: '#f59e0b',
       link: '/admin/portfolios',
+    },
+    {
+      title: 'Team Members',
+      value: stats.teamMembers,
+      icon: '👥',
+      color: '#8b5cf6',
+      link: '/admin/team-members',
+    },
+    {
+      title: 'Testimonials',
+      value: stats.testimonials,
+      icon: '⭐',
+      color: '#ec4899',
+      link: '/admin/testimonials',
+    },
+    {
+      title: 'Story Images',
+      value: stats.storyImages,
+      icon: '🖼️',
+      color: '#14b8a6',
+      link: '/admin/story-images',
     },
     {
       title: 'Client Engagements',
@@ -213,6 +243,66 @@ const AdminDashboard = () => {
           >
             <span>➕</span> Add Client Engagement
           </Link>
+          <Link
+            to="/admin/team-members/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 20px',
+              background: '#8b5cf6',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = '#7c3aed')}
+            onMouseLeave={(e) => (e.target.style.background = '#8b5cf6')}
+          >
+            <span>➕</span> Add Team Member
+          </Link>
+          <Link
+            to="/admin/testimonials/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 20px',
+              background: '#ec4899',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = '#db2777')}
+            onMouseLeave={(e) => (e.target.style.background = '#ec4899')}
+          >
+            <span>➕</span> Add Testimonial
+          </Link>
+          <Link
+            to="/admin/story-images/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 20px',
+              background: '#14b8a6',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = '#0d9488')}
+            onMouseLeave={(e) => (e.target.style.background = '#14b8a6')}
+          >
+            <span>➕</span> Add Story Image
+          </Link>
         </div>
       </div>
 
@@ -232,7 +322,10 @@ const AdminDashboard = () => {
         <ul style={{ color: '#6366f1', fontSize: '14px', lineHeight: '1.8', paddingLeft: '20px' }}>
           <li>Add products to showcase your services</li>
           <li>Create portfolios with project images and details</li>
-          <li>Edit existing content by clicking on items in the lists</li>
+          <li>Manage team members with profiles and LinkedIn links</li>
+          <li>Add client testimonials with ratings and images</li>
+          <li>Upload story images for your About page hero section</li>
+          <li>Track client engagements and project history</li>
           <li>Upload images up to 5MB (JPG, PNG, WebP)</li>
         </ul>
       </div>
