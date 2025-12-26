@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import SocialProof from '../components/sections/SocialProof';
@@ -12,6 +13,8 @@ import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
+import { FaLinkedin } from 'react-icons/fa';
+import { db } from '../config/firebase';
 
 // Import team images
 import team1 from '../assets/img/team/team1.png';
@@ -23,13 +26,6 @@ import team6 from '../assets/img/team/team6.png';
 import team7 from '../assets/img/team/team7.png';
 import team8 from '../assets/img/team/team8.png';
 
-// Import individual team member images
-import davinder from '../assets/img/team/davinder.png';
-import anushka from '../assets/img/team/anushka.png';
-import jagriti from '../assets/img/team/jagriti.png';
-import nisha from '../assets/img/team/nisha.png';
-import sheetal from '../assets/img/team/sheetal.png';
-
 import { useAIAssistant } from '../hooks/useAIAssistant';
 
 /**
@@ -38,6 +34,9 @@ import { useAIAssistant } from '../hooks/useAIAssistant';
  */
 const ModernAbout = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamLoading, setTeamLoading] = useState(true);
+  const [teamError, setTeamError] = useState('');
   
   // Random team image for story section
   const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];
@@ -61,6 +60,30 @@ const ModernAbout = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        setTeamLoading(true);
+        setTeamError('');
+        const q = query(
+          collection(db, 'team_members'),
+          where('isVisible', '==', true),
+          orderBy('sortOrder', 'asc')
+        );
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setTeamMembers(data);
+      } catch (err) {
+        console.error('Error fetching team members:', err);
+        setTeamError('Unable to load team at the moment.');
+      } finally {
+        setTeamLoading(false);
+      }
+    };
+
+    fetchTeam();
   }, []);
 
   const stats = [
@@ -115,39 +138,6 @@ const ModernAbout = () => {
     },
   ];
 
-  const team = [
-    {
-      name: 'Davinder Pal',
-      role: 'Director & CTO',
-      image: davinder,
-      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
-    },
-    {
-      name: 'Anushka',
-      role: 'Sales & Finance',
-      image: anushka,
-      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
-    },
-    {
-      name: 'Jagriti',
-      role: 'Software Developer (Remote)',
-      image: jagriti,
-      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
-    },
-    {
-      name: 'Nisha',
-      role: 'Software Developer',
-      image: nisha,
-      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
-    },
-    {
-      name: 'Sheetal',
-      role: 'Software Developer',
-      image: sheetal,
-      linkedin: 'https://www.linkedin.com/company/solidev-electrosoft-opc-private-limited/',
-    },
-  ];
-
   const technologies = [
     { name: 'React', category: 'Frontend' },
     { name: 'Angular', category: 'Frontend' },
@@ -166,6 +156,11 @@ const ModernAbout = () => {
     { name: 'Docker', category: 'DevOps' },
     { name: 'Kubernetes', category: 'DevOps' },
   ];
+
+  const getInitials = (fullName = '') => {
+    const parts = fullName.split(' ').filter(Boolean);
+    return parts.slice(0, 2).map((p) => p[0]?.toUpperCase()).join('');
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -571,9 +566,38 @@ const ModernAbout = () => {
               }}
               className="team-grid"
             >
-              {team.map((member, index) => (
+              {teamLoading && (
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '24px 0' }}>
+                  <div
+                    style={{
+                      display: 'inline-block',
+                      width: '40px',
+                      height: '40px',
+                      border: '4px solid #e5e7eb',
+                      borderTopColor: '#667eea',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite',
+                    }}
+                  />
+                  <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </div>
+              )}
+
+              {teamError && !teamLoading && (
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#b91c1c', padding: '12px' }}>
+                  {teamError}
+                </div>
+              )}
+
+              {!teamLoading && !teamError && teamMembers.length === 0 && (
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#6b7280', padding: '16px' }}>
+                  Team will appear here once added.
+                </div>
+              )}
+
+              {!teamLoading && !teamError && teamMembers.map((member) => (
                 <motion.div
-                  key={index}
+                  key={member.id}
                   variants={itemVariants}
                   style={{
                     textAlign: 'center',
@@ -593,17 +617,28 @@ const ModernAbout = () => {
                       overflow: 'hidden',
                       margin: '0 auto 20px',
                       border: '4px solid #e5e7eb',
+                      background: '#f3f4f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#4b5563',
+                      fontWeight: 700,
+                      fontSize: '20px',
                     }}
                   >
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
+                    {member.profileImageUrl ? (
+                      <img
+                        src={member.profileImageUrl}
+                        alt={member.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    ) : (
+                      getInitials(member.name)
+                    )}
                   </div>
                   <h3
                     style={{
@@ -615,31 +650,30 @@ const ModernAbout = () => {
                   >
                     {member.name}
                   </h3>
-                  <p style={{ fontSize: '14px', color: '#3b82f6', marginBottom: '16px' }}>
+                  <p style={{ fontSize: '14px', color: '#3b82f6', marginBottom: member.linkedinUrl ? '12px' : '0' }}>
                     {member.role}
                   </p>
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '36px',
-                      height: '36px',
-                      background: 'rgba(59, 130, 246, 0.1)',
-                      borderRadius: '50%',
-                      color: '#3b82f6',
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                      <rect x="2" y="9" width="4" height="12"/>
-                      <circle cx="4" cy="4" r="2"/>
-                    </svg>
-                  </a>
+                  {member.linkedinUrl && (
+                    <a
+                      href={member.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '36px',
+                        height: '36px',
+                        background: 'rgba(59, 130, 246, 0.1)',
+                        borderRadius: '50%',
+                        color: '#3b82f6',
+                        transition: 'all 0.3s ease',
+                      }}
+                      aria-label={`View ${member.name} on LinkedIn`}
+                    >
+                      <FaLinkedin size={18} />
+                    </a>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
