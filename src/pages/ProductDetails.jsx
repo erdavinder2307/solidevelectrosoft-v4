@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
+import { SmartImage } from '../components/ui';
 import { db } from '../config/firebase';
 import PlaceholderImage from '../components/products/PlaceholderImage';
 import { trackProductViewed, trackProductScreenshotsOpened, trackExternalLinkClicked } from '../utils/analytics';
@@ -179,10 +180,11 @@ const ProductDetails = () => {
                   }}
                 >
                   {product.logo ? (
-                    <img
+                    <SmartImage
                       src={product.logo}
                       alt={product.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      aspectRatio={1}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }}
                     />
                   ) : (
                     <PlaceholderImage width={120} height={120} />
@@ -371,7 +373,7 @@ const ProductDetails = () => {
                       }}
                     >
                       {currentScreenshot?.url ? (
-                        <img
+                        <SmartImage
                           src={currentScreenshot.url}
                           alt={`Screenshot ${selectedScreenshot + 1}`}
                           style={{
@@ -424,9 +426,10 @@ const ProductDetails = () => {
                             }
                           }}
                         >
-                          <img
+                          <SmartImage
                             src={screenshot.url}
                             alt={`Thumbnail ${idx + 1}`}
+                            aspectRatio={1}
                             style={{
                               width: '100%',
                               height: '100%',

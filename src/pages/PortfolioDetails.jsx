@@ -7,6 +7,7 @@ import { ConfidentialPlaceholder } from '../components/ui';
 import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
+import { SmartImage } from '../components/ui';
 import { db } from '../config/firebase';
 import { trackPortfolioViewed, trackExternalLinkClicked } from '../utils/analytics';
 import { useSEO } from '../hooks/useSEO';
@@ -356,7 +357,7 @@ const PortfolioDetails = () => {
                         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                       }}
                     >
-                      <img
+                      <SmartImage
                         src={currentImage || images[0]}
                         alt={`${project.title} screenshot ${selectedImage + 1}`}
                         style={{
@@ -399,9 +400,10 @@ const PortfolioDetails = () => {
                             }
                           }}
                         >
-                          <img
+                          <SmartImage
                             src={image}
                             alt={`Thumbnail ${idx + 1}`}
+                            aspectRatio={1}
                             style={{
                               width: '100%',
                               height: '100%',
