@@ -21,12 +21,12 @@ const Testimonials = () => {
       location: "(Edify Technologies, Dacra Tech Core360, USA)",
       rating: 5
     },
-    // {
-    //   review: "As per customer our work is excellent and provided them value. Code quality is great and meeting deadlines for work.",
-    //   reviewer: "Ngwenze, Ayanda",
-    //   location: "(Lexis Nexis, South Africa)",
-    //   rating: 5
-    // }
+    {
+      review: "As per customer our work is excellent and provided them value. Code quality is great and meeting deadlines for work.",
+      reviewer: "Ngwenze, Ayanda",
+      location: "(Lexis Nexis, South Africa)",
+      rating: 5
+    }
   ];
 
   // Testimonials carousel settings - single slide with arrows
