@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PlaceholderAvatar } from '../ui/Placeholders';
+import { SmartImage } from '../ui';
 import { fetchPublishedTestimonials } from '../../services/testimonialsService';
 
 /**
@@ -231,14 +232,14 @@ const ModernTestimonials = ({
                   }}
                 >
                   {testimonial.clientImageUrl ? (
-                    <img
+                    <SmartImage
                       src={testimonial.clientImageUrl}
                       alt={testimonial.clientName}
-                      loading="lazy"
+                      aspectRatio={1}
                       style={{
                         width: '48px',
                         height: '48px',
-                        borderRadius: 'var(--radius-full)',
+                        borderRadius: '50%',
                         objectFit: 'cover',
                       }}
                     />

@@ -10,7 +10,7 @@ import ModernPortfolio from '../components/sections/ModernPortfolio';
 import ProductsSection from '../components/sections/ProductsSection';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
-import { FloatingCTA } from '../components/ui';
+import { FloatingCTA, SmartImage } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
 import { db } from '../config/firebase';
@@ -325,9 +325,10 @@ const ModernHome = () => {
               gap: '20px',
             }}
           >
-            <img
+            <SmartImage
               src={galleryModal.product.screenshots[galleryModal.currentIndex].url || galleryModal.product.screenshots[galleryModal.currentIndex]}
               alt={`${galleryModal.product.title || galleryModal.product.name} - Screenshot ${galleryModal.currentIndex + 1}`}
+              aspectRatio={null}
               style={{
                 maxWidth: '100%',
                 maxHeight: 'calc(90vh - 100px)',
@@ -370,24 +371,33 @@ const ModernHome = () => {
               {galleryModal.product.screenshots.map((screenshot, idx) => {
                 const imgUrl = screenshot.url || screenshot;
                 return (
-                  <img
+                  <div
                     key={idx}
-                    src={imgUrl}
-                    alt={`Thumbnail ${idx + 1}`}
                     onClick={() => setGalleryModal(prev => ({ ...prev, currentIndex: idx }))}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = idx === galleryModal.currentIndex ? '1' : '0.6'}
                     style={{
                       width: '60px',
                       height: '60px',
-                      objectFit: 'cover',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       border: idx === galleryModal.currentIndex ? '2px solid #667eea' : '2px solid transparent',
                       opacity: idx === galleryModal.currentIndex ? 1 : 0.6,
                       transition: 'all 0.2s',
+                      overflow: 'hidden',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = idx === galleryModal.currentIndex ? '1' : '0.6'}
-                  />
+                  >
+                    <SmartImage
+                      src={imgUrl}
+                      alt={`Thumbnail ${idx + 1}`}
+                      aspectRatio={1}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </div>
                 );
               })}
             </div>

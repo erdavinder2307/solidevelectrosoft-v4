@@ -1,4 +1,5 @@
 import React from 'react';
+import { SmartImage } from './index';
 
 /**
  * ProjectLogo
@@ -26,9 +27,10 @@ const ProjectLogo = ({ name = 'Project', logoUrl = null, style = {}, className =
   if (logoUrl) {
     return (
       <div className={className} style={containerStyle} aria-label={`Project logo: ${name}`}>
-        <img
+        <SmartImage
           src={logoUrl}
           alt={`${name} logo`}
+          aspectRatio={1}
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px' }}
         />
       </div>

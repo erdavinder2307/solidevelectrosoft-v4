@@ -8,6 +8,7 @@ export { default as FullScreenSlider } from './FullScreenSlider';
 // Modern UI Components
 export { default as FloatingCTA } from './FloatingCTA';
 export { default as ModernContactForm } from './ModernContactForm';
+export { default as SmartImage } from './SmartImage';
 export { 
   PlaceholderImage, 
   PlaceholderCard, 

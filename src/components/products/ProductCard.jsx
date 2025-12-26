@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaApple, FaGooglePlay, FaGlobe, FaDownload, FaGithub, FaCheck } from 'react-icons/fa';
 import PlaceholderImage from './PlaceholderImage';
+import { SmartImage } from '../ui';
 
 /**
  * ProductCard Component
@@ -179,9 +180,10 @@ const ProductCard = ({ product, onViewScreenshots }) => {
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
             {logo ? (
-              <img
+              <SmartImage
                 src={logo}
                 alt={`${displayName} logo`}
+                aspectRatio={1}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -196,9 +198,10 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                 color={color}
               />
             ) : (
-              <img
+              <SmartImage
                 src={icon}
                 alt={`${displayName} icon`}
+                aspectRatio={1}
                 onError={() => setIconError(true)}
                 style={{
                   width: '100%',

@@ -8,7 +8,7 @@ import SocialProof from '../components/sections/SocialProof';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
 import TechStack from '../components/sections/TechStack';
-import { FloatingCTA } from '../components/ui';
+import { FloatingCTA, SmartImage } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
@@ -408,9 +408,10 @@ const ModernAbout = () => {
                   position: 'relative',
                 }}
               >
-                <img
+                <SmartImage
                   src={displayStoryImage}
                   alt="Solidev Team"
+                  aspectRatio={null}
                   style={{
                     width: '100%',
                     borderRadius: '24px',
@@ -427,6 +428,7 @@ const ModernAbout = () => {
                     padding: '24px 32px',
                     borderRadius: '16px',
                     boxShadow: '0 10px 40px rgba(59, 130, 246, 0.3)',
+                    zIndex: 10,
                   }}
                 >
                   <div style={{ fontSize: '2rem', fontWeight: '700' }}>2018</div>
@@ -654,13 +656,15 @@ const ModernAbout = () => {
                     }}
                   >
                     {member.profileImageUrl ? (
-                      <img
+                      <SmartImage
                         src={member.profileImageUrl}
                         alt={member.name}
+                        aspectRatio={1}
                         style={{
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
+                          borderRadius: '50%',
                         }}
                       />
                     ) : (
