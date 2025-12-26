@@ -44,7 +44,9 @@ const ModernAbout = () => {
   // Random team image for story section
   const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];
   const randomTeamImage = teamImages[Math.floor(Math.random() * teamImages.length)];
-  const displayStoryImage = storyImages[0]?.imageUrl || randomTeamImage;
+  const displayStoryImage = storyImages.length > 0 
+    ? storyImages[Math.floor(Math.random() * storyImages.length)].imageUrl 
+    : randomTeamImage;
   
   // SEO Configuration
   useSEO({
