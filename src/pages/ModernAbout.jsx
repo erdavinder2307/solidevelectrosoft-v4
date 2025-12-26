@@ -37,10 +37,14 @@ const ModernAbout = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamLoading, setTeamLoading] = useState(true);
   const [teamError, setTeamError] = useState('');
+  const [storyImages, setStoryImages] = useState([]);
+  const [storyLoading, setStoryLoading] = useState(true);
+  const [storyError, setStoryError] = useState('');
   
   // Random team image for story section
   const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];
   const randomTeamImage = teamImages[Math.floor(Math.random() * teamImages.length)];
+  const displayStoryImage = storyImages[0]?.imageUrl || randomTeamImage;
   
   // SEO Configuration
   useSEO({
@@ -60,6 +64,30 @@ const ModernAbout = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchStoryImages = async () => {
+      try {
+        setStoryLoading(true);
+        setStoryError('');
+        const q = query(
+          collection(db, 'story_images'),
+          where('isVisible', '==', true),
+          orderBy('sortOrder', 'asc')
+        );
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setStoryImages(data);
+      } catch (err) {
+        console.error('Error fetching story images:', err);
+        setStoryError('');
+      } finally {
+        setStoryLoading(false);
+      }
+    };
+
+    fetchStoryImages();
   }, []);
 
   useEffect(() => {
@@ -382,7 +410,7 @@ const ModernAbout = () => {
                 }}
               >
                 <img
-                  src={randomTeamImage}
+                  src={displayStoryImage}
                   alt="Solidev Team"
                   style={{
                     width: '100%',
