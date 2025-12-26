@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
+// Import scroll restoration
+import ScrollRestorationManager from './components/ScrollRestorationManager';
+
 // Import analytics utility
 import { initializeAnalytics, trackPageView } from './utils/analytics';
 
@@ -125,6 +128,9 @@ function App() {
     <AuthProvider>
       <Router basename="/">
         <div className="App">
+          {/* Restore scroll position on back/forward navigation */}
+          <ScrollRestorationManager />
+          
           {/* Track page views on route changes */}
           <RouteTracker />
           <Routes>

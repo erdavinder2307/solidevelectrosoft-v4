@@ -46,10 +46,6 @@ const AISolutionsService = () => {
       ]),
     ],
   });
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const solutions = [
     {

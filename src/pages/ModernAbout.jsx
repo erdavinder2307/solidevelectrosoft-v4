@@ -65,10 +65,7 @@ const ModernAbout = () => {
   });
   
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
-  useEffect(() => {
     const fetchStoryImages = async () => {
       try {
         setStoryLoading(true);

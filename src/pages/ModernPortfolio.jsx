@@ -148,9 +148,6 @@ const ModernPortfolio = () => {
         page_path: '/portfolio',
       });
     }
-
-    // Scroll to top
-    window.scrollTo(0, 0);
   }, []);
 
   const filters = [
