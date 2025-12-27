@@ -10,6 +10,7 @@ import ModernPortfolio from '../components/sections/ModernPortfolio';
 import ProductsSection from '../components/sections/ProductsSection';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
+import FeaturedVideos from '../components/sections/FeaturedVideos';
 import { FloatingCTA, SmartImage } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
@@ -163,6 +164,14 @@ const ModernHome = () => {
 
         {/* Testimonials */}
         <ModernTestimonials />
+{/* Featured Videos */}
+<FeaturedVideos 
+  limit={4} 
+  showViewAll={true}
+  title="Learn from Our Videos"
+  description="Watch tutorials, demos, and technical walkthroughs to understand our solutions better"
+/>
+
 
         {/* Final CTA */}
         <CTABanner

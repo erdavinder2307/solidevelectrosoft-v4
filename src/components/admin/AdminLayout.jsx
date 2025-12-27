@@ -14,6 +14,8 @@ import StoryImagesList from '../../pages/admin/StoryImagesList';
 import StoryImageForm from '../../pages/admin/StoryImageForm';
 import TestimonialsList from '../../pages/admin/TestimonialsList';
 import TestimonialForm from '../../pages/admin/TestimonialForm';
+import VideoList from '../../pages/admin/VideoList';
+import VideoForm from '../../pages/admin/VideoForm';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -33,6 +35,7 @@ const AdminLayout = () => {
     { path: '/admin/dashboard', icon: '📊', label: 'Dashboard' },
     { path: '/admin/products', icon: '📦', label: 'Products' },
     { path: '/admin/portfolios', icon: '💼', label: 'Portfolios' },
+    { path: '/admin/videos', icon: '🎥', label: 'Videos' },
     { path: '/admin/team-members', icon: '👥', label: 'Team Members' },
     { path: '/admin/testimonials', icon: '⭐', label: 'Testimonials' },
     { path: '/admin/story-images', icon: '🖼️', label: 'Story Images' },
@@ -190,6 +193,9 @@ const AdminLayout = () => {
             <Route path="testimonials" element={<TestimonialsList />} />
             <Route path="testimonials/new" element={<TestimonialForm />} />
             <Route path="testimonials/:id" element={<TestimonialForm />} />
+            <Route path="videos" element={<VideoList />} />
+            <Route path="videos/new" element={<VideoForm />} />
+            <Route path="videos/:id/edit" element={<VideoForm />} />
             <Route path="clients" element={<ClientEngagements />} />
             <Route path="clients/new" element={<ClientEngagementForm />} />
             <Route path="clients/:id" element={<ClientEngagementForm />} />

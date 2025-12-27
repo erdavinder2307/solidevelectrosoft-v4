@@ -28,6 +28,9 @@ import {
 import ProductDetails from './pages/ProductDetails';
 import PortfolioDetails from './pages/PortfolioDetails';
 
+// Import videos page
+import Videos from './pages/Videos';
+
 // Import admin components
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -150,6 +153,10 @@ function App() {
             <Route path="/products.html" element={<ModernProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
+            
+            {/* Videos Routes */}
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/videos.html" element={<Videos />} />
             
             {/* Services Routes */}
             <Route path="/services" element={<ServicesPage />} />

@@ -11,6 +11,7 @@ const AdminDashboard = () => {
     teamMembers: 0,
     testimonials: 0,
     storyImages: 0,
+    videos: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +24,7 @@ const AdminDashboard = () => {
         const teamSnap = await getDocs(collection(db, 'team_members'));
         const testimonialsSnap = await getDocs(collection(db, 'testimonials'));
         const storySnap = await getDocs(collection(db, 'story_images'));
+        const videosSnap = await getDocs(collection(db, 'videos'));
 
         setStats({
           products: productsSnap.size,
@@ -31,6 +33,7 @@ const AdminDashboard = () => {
           teamMembers: teamSnap.size,
           testimonials: testimonialsSnap.size,
           storyImages: storySnap.size,
+          videos: videosSnap.size,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -77,6 +80,13 @@ const AdminDashboard = () => {
       icon: '🖼️',
       color: '#14b8a6',
       link: '/admin/story-images',
+    },
+    {
+      title: 'Total Videos',
+      value: stats.videos,
+      icon: '🎥',
+      color: '#8b5cf6',
+      link: '/admin/videos',
     },
     {
       title: 'Client Engagements',
@@ -261,7 +271,7 @@ const AdminDashboard = () => {
             onMouseEnter={(e) => (e.target.style.background = '#7c3aed')}
             onMouseLeave={(e) => (e.target.style.background = '#8b5cf6')}
           >
-            <span>➕</span> Add Team Member
+            <span>➕</span> Add New Video
           </Link>
           <Link
             to="/admin/testimonials/new"

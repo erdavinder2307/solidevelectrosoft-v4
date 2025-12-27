@@ -27,3 +27,4 @@ export { default as SocialProof } from './SocialProof';
 export { default as ProductsSection } from './ProductsSection';
 export { default as TechStack } from './TechStack';
 export { default as ClientEngagements } from './ClientEngagements';
+export { default as FeaturedVideos } from './FeaturedVideos';

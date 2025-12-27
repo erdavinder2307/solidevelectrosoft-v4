@@ -24,6 +24,7 @@ const ModernHeader = () => {
     { path: '/services', label: 'Services', hasDropdown: true },
     { path: '/products', label: 'Products' },
     { path: '/portfolio', label: 'Portfolio' },
+    { path: '/videos', label: 'Video Library' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },
   ];
