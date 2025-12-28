@@ -577,7 +577,7 @@ const ModernAbout = () => {
                 Meet the People Behind the Magic
               </h2>
               <p style={{ fontSize: '1.125rem', color: '#6b7280', lineHeight: '1.7' }}>
-                We work with a group of skilled professionals who bring diverse experience and perspectives to deliver high-quality software solutions.
+                We work with skilled professionals who bring diverse experience and perspectives to deliver high-quality software solutions.
               </p>
             </motion.div>
 
