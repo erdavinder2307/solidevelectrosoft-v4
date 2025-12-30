@@ -128,7 +128,7 @@ const LazyYouTubeVideo = ({
           src={embedUrl}
           title={title}
           frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
           allowFullScreen
           style={{
             position: 'absolute',
@@ -145,6 +145,11 @@ const LazyYouTubeVideo = ({
         {`
           .video-hover-overlay:hover {
             opacity: 1 !important;
+          }
+          /* Allow fullscreen on iOS */
+          iframe {
+            -webkit-playsinline: true;
+            playsinline: true;
           }
         `}
       </style>

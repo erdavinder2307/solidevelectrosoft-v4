@@ -47,9 +47,13 @@ const VideoModal = ({ video, isOpen, onClose }) => {
             background: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(4,6,12,0.95) 70%, rgba(4,6,12,0.98) 100%)',
             zIndex: 10000,
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'center',
+            overflow: 'auto',
             padding: '20px',
+            '@media (max-height: 900px)': {
+              alignItems: 'flex-start',
+            },
           }}
         >
           {/* Close Button */}
@@ -57,7 +61,7 @@ const VideoModal = ({ video, isOpen, onClose }) => {
             onClick={onClose}
             aria-label="Close video"
             style={{
-              position: 'absolute',
+              position: 'fixed',
               top: '20px',
               right: '20px',
               width: '44px',
@@ -94,6 +98,8 @@ const VideoModal = ({ video, isOpen, onClose }) => {
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
+              marginTop: '60px',
+              marginBottom: '20px',
             }}
           >
             {/* Video Player */}
@@ -103,6 +109,7 @@ const VideoModal = ({ video, isOpen, onClose }) => {
                 overflow: 'hidden',
                 boxShadow: '0 30px 80px rgba(0,0,0,0.55)',
                 background: '#000',
+                flexShrink: 0,
               }}
             >
               <LazyYouTubeVideo
@@ -120,15 +127,17 @@ const VideoModal = ({ video, isOpen, onClose }) => {
                 background: 'rgba(15, 23, 42, 0.92)',
                 backdropFilter: 'blur(12px)',
                 borderRadius: '14px',
-                padding: '22px',
+                padding: 'clamp(16px, 4vw, 22px)',
                 color: '#e5e7eb',
                 border: '1px solid rgba(255,255,255,0.06)',
                 boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+                overflowY: 'auto',
+                maxHeight: 'none',
               }}
             >
               <h2
                 style={{
-                  fontSize: '24px',
+                  fontSize: 'clamp(18px, 5vw, 24px)',
                   fontWeight: '700',
                   marginBottom: '10px',
                   lineHeight: '1.3',
@@ -141,7 +150,7 @@ const VideoModal = ({ video, isOpen, onClose }) => {
               {video.description && (
                 <p
                   style={{
-                    fontSize: '14px',
+                    fontSize: 'clamp(13px, 4vw, 14px)',
                     color: '#cbd5e1',
                     lineHeight: '1.7',
                     marginBottom: video.tags?.length > 0 ? '14px' : '0',
