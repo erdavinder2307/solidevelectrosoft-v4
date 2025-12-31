@@ -38,6 +38,13 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     gitRepoUrl,
   } = product;
 
+  // Sort screenshots by displayOrder (ascending) for consistent display
+  const sortedScreenshots = [...screenshots].sort((a, b) => {
+    const orderA = a.displayOrder ?? 999;
+    const orderB = b.displayOrder ?? 999;
+    return orderA - orderB;
+  });
+
   // Use title or name (Firestore uses 'title', legacy might use 'name')
   const displayName = title || name;
   
@@ -671,7 +678,8 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                 <button
                   onClick={() => {
                     if (typeof onViewScreenshots === 'function') {
-                      onViewScreenshots(product);
+                      // Pass product with sorted screenshots
+                      onViewScreenshots({ ...product, screenshots: sortedScreenshots });
                     } else {
                       navigate(`/product/${product.id}`);
                     }

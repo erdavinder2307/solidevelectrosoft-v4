@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "@azure/communication-email": "^1.0.0",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "browser-image-compression": "^2.0.2",
     "firebase": "^12.7.0",
     "firebase-admin": "^13.6.0",

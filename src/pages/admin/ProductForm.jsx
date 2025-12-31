@@ -6,6 +6,131 @@ import { validateProduct, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
 import { FaGlobe, FaGooglePlay, FaApple, FaDownload } from 'react-icons/fa';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// Sortable Screenshot Item Component
+const SortableScreenshot = ({ screenshot, onRemove }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: screenshot.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{
+        ...style,
+        position: 'relative',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        border: '2px solid #e5e7eb',
+        background: 'white',
+        cursor: isDragging ? 'grabbing' : 'grab',
+      }}
+    >
+      {/* Drag Handle */}
+      <div
+        {...attributes}
+        {...listeners}
+        style={{
+          position: 'absolute',
+          top: '8px',
+          left: '8px',
+          background: 'rgba(0, 0, 0, 0.7)',
+          color: 'white',
+          padding: '6px 10px',
+          borderRadius: '6px',
+          fontSize: '12px',
+          fontWeight: '600',
+          cursor: 'grab',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}
+      >
+        <span style={{ fontSize: '14px' }}>⋮⋮</span>
+        <span>#{screenshot.displayOrder}</span>
+      </div>
+
+      <img
+        src={screenshot.url}
+        alt="Screenshot"
+        style={{
+          width: '100%',
+          height: '120px',
+          objectFit: 'cover',
+          pointerEvents: 'none',
+        }}
+      />
+      
+      {/* Platform Badge */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '8px',
+          right: '8px',
+          background: 'rgba(0, 0, 0, 0.7)',
+          color: 'white',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '11px',
+          fontWeight: '600',
+        }}
+      >
+        {screenshot.type === 'both' ? 'Web & Mobile' : screenshot.type === 'web' ? 'Web' : 'Mobile'}
+      </div>
+
+      {/* Remove Button */}
+      <button
+        type="button"
+        onClick={() => onRemove(screenshot.id)}
+        style={{
+          position: 'absolute',
+          bottom: '8px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#ef4444',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          padding: '6px 12px',
+          fontSize: '12px',
+          cursor: 'pointer',
+          fontWeight: '500',
+          zIndex: 10,
+        }}
+      >
+        🗑️ Remove
+      </button>
+    </div>
+  );
+};
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -44,6 +169,16 @@ const ProductForm = () => {
   const [screenshotType, setScreenshotType] = useState('web');
   const [addingAnotherScreenshot, setAddingAnotherScreenshot] = useState(false);
   const [changingLogo, setChangingLogo] = useState(false);
+  const [hasOrderChanges, setHasOrderChanges] = useState(false);
+  const [savingOrder, setSavingOrder] = useState(false);
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     if (isEditing) {
@@ -59,7 +194,10 @@ const ProductForm = () => {
         const normalizedScreenshots = (data.screenshots || []).map((screenshot, index) => ({
           ...screenshot,
           id: screenshot.id || `existing-${index}-${screenshot.url || 'screenshot'}`,
+          displayOrder: screenshot.displayOrder ?? index + 1, // Assign order if missing
         }));
+        // Sort by displayOrder
+        normalizedScreenshots.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
         setFormData({
           ...data,
           screenshots: normalizedScreenshots,
@@ -141,10 +279,11 @@ const ProductForm = () => {
 
   const handleScreenshotSelected = (croppedFile) => {
     const newScreenshot = {
-      id: Date.now(),
+      id: `new-${Date.now()}`,
       url: URL.createObjectURL(croppedFile),
       file: croppedFile,
       type: screenshotType,
+      displayOrder: formData.screenshots.length + 1, // Add to end
     };
     setFormData((prev) => ({
       ...prev,
@@ -159,10 +298,69 @@ const ProductForm = () => {
   };
 
   const handleRemoveScreenshot = (screenshotId) => {
-    setFormData((prev) => ({
-      ...prev,
-      screenshots: prev.screenshots.filter(s => s.id !== screenshotId),
-    }));
+    setFormData((prev) => {
+      const updatedScreenshots = prev.screenshots
+        .filter(s => s.id !== screenshotId)
+        .map((s, index) => ({ ...s, displayOrder: index + 1 }));
+      return {
+        ...prev,
+        screenshots: updatedScreenshots,
+      };
+    });
+    setHasOrderChanges(true);
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setFormData((prev) => {
+        const oldIndex = prev.screenshots.findIndex((s) => s.id === active.id);
+        const newIndex = prev.screenshots.findIndex((s) => s.id === over.id);
+
+        const reorderedScreenshots = arrayMove(prev.screenshots, oldIndex, newIndex);
+        // Update displayOrder based on new positions
+        const updatedScreenshots = reorderedScreenshots.map((screenshot, index) => ({
+          ...screenshot,
+          displayOrder: index + 1,
+        }));
+
+        return {
+          ...prev,
+          screenshots: updatedScreenshots,
+        };
+      });
+      setHasOrderChanges(true);
+    }
+  };
+
+  const handleSaveOrder = async () => {
+    if (!isEditing || !hasOrderChanges) return;
+
+    setSavingOrder(true);
+    try {
+      // Prepare screenshots with updated order
+      const screenshotsToSave = formData.screenshots.map(({ id, url, type, displayOrder, caption }) => ({
+        url,
+        type,
+        displayOrder,
+        ...(caption && { caption }),
+      }));
+
+      await updateDoc(doc(db, 'products', id), {
+        screenshots: screenshotsToSave,
+        updatedAt: new Date().toISOString(),
+      });
+
+      setHasOrderChanges(false);
+      setSuccessMessage('Screenshot order saved successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Error saving screenshot order:', error);
+      setErrors({ general: 'Failed to save screenshot order' });
+    } finally {
+      setSavingOrder(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -207,14 +405,24 @@ const ProductForm = () => {
         if (screenshot.file) {
           try {
             const url = await uploadImageToFirebase(screenshot.file, 'products/screenshots');
-            return { url, type: screenshot.type };
+            return { 
+              url, 
+              type: screenshot.type,
+              displayOrder: screenshot.displayOrder,
+              ...(screenshot.caption && { caption: screenshot.caption }),
+            };
           } catch (error) {
             console.error('Screenshot upload error:', error);
             throw error;
           }
         }
         // If it's an existing screenshot from database
-        return { url: screenshot.url, type: screenshot.type };
+        return { 
+          url: screenshot.url, 
+          type: screenshot.type,
+          displayOrder: screenshot.displayOrder,
+          ...(screenshot.caption && { caption: screenshot.caption }),
+        };
       });
 
       let screenshotsData = [];
@@ -566,65 +774,71 @@ const ProductForm = () => {
 
           {formData.screenshots.length > 0 && (
             <div style={{ marginBottom: '12px' }}>
-              <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '12px' }}>
-                Uploaded Screenshots ({formData.screenshots.length})
-              </h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
-                {formData.screenshots.map((screenshot) => (
-                  <div
-                    key={screenshot.id}
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                marginBottom: '16px',
+                padding: '12px',
+                background: '#f0f9ff',
+                borderRadius: '8px',
+                border: '1px solid #bae6fd',
+              }}>
+                <div>
+                  <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#0369a1', marginBottom: '4px' }}>
+                    📸 Screenshots ({formData.screenshots.length})
+                  </h4>
+                  <p style={{ fontSize: '12px', color: '#0c4a6e' }}>
+                    Drag screenshots to reorder. Click "Save Order" to persist changes.
+                  </p>
+                </div>
+                {hasOrderChanges && (
+                  <button
+                    type="button"
+                    onClick={handleSaveOrder}
+                    disabled={savingOrder}
                     style={{
-                      position: 'relative',
+                      padding: '10px 20px',
+                      background: savingOrder ? '#9ca3af' : '#10b981',
+                      color: 'white',
+                      border: 'none',
                       borderRadius: '8px',
-                      overflow: 'hidden',
-                      border: '2px solid #e5e7eb',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: savingOrder ? 'not-allowed' : 'pointer',
+                      transition: 'background 0.2s',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                     }}
                   >
-                    <img
-                      src={screenshot.url}
-                      alt="Screenshot"
-                      style={{
-                        width: '100%',
-                        height: '100px',
-                        objectFit: 'cover',
-                      }}
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      top: '4px',
-                      right: '4px',
-                      background: 'rgba(0, 0, 0, 0.7)',
-                      color: 'white',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      fontSize: '11px',
-                      fontWeight: '600',
-                    }}>
-                      {screenshot.type === 'both' ? 'Web & Mobile' : screenshot.type === 'web' ? 'Web' : 'Mobile'}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveScreenshot(screenshot.id)}
-                      style={{
-                        position: 'absolute',
-                        bottom: '4px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: '#ef4444',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        padding: '4px 8px',
-                        fontSize: '12px',
-                        cursor: 'pointer',
-                        fontWeight: '500',
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
+                    {savingOrder ? '💾 Saving...' : '💾 Save Order'}
+                  </button>
+                )}
               </div>
+
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={formData.screenshots.map(s => s.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', 
+                    gap: '16px' 
+                  }}>
+                    {formData.screenshots.map((screenshot) => (
+                      <SortableScreenshot
+                        key={screenshot.id}
+                        screenshot={screenshot}
+                        onRemove={handleRemoveScreenshot}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
 
               {formData.screenshots.length < 6 && !addingAnotherScreenshot && (
                 <button
