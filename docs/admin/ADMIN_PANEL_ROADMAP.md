@@ -179,7 +179,7 @@ npm run migrate
 ```
 
 ### Documentation
-- `/MIGRATION_GUIDE.md` - Complete step-by-step guide
+- `../guides/MIGRATION_GUIDE.md` - Complete step-by-step guide
 - Prerequisites, verification steps, troubleshooting
 - Post-migration checklist
 
