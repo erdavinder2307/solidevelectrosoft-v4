@@ -398,9 +398,9 @@ This will populate your Firestore database with 16 initial documents, ready for 
 
 ## 📞 Quick Links
 
-- 📖 [Migration Guide](./MIGRATION_GUIDE.md) - Full step-by-step
+- 📖 [Migration Guide](../guides/MIGRATION_GUIDE.md) - Full step-by-step
 - 📋 [Phase 4 Summary](./PHASE_4_SUMMARY.md) - Quick reference
-- 🗺️ [Admin Panel Roadmap](./ADMIN_PANEL_ROADMAP.md) - All 7 phases
+- 🗺️ [Admin Panel Roadmap](../admin/ADMIN_PANEL_ROADMAP.md) - All 7 phases
 - 🔥 [Firebase Docs](https://firebase.google.com/docs)
 - 🎯 [Firestore Best Practices](https://firebase.google.com/docs/firestore/best-practices)
 

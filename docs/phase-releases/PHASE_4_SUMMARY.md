@@ -20,7 +20,7 @@
   - E-Commerce Platform, Healthcare Portal, AI Customer Support, FinTech Dashboard
 
 #### 3. Documentation
-- **File:** `/MIGRATION_GUIDE.md`
+- **File:** `../guides/MIGRATION_GUIDE.md`
 - **Content:** Complete step-by-step guide with troubleshooting
 
 #### 4. Package Script
