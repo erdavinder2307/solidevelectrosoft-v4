@@ -15,6 +15,8 @@ export { default as ProductDetails } from './ProductDetails';
 export { default as PortfolioDetails } from './PortfolioDetails';
 export { default as Videos } from './Videos';
 export { default as ServicesPage } from './ServicesPage';
+export { default as ModernBlog } from './ModernBlog';
+export { default as BlogDetails } from './BlogDetails';
 
 // Service Detail Pages
 export { default as WebDevelopmentService } from './services/WebDevelopment';

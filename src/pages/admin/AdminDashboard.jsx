@@ -12,6 +12,7 @@ const AdminDashboard = () => {
     testimonials: 0,
     storyImages: 0,
     videos: 0,
+    blogs: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
         const testimonialsSnap = await getDocs(collection(db, 'testimonials'));
         const storySnap = await getDocs(collection(db, 'story_images'));
         const videosSnap = await getDocs(collection(db, 'videos'));
+        const blogsSnap = await getDocs(collection(db, 'blogs'));
 
         setStats({
           products: productsSnap.size,
@@ -34,6 +36,7 @@ const AdminDashboard = () => {
           testimonials: testimonialsSnap.size,
           storyImages: storySnap.size,
           videos: videosSnap.size,
+          blogs: blogsSnap.size,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -87,6 +90,13 @@ const AdminDashboard = () => {
       icon: '🎥',
       color: '#8b5cf6',
       link: '/admin/videos',
+    },
+    {
+      title: 'Total Blogs',
+      value: stats.blogs,
+      icon: '✍️',
+      color: '#06b6d4',
+      link: '/admin/blogs',
     },
     {
       title: 'Client Engagements',
@@ -292,6 +302,26 @@ const AdminDashboard = () => {
             onMouseLeave={(e) => (e.target.style.background = '#ec4899')}
           >
             <span>➕</span> Add Testimonial
+          </Link>
+          <Link
+            to="/admin/blogs/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 20px',
+              background: '#06b6d4',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = '#0891b2')}
+            onMouseLeave={(e) => (e.target.style.background = '#06b6d4')}
+          >
+            <span>➕</span> Add Blog
           </Link>
           <Link
             to="/admin/story-images/new"

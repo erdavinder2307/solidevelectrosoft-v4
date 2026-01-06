@@ -21,7 +21,9 @@ import {
   WebDevelopmentService,
   MobileAppService,
   AISolutionsService,
-  MVPDevelopmentService
+  MVPDevelopmentService,
+  ModernBlog,
+  BlogDetails,
 } from './pages';
 
 // Import product and portfolio details pages
@@ -157,6 +159,10 @@ function App() {
             {/* Videos Routes */}
             <Route path="/videos" element={<Videos />} />
             <Route path="/videos.html" element={<Videos />} />
+
+            {/* Blog Routes */}
+            <Route path="/blog" element={<ModernBlog />} />
+            <Route path="/blog/:slug" element={<BlogDetails />} />
             
             {/* Services Routes */}
             <Route path="/services" element={<ServicesPage />} />

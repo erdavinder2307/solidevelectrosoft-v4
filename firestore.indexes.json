@@ -55,6 +55,24 @@
         { "fieldPath": "isDeleted", "mode": "ASCENDING" },
         { "fieldPath": "displayOrder", "mode": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "blogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "mode": "ASCENDING" },
+        { "fieldPath": "isDeleted", "mode": "ASCENDING" },
+        { "fieldPath": "publishDate", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "blogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slug", "mode": "ASCENDING" },
+        { "fieldPath": "status", "mode": "ASCENDING" },
+        { "fieldPath": "isDeleted", "mode": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

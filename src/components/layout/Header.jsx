@@ -65,6 +65,9 @@ const Header = () => {
                         <li className="">
                           <a href="project.html">Portfolio</a>
                         </li>
+                        <li className={location.pathname.startsWith('/blog') ? 'active' : ''}>
+                          <a href="/blog">Blog</a>
+                        </li>
                         <li className="">
                           <a href="contact.html">Contacts</a>
                         </li>
