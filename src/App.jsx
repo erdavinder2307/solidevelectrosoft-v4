@@ -33,6 +33,10 @@ import PortfolioDetails from './pages/PortfolioDetails';
 // Import videos page
 import Videos from './pages/Videos';
 
+// Import search
+import { SearchProvider } from './contexts/SearchContext';
+import { SearchModal } from './components/search';
+
 // Import admin components
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -51,6 +55,7 @@ import './assets/css/magnific-popup.css';
 import './assets/css/nice-select.css';
 import './assets/css/ui-icon.css';
 import './styles/ai-assistant.css';
+import './styles/search.css';
 import './assets/css/font-awesome-pro.css';
 import './assets/css/spacing.css';
 import './assets/css/style.css';
@@ -131,6 +136,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <SearchProvider>
       <Router basename="/">
         <div className="App">
           {/* Restore scroll position on back/forward navigation */}
@@ -138,6 +144,8 @@ function App() {
           
           {/* Track page views on route changes */}
           <RouteTracker />
+          {/* Global Search Modal */}
+          <SearchModal />
           <Routes>
             {/* Main Routes */}
             <Route path="/" element={<HomePage />} />
@@ -191,6 +199,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      </SearchProvider>
     </AuthProvider>
   );
 }

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIProjectAssistant from '../ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
+import { useSearch } from '../../contexts/SearchContext';
 
 // Import logos for proper Vite bundling
 import logoDark from '../../assets/img/logo/logo 3-bg-dark.png';
@@ -16,6 +17,7 @@ const ModernHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const { openSearch } = useSearch();
   const location = useLocation();
 
   // Navigation items
@@ -221,6 +223,34 @@ const ModernHeader = () => {
 
             {/* Desktop CTA & Mobile Menu Button */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+              {/* Search trigger — desktop */}
+              <button
+                type="button"
+                onClick={openSearch}
+                className="nh-search-btn modern-lg-flex"
+                style={{ display: 'none' }}
+                aria-label="Open search (Ctrl+K)"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <span className="nh-search-label">Search</span>
+                <kbd className="nh-search-shortcut">⌘K</kbd>
+              </button>
+
+              {/* Search trigger — mobile icon */}
+              <button
+                type="button"
+                onClick={openSearch}
+                className="nh-search-icon-btn modern-lg-hidden"
+                aria-label="Open search"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
               {/* Desktop CTA */}
               <button
                 onClick={openAI}
