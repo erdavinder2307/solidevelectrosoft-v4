@@ -1,10 +1,14 @@
 import React from 'react';
 
 const TYPE_OPTIONS = [
-  { value: 'blog', label: 'Blogs' },
-  { value: 'product', label: 'Products' },
-  { value: 'portfolio', label: 'Portfolio' },
-  { value: 'page', label: 'Pages' },
+  { value: 'blog',        label: 'Blogs' },
+  { value: 'product',     label: 'Products' },
+  { value: 'portfolio',   label: 'Portfolio' },
+  { value: 'video',       label: 'Videos' },
+  { value: 'team',        label: 'Team' },
+  { value: 'client',      label: 'Clients' },
+  { value: 'testimonial', label: 'Testimonials' },
+  { value: 'page',        label: 'Pages' },
 ];
 
 /**

@@ -1,12 +1,16 @@
 import React from 'react';
 import ResultCard from './ResultCard';
 
-const SECTION_ORDER = ['blog', 'product', 'portfolio', 'page'];
+const SECTION_ORDER = ['blog', 'product', 'portfolio', 'video', 'team', 'client', 'testimonial', 'page'];
 const SECTION_LABELS = {
-  blog:      'Blogs',
-  product:   'Products',
-  portfolio: 'Portfolio',
-  page:      'Pages',
+  blog:        'Blogs',
+  product:     'Products',
+  portfolio:   'Portfolio',
+  video:       'Videos',
+  team:        'Team Members',
+  client:      'Client Engagements',
+  testimonial: 'Testimonials',
+  page:        'Pages',
 };
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
@@ -64,7 +68,7 @@ function PromptState() {
 /**
  * SearchResults – renders loading skeletons, empty state, or categorised results.
  */
-const SearchResults = ({ query, results, loading, onClose }) => {
+const SearchResults = ({ query, results, loading, onClose, onClientClick }) => {
   // Loading state
   if (loading) {
     return (
@@ -103,6 +107,7 @@ const SearchResults = ({ query, results, loading, onClose }) => {
             result={topResult}
             query={query}
             onClose={onClose}
+            onClientClick={onClientClick}
             featured
           />
         </section>
@@ -128,7 +133,7 @@ const SearchResults = ({ query, results, loading, onClose }) => {
             </h2>
             <div className="sr-list">
               {filtered.map((r) => (
-                <ResultCard key={r.id} result={r} query={query} onClose={onClose} />
+                <ResultCard key={r.id} result={r} query={query} onClose={onClose} onClientClick={onClientClick} />
               ))}
             </div>
           </section>

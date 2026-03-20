@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router-dom';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const TYPE_META = {
-  blog:      { label: 'Blog',      colorClass: 'rc-badge--blog' },
-  product:   { label: 'Product',   colorClass: 'rc-badge--product' },
-  portfolio: { label: 'Portfolio', colorClass: 'rc-badge--portfolio' },
-  page:      { label: 'Page',      colorClass: 'rc-badge--page' },
+  blog:        { label: 'Blog',        colorClass: 'rc-badge--blog' },
+  product:     { label: 'Product',     colorClass: 'rc-badge--product' },
+  portfolio:   { label: 'Portfolio',   colorClass: 'rc-badge--portfolio' },
+  page:        { label: 'Page',        colorClass: 'rc-badge--page' },
+  video:       { label: 'Video',       colorClass: 'rc-badge--video' },
+  team:        { label: 'Team',        colorClass: 'rc-badge--team' },
+  client:      { label: 'Client',      colorClass: 'rc-badge--client' },
+  testimonial: { label: 'Testimonial', colorClass: 'rc-badge--testimonial' },
 };
 
 /**
@@ -68,12 +72,16 @@ function formatDate(iso) {
  *
  * @param {{ result: SearchResult, query: string, onClose: () => void, featured?: boolean }} props
  */
-const ResultCard = ({ result, query, onClose, featured = false }) => {
+const ResultCard = ({ result, query, onClose, onClientClick, featured = false }) => {
   const navigate = useNavigate();
   const meta = TYPE_META[result.type] || { label: result.type, colorClass: '' };
   const formattedDate = formatDate(result.date);
 
   const handleClick = () => {
+    if (result.type === 'client' && onClientClick && result._raw) {
+      onClientClick(result._raw);
+      return;
+    }
     navigate(result.url);
     onClose();
   };

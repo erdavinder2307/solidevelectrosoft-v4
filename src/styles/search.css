@@ -450,10 +450,14 @@
   letter-spacing: 0.06em;
   margin-top: 2px;
 }
-.rc-badge--blog      { background: #ecfdf5; color: #059669; }
-.rc-badge--product   { background: #eff6ff; color: #2563eb; }
-.rc-badge--portfolio { background: #fdf4ff; color: #9333ea; }
-.rc-badge--page      { background: #fff7ed; color: #ea580c; }
+.rc-badge--blog        { background: #ecfdf5; color: #059669; }
+.rc-badge--product     { background: #eff6ff; color: #2563eb; }
+.rc-badge--portfolio   { background: #fdf4ff; color: #9333ea; }
+.rc-badge--page        { background: #fff7ed; color: #ea580c; }
+.rc-badge--video       { background: #fef2f2; color: #dc2626; }
+.rc-badge--team        { background: #f0fdf4; color: #16a34a; }
+.rc-badge--client      { background: #fafaf9; color: #78716c; }
+.rc-badge--testimonial { background: #fdf2fb; color: #a21caf; }
 
 .rc-body {
   flex: 1;

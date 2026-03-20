@@ -1,7 +1,7 @@
 /**
  * Global Search Service
- * Searches across blogs (Firebase), portfolios (Firebase),
- * products (static data), and pages (static list).
+ * Searches across blogs, portfolios, products, videos,
+ * team members, client engagements, testimonials, and pages.
  */
 
 import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
@@ -231,6 +231,134 @@ function getProducts() {
   }));
 }
 
+// ─── Extra Firebase Fetchers ─────────────────────────────────────────────────
+
+async function fetchVideos() {
+  try {
+    const q = query(
+      collection(db, 'videos'),
+      where('isPublished', '==', true),
+      orderBy('displayOrder', 'asc'),
+      limit(100)
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => {
+      const v = { id: d.id, ...d.data() };
+      return {
+        id: v.id,
+        type: 'video',
+        title: v.title || 'Untitled Video',
+        description: v.description || '',
+        slug: v.id,
+        url: '/videos',
+        tags: Array.isArray(v.tags) ? v.tags : v.category ? [v.category] : [],
+        date: null,
+        image: v.youtubeVideoId
+          ? `https://img.youtube.com/vi/${v.youtubeVideoId}/hqdefault.jpg`
+          : null,
+      };
+    });
+  } catch (err) {
+    console.error('[searchService] Failed to fetch videos:', err);
+    return [];
+  }
+}
+
+async function fetchTeamMembers() {
+  try {
+    const q = query(
+      collection(db, 'team_members'),
+      orderBy('sortOrder', 'asc'),
+      limit(100)
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => {
+      const m = { id: d.id, ...d.data() };
+      return {
+        id: m.id,
+        type: 'team',
+        title: m.name || 'Team Member',
+        description: m.shortBio || m.role || '',
+        slug: m.id,
+        url: '/about#team',
+        tags: m.role ? [m.role] : [],
+        date: null,
+        image: m.imageUrl || null,
+      };
+    });
+  } catch (err) {
+    console.error('[searchService] Failed to fetch team members:', err);
+    return [];
+  }
+}
+
+async function fetchClientEngagements() {
+  try {
+    // Avoid composite index: filter by isVisible only, sort client-side
+    const q = query(
+      collection(db, 'client_engagements'),
+      where('isVisible', '==', true)
+    );
+    const snap = await getDocs(q);
+    const docs = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    return docs.map((c) => {
+      const domains = Array.isArray(c.domains)
+        ? c.domains
+        : typeof c.domains === 'string'
+        ? c.domains.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+      return {
+        id: c.id,
+        type: 'client',
+        title: c.companyName || 'Client',
+        description: c.description || (c.projects ? `Projects: ${Array.isArray(c.projects) ? c.projects.join(', ') : c.projects}` : ''),
+        slug: c.id,
+        url: '/portfolio',
+        tags: domains,
+        date: null,
+        image: c.logoUrl || null,
+        // Raw doc kept so the ClientDetailsDialog can render full details
+        _raw: c,
+      };
+    });
+  } catch (err) {
+    console.error('[searchService] Failed to fetch client engagements:', err);
+    return [];
+  }
+}
+
+async function fetchTestimonials() {
+  try {
+    const q = query(
+      collection(db, 'testimonials'),
+      where('isPublished', '==', true),
+      where('isDeleted', '==', false),
+      orderBy('displayOrder', 'asc'),
+      limit(100)
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => {
+      const t = { id: d.id, ...d.data() };
+      return {
+        id: t.id,
+        type: 'testimonial',
+        title: `${t.clientName || 'Client'} — ${t.clientCompany || ''}`.replace(/ — $/, ''),
+        description: t.testimonialText || '',
+        slug: t.id,
+        url: '/',
+        tags: t.clientRole ? [t.clientRole] : [],
+        date: null,
+        image: t.clientImageUrl || null,
+      };
+    });
+  } catch (err) {
+    console.error('[searchService] Failed to fetch testimonials:', err);
+    return [];
+  }
+}
+
 // ─── Cache ────────────────────────────────────────────────────────────────────
 // Cache Firebase results for 5 minutes to avoid repeated reads during a session.
 let _cache = null;
@@ -239,11 +367,22 @@ const CACHE_TTL = 5 * 60 * 1000;
 
 async function getAllItems() {
   if (_cache && Date.now() - _cacheTime < CACHE_TTL) return _cache;
-  const [blogs, portfolios] = await Promise.all([fetchBlogs(), fetchPortfolios()]);
+  const [blogs, portfolios, videos, teamMembers, clients, testimonials] = await Promise.all([
+    fetchBlogs(),
+    fetchPortfolios(),
+    fetchVideos(),
+    fetchTeamMembers(),
+    fetchClientEngagements(),
+    fetchTestimonials(),
+  ]);
   _cache = [
     ...blogs,
     ...portfolios,
     ...getProducts(),
+    ...videos,
+    ...teamMembers,
+    ...clients,
+    ...testimonials,
     ...STATIC_PAGES,
   ];
   _cacheTime = Date.now();

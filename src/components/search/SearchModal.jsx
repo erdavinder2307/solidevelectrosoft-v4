@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSearch } from '../../contexts/SearchContext';
 import SearchInput from './SearchInput';
 import FiltersSidebar from './FiltersSidebar';
-import SearchResults from './SearchResults';
-
+import SearchResults from './SearchResults';import ClientDetailsDialog from '../ui/ClientDetailsDialog';
 const overlayVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.18 } },
@@ -37,6 +36,14 @@ const SearchModal = () => {
 
   const overlayRef = useRef(null);
 
+  // Client engagement dialog
+  const [clientDialog, setClientDialog] = useState({ isOpen: false, client: null });
+  const openClientDialog = (raw) => {
+    closeSearch();
+    setClientDialog({ isOpen: true, client: raw });
+  };
+  const closeClientDialog = () => setClientDialog({ isOpen: false, client: null });
+
   // Click outside to close
   const handleOverlayClick = (e) => {
     if (e.target === overlayRef.current) closeSearch();
@@ -50,6 +57,7 @@ const SearchModal = () => {
   };
 
   return (
+    <>
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -113,6 +121,7 @@ const SearchModal = () => {
                   results={results}
                   loading={loading}
                   onClose={closeSearch}
+                  onClientClick={openClientDialog}
                 />
               </div>
             </div>
@@ -127,6 +136,15 @@ const SearchModal = () => {
         </motion.div>
       )}
     </AnimatePresence>
+
+      {/* Client Engagement detail dialog — rendered outside the animated overlay
+          so it persists even if the search modal is dismissed */}
+      <ClientDetailsDialog
+        isOpen={clientDialog.isOpen}
+        onClose={closeClientDialog}
+        client={clientDialog.client}
+      />
+    </>
   );
 };
 
