@@ -23,7 +23,7 @@ export const initializeAnalytics = () => {
   // gtag is already initialized in App.jsx via script tags
   // This function can be used for additional configuration
   if (typeof window.gtag === 'function') {
-    console.log('GA4 Analytics initialized');
+    if (import.meta.env.DEV) console.log('GA4 Analytics initialized');
     
     // Configure default parameters for all events
     window.gtag('set', {
@@ -31,7 +31,7 @@ export const initializeAnalytics = () => {
       'app_version': '4.0',
     });
   } else {
-    console.warn('GA4 gtag not available - analytics disabled');
+    if (import.meta.env.DEV) console.warn('GA4 gtag not available - analytics disabled');
   }
 };
 
@@ -46,7 +46,7 @@ export const initializeAnalytics = () => {
  */
 export const trackEvent = (eventName, params = {}) => {
   if (typeof window.gtag !== 'function') {
-    console.warn(`Analytics not available - skipping event: ${eventName}`);
+    if (import.meta.env.DEV) console.warn(`Analytics not available - skipping event: ${eventName}`);
     return;
   }
 
@@ -55,7 +55,7 @@ export const trackEvent = (eventName, params = {}) => {
 
   try {
     window.gtag('event', eventName, sanitizedParams);
-    console.log(`GA4 Event: ${eventName}`, sanitizedParams);
+    if (import.meta.env.DEV) console.log(`GA4 Event: ${eventName}`, sanitizedParams);
   } catch (error) {
     console.error('Error tracking event:', error);
   }
@@ -78,7 +78,7 @@ export const trackPageView = (path, title) => {
         page_title: title,
       });
     });
-    console.log(`GA4 Page View: ${path} - ${title}`);
+    if (import.meta.env.DEV) console.log(`GA4 Page View: ${path} - ${title}`);
   } catch (error) {
     console.error('Error tracking page view:', error);
   }

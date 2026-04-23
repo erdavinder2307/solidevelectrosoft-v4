@@ -114,7 +114,7 @@ const Header = () => {
       {/* Offcanvas Area */}
       <div 
         className={`offcanvas__area off-canvas-bg ${isOffcanvasOpen ? 'opened' : ''}`}
-        data-background="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/Sidearea-bg-img.webp"
+        data-background="/src/assets/img/bg/Sidearea-bg-img.webp"
       >
         <div className="offcanvas_area-logo">
           <span className="offcanvas__close-btn">

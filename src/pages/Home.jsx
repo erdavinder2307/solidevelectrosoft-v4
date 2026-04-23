@@ -26,19 +26,10 @@ import {
 
 const Home = () => {
   useEffect(() => {
-    // Add Google Analytics
-    const gtag = (...args) => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(args);
-    };
-
-    // Initialize gtag
-    gtag('js', new Date());
-    gtag('config', 'GT-KFNT9K9X');
-    gtag('config', 'GT-MBLK2C2Q');
-
-    // Conversion event
-    gtag('event', 'conversion', {'send_to': 'GT-KFNT9K9X/MgRjCLiyz4EbEIWQz78_'});
+    // Fire Ads conversion after GA is ready (correct tag ID)
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', { send_to: 'AW-17044850693/MgRjCLiyz4EbEIWQz78_' });
+    }
 
     // Set document class
     document.documentElement.className = 'no-js';

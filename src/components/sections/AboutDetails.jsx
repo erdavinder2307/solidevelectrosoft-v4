@@ -99,7 +99,7 @@ const AboutDetails = () => {
               <div className="about-page-img">
                 <img 
                   loading="lazy"
-                  src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/about-page.webp"
+                  src="/src/assets/img/about/about-page.webp"
                   alt="About Solidev Electrosoft"
                   style={{
                     width: '100%',
@@ -112,7 +112,7 @@ const AboutDetails = () => {
               <div className="dots-img">
                 <img 
                   loading="lazy"
-                  src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/dot.webp"
+                  src="/src/assets/img/about/dot.webp"
                   alt="Decorative dots"
                   style={{
                     maxWidth: '100%',

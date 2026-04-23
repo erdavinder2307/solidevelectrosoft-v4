@@ -14,16 +14,16 @@ class SendEmailService {
     try {
       if (environment.azure.primaryConnectionString) {
         this.emailClient = new EmailClient(environment.azure.primaryConnectionString);
-        console.log('Primary Azure email client initialized');
+        if (import.meta.env.DEV) console.log('Primary Azure email client initialized');
       }
       
       if (environment.azure.secondaryConnectionString) {
         this.secondaryEmailClient = new EmailClient(environment.azure.secondaryConnectionString);
-        console.log('Secondary Azure email client initialized');
+        if (import.meta.env.DEV) console.log('Secondary Azure email client initialized');
       }
       
       if (!this.emailClient && !this.secondaryEmailClient) {
-        console.warn('No Azure Communication Services connection strings configured');
+        if (import.meta.env.DEV) console.warn('No Azure Communication Services connection strings configured');
       }
     } catch (error) {
       console.error('Failed to initialize email clients:', error);
@@ -56,10 +56,10 @@ class SendEmailService {
     // Try primary client first, then fallback to secondary
     for (let i = 0; i < clients.length; i++) {
       try {
-        console.log(`Attempting to send email using ${i === 0 ? 'primary' : 'secondary'} client`);
+        if (import.meta.env.DEV) console.log(`Attempting to send email using ${i === 0 ? 'primary' : 'secondary'} client`);
         const poller = await clients[i].beginSend(emailMessage);
         const response = await poller.pollUntilDone();
-        console.log(`Email sent successfully using ${i === 0 ? 'primary' : 'secondary'} client`);
+        if (import.meta.env.DEV) console.log(`Email sent successfully using ${i === 0 ? 'primary' : 'secondary'} client`);
         return response;
       } catch (error) {
         console.error(`Failed to send email using ${i === 0 ? 'primary' : 'secondary'} client:`, error);
@@ -70,7 +70,7 @@ class SendEmailService {
         }
         
         // Otherwise, continue to next client
-        console.log('Trying next available client...');
+        if (import.meta.env.DEV) console.log('Trying next available client...');
       }
     }
   }
@@ -81,7 +81,7 @@ class SendEmailService {
     // Check if any Azure client is configured
     const hasAzureClient = this.emailClient || this.secondaryEmailClient;
     if (!hasAzureClient) {
-      console.warn('No Azure Communication Services clients configured, using fallback');
+      if (import.meta.env.DEV) console.warn('No Azure Communication Services clients configured, using fallback');
       return this.sendEmailFallback(formData);
     }
 
@@ -110,7 +110,7 @@ class SendEmailService {
       console.error('Failed to send contact form email with all Azure clients:', error);
       
       // Try fallback on Azure failure
-      console.warn('All Azure email clients failed, trying fallback method');
+      if (import.meta.env.DEV) console.warn('All Azure email clients failed, trying fallback method');
       return this.sendEmailFallback(formData);
     }
   }
@@ -251,7 +251,7 @@ class SendEmailService {
   // Fallback method for environments without Azure setup
   async sendEmailFallback(formData) {
     // This could integrate with other services like EmailJS, Formspree, etc.
-    console.log('Email fallback - Form data:', formData);
+    if (import.meta.env.DEV) console.log('Email fallback - Form data:', formData);
     
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));

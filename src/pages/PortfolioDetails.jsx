@@ -95,20 +95,12 @@ const PortfolioDetails = () => {
 
   useEffect(() => {
     if (project) {
-      // GA4 EVENT: Track portfolio project view
-      // Business value: Measures which projects generate the most interest
-      trackPortfolioViewed(project.id);
-    }
-  }, [project]);
-
-  useEffect(() => {
-    if (project) {
       document.title = `${project.title} | Solidev Electrosoft`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute('content', project.description || '');
       }
-      
+
       // GA4 EVENT: Track portfolio project view
       // Business value: Measures which projects generate the most interest
       trackPortfolioViewed(project.id);

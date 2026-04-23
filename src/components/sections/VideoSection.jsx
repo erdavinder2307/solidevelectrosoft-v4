@@ -6,7 +6,7 @@ const VideoSection = () => {
       <div className="row">
         <video controls className="col-md-8">
         <source
-          src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/about/Introduction-Video-Upwork.mp4"
+          src="/src/assets/img/about/Introduction-Video-Upwork.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.

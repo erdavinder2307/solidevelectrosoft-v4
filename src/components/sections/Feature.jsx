@@ -4,7 +4,7 @@ const Feature = () => {
       <div 
         className="tp-fe-bg d-none d-lg-block"
         style={{
-          backgroundImage: "url(https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/coding.webp)"
+          backgroundImage: "url(/src/assets/img/bg/newbgimage/coding.webp)"
         }}
       ></div>
       <div className="container-fluid p-0">

@@ -77,39 +77,20 @@ function RouteTracker() {
   const location = useLocation();
 
   useEffect(() => {
-    // Track page view on route change
-    const pageTitle = document.title;
-    trackPageView(location.pathname, pageTitle);
-  }, [location]);
+    // Defer by one tick so the incoming page's useEffect sets document.title first
+    const timer = setTimeout(() => {
+      trackPageView(location.pathname, document.title);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   return null;
 }
 
 function App() {
   useEffect(() => {
-    // Add Google Analytics scripts
-    const script1 = document.createElement('script');
-    script1.async = true;
-    script1.src = 'https://www.googletagmanager.com/gtag/js?id=GT-KFNT9K9X';
-    document.head.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.async = true;
-    script2.src = 'https://www.googletagmanager.com/gtag/js?id=GT-MBLK2C2Q';
-    document.head.appendChild(script2);
-
-    // Initialize dataLayer and gtag
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-
-    gtag('js', new Date());
-    gtag('config', 'GT-KFNT9K9X');
-    gtag('config', 'GT-MBLK2C2Q');
-    // Google Ads configuration
-    gtag('config', 'AW-17044850693');
-
-    // Initialize analytics utility
+    // GA scripts are loaded in index.html — no dynamic injection needed here.
+    // Initialize analytics utility (sets app_name / app_version defaults).
     initializeAnalytics();
 
     // Set document class
@@ -120,12 +101,6 @@ function App() {
     if (currentYearElement) {
       currentYearElement.textContent = new Date().getFullYear();
     }
-
-    return () => {
-      // Cleanup scripts on unmount
-      if (document.head.contains(script1)) document.head.removeChild(script1);
-      if (document.head.contains(script2)) document.head.removeChild(script2);
-    };
   }, []);
 
   // Choose components based on feature flag

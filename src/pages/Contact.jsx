@@ -93,15 +93,6 @@ const Contact = () => {
     }
   };
   useEffect(() => {
-    const gtag = (...args) => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(args);
-    };
-
-    gtag('js', new Date());
-    gtag('config', 'GT-KFNT9K9X');
-    gtag('config', 'GT-MBLK2C2Q');
-
     document.documentElement.className = 'no-js';
     document.title = 'Contact Solidev Electrosoft - Get In Touch for Web & Mobile Development Services';
 
@@ -130,7 +121,7 @@ const Contact = () => {
 
       <Breadcrumb
         title="Contacts"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/contact-v2.webp"
+        backgroundImage="/src/assets/img/bg/newbgimage/contact.webp"
       />
 
       <main>

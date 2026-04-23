@@ -65,7 +65,7 @@ const Testimonials = () => {
             <div 
               className="tp-testimonial"
               style={{
-                backgroundImage: "url(https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/testimonial.jpg)"
+                backgroundImage: "url(/src/assets/img/bg/testimonial.jpg)"
               }}
             >
               <div className="tp-testimonial-active pt-25 pb-25">

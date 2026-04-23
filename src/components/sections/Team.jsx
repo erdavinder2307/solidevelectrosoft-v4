@@ -4,35 +4,35 @@ import Slider from 'react-slick';
 const Team = () => {
   const teamMembersOriginal = [
     {
-      image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/director-pic.webp",
+      image: "/src/assets/img/team/director-pic.webp",
       name: "Davinder Pal",
       position: "Director",
       github: "https://github.com/erdavinder2307",
       linkedin: "https://www.linkedin.com/in/davinder-pal-906a53166/"
     },
     {
-      image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/nisha-pic.webp",
+      image: "/src/assets/img/team/nisha-pic.webp",
       name: "Nisha Kumari Yadav",
       position: "Software Executive",
       github: "https://github.com/Solidev-Electrosoft",
       linkedin: "https://in.linkedin.com/in/nisha-kumari-yadav-50a145204"
     },
     {
-      image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/sales-finance-excutive-pic.webp",
+      image: "/src/assets/img/team/sales-finance-excutive-pic.webp",
       name: "Anushka Singh",
       position: "Sales Finance Executive",
       github: "#",
       linkedin: "https://www.linkedin.com/in/anushka-singh-931215240"
     },
     {
-      image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/Jagriti-pic.webp",
+      image: "/src/assets/img/team/Jagriti-pic.webp",
       name: "Jagriti Khantwal",
       position: "Software Developer",
       github: "https://github.com/jagriti03",
       linkedin: "https://www.linkedin.com/in/jagriti-khantwal-614718102"
     },
     {
-      image: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/team/software-developer-sy.webp",
+      image: "/src/assets/img/team/software-developer-sy.webp",
       name: "Sheetal Yadav",
       position: "Software Developer",
       github: "https://github.com/sheetal-sy",

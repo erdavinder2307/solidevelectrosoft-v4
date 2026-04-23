@@ -132,7 +132,7 @@ export const deleteImageFromFirebase = async (imageUrl) => {
 
     // This requires a backend function for security
     // For now, we'll handle deletion via Firestore cleanup
-    console.log('Image deletion would be handled by backend cleanup');
+    if (import.meta.env.DEV) console.log('Image deletion would be handled by backend cleanup');
   } catch (error) {
     console.error('Image deletion error:', error);
     // Don't throw - allow the operation to continue

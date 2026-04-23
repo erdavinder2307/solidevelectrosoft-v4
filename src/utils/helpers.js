@@ -177,25 +177,25 @@ export const storage = {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      console.warn('Could not save to localStorage:', error);
+      if (import.meta.env.DEV) console.warn('Could not save to localStorage:', error);
     }
   },
-  
+
   get: (key) => {
     try {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : null;
     } catch (error) {
-      console.warn('Could not read from localStorage:', error);
+      if (import.meta.env.DEV) console.warn('Could not read from localStorage:', error);
       return null;
     }
   },
-  
+
   remove: (key) => {
     try {
       localStorage.removeItem(key);
     } catch (error) {
-      console.warn('Could not remove from localStorage:', error);
+      if (import.meta.env.DEV) console.warn('Could not remove from localStorage:', error);
     }
   }
 };

@@ -97,14 +97,7 @@ const ModernProducts = () => {
     }
     canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/products');
 
-    // Analytics
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_title: 'Products',
-        page_location: window.location.href,
-        page_path: '/products',
-      });
-    }
+    // page_view is handled globally by RouteTracker in App.jsx
   }, []);
 
   const stats = [

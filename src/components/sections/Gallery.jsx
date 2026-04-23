@@ -3,12 +3,12 @@ import Slider from 'react-slick';
 
 const Gallery = () => {
   const quotesOriginal = [
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote1.webp",
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote2.webp",
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote3.webp",
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote4.webp",
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote5.webp",
-    "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/quote6.webp"
+    "/src/assets/img/bg/newbgimage/quote1.webp",
+    "/src/assets/img/bg/newbgimage/quote2.webp",
+    "/src/assets/img/bg/newbgimage/quote3.webp",
+    "/src/assets/img/bg/newbgimage/quote4.webp",
+    "/src/assets/img/bg/newbgimage/quote5.webp",
+    "/src/assets/img/bg/newbgimage/quote6.webp"
   ];
 
   // Shuffle array randomly

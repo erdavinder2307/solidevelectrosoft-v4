@@ -34,21 +34,7 @@ const Videos = () => {
     }
     canonical.href = `${window.location.origin}/videos`;
 
-    // Analytics
-    if (window.gtag) {
-      window.gtag('event', 'page_view', {
-        page_title: 'Videos',
-        page_location: window.location.href,
-        page_path: '/videos',
-        send_to: 'GT-KFNT9K9X'
-      });
-      window.gtag('event', 'page_view', {
-        page_title: 'Videos',
-        page_location: window.location.href,
-        page_path: '/videos',
-        send_to: 'GT-MBLK2C2Q'
-      });
-    }
+    // page_view is handled globally by RouteTracker in App.jsx
   }, []);
 
   const loadData = async () => {

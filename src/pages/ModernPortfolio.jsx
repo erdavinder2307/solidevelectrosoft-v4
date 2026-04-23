@@ -140,14 +140,7 @@ const ModernPortfolio = () => {
     }
     canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/portfolio');
 
-    // Analytics
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_title: 'Portfolio',
-        page_location: window.location.href,
-        page_path: '/portfolio',
-      });
-    }
+    // page_view is handled globally by RouteTracker in App.jsx
   }, []);
 
   const filters = [

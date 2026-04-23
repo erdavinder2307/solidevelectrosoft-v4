@@ -6,7 +6,6 @@
 
 import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import productsData from '../data/productsData';
 
 // ─── Static Pages ─────────────────────────────────────────────────────────────
 const STATIC_PAGES = [
@@ -216,19 +215,34 @@ async function fetchPortfolios() {
   }
 }
 
-function getProducts() {
-  return productsData.map((p) => ({
-    id: p.id,
-    type: 'product',
-    title: p.name,
-    description: p.description || '',
-    slug: p.id,
-    url: `/product/${p.id}`,
-    tags: p.platform || [],
-    date: null,
-    image: p.icon || null,
-    status: p.status || null,
-  }));
+async function fetchProducts() {
+  try {
+    const q = query(
+      collection(db, 'products'),
+      where('status', '!=', 'archived'),
+      orderBy('status'),
+      orderBy('createdAt', 'desc')
+    );
+    const snap = await getDocs(q);
+    const docs = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    return docs.map((p) => ({
+      id: p.id,
+      type: 'product',
+      title: p.title || p.name || 'Product',
+      description: p.description || p.shortDescription || '',
+      slug: p.id,
+      url: `/product/${p.id}`,
+      tags: Array.isArray(p.platform) ? p.platform : p.tags || [],
+      date: null,
+      image: p.icon || p.iconUrl || null,
+      status: p.status || null,
+    }));
+  } catch (err) {
+    console.error('[searchService] Failed to fetch products:', err);
+    return [];
+  }
 }
 
 // ─── Extra Firebase Fetchers ─────────────────────────────────────────────────
@@ -367,9 +381,10 @@ const CACHE_TTL = 5 * 60 * 1000;
 
 async function getAllItems() {
   if (_cache && Date.now() - _cacheTime < CACHE_TTL) return _cache;
-  const [blogs, portfolios, videos, teamMembers, clients, testimonials] = await Promise.all([
+  const [blogs, portfolios, products, videos, teamMembers, clients, testimonials] = await Promise.all([
     fetchBlogs(),
     fetchPortfolios(),
+    fetchProducts(),
     fetchVideos(),
     fetchTeamMembers(),
     fetchClientEngagements(),
@@ -378,7 +393,7 @@ async function getAllItems() {
   _cache = [
     ...blogs,
     ...portfolios,
-    ...getProducts(),
+    ...products,
     ...videos,
     ...teamMembers,
     ...clients,

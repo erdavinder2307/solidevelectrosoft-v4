@@ -28,23 +28,23 @@ const Project = () => {
       link: "/project-details",
       images: [
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp",
+          src: "/src/assets/project-image/Dracra-tech.webp",
           alt: "Core360 Project Image 1"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech1.webp",
+          src: "/src/assets/project-image/dracratech1.webp",
           alt: "Core360 Project Image 2"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech2.webp",
+          src: "/src/assets/project-image/dracratech2.webp",
           alt: "Core360 Project Image 3"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech3.webp",
+          src: "/src/assets/project-image/dracratech3.webp",
           alt: "Core360 Project Image 4"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech4.webp",
+          src: "/src/assets/project-image/dracratech4.webp",
           alt: "Core360 Project Image 5"
         }
       ]
@@ -55,15 +55,15 @@ const Project = () => {
       link: "/project-details1",
       images: [
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp",
+          src: "/src/assets/project-image/brind.webp",
           alt: "Briind Project Image 1"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind.webp",
+          src: "/src/assets/project-image/briind.webp",
           alt: "Briind Project Image 2"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind1.webp",
+          src: "/src/assets/project-image/briind1.webp",
           alt: "Briind Project Image 3"
         }
       ]
@@ -74,23 +74,23 @@ const Project = () => {
       link: "/project-details2",
       images: [
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp",
+          src: "/src/assets/project-image/fairway.webp",
           alt: "Fairway First Project Image 1"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway1.webp",
+          src: "/src/assets/project-image/fairway1.webp",
           alt: "Fairway First Project Image 2"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway2.webp",
+          src: "/src/assets/project-image/fairway2.webp",
           alt: "Fairway First Project Image 3"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway3.webp",
+          src: "/src/assets/project-image/fairway3.webp",
           alt: "Fairway First Project Image 4"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway4.webp",
+          src: "/src/assets/project-image/fairway4.webp",
           alt: "Fairway First Project Image 5"
         }
       ]
@@ -101,19 +101,19 @@ const Project = () => {
       link: "/project-details3",
       images: [
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp",
+          src: "/src/assets/project-image/Lexisnexis.webp",
           alt: "Lexis Convey Project Image 1"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis1.webp",
+          src: "/src/assets/project-image/lexisnexis1.webp",
           alt: "Lexis Convey Project Image 2"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis2.webp",
+          src: "/src/assets/project-image/lexisnexis2.webp",
           alt: "Lexis Convey Project Image 3"
         },
         {
-          src: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis3.webp",
+          src: "/src/assets/project-image/lexisnexis3.webp",
           alt: "Lexis Convey Project Image 4"
         }
       ]
@@ -132,16 +132,6 @@ const Project = () => {
     setCurrentImageIndex(0);
   };
   useEffect(() => {
-    // Analytics helpers (gtag already added in App)
-    const gtag = (...args) => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(args);
-    };
-
-    gtag('js', new Date());
-    gtag('config', 'GT-KFNT9K9X');
-    gtag('config', 'GT-MBLK2C2Q');
-
     // Document class
     document.documentElement.className = 'no-js';
 
@@ -178,7 +168,7 @@ const Project = () => {
 
       <Breadcrumb
         title="Our Projects"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/work-v2.webp"
+        backgroundImage="/src/assets/img/bg/newbgimage/work.webp"
       />
 
       <main>
@@ -194,11 +184,11 @@ const Project = () => {
                     onClick={() => openSlider('core360', 0)}
                   >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Dracra-tech.webp" alt="Core360 Project Image 1" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech1.webp" alt="Core360 Project Image 2" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech2.webp" alt="Core360 Project Image 3" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech3.webp" alt="Core360 Project Image 4" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/dracratech4.webp" alt="Core360 Project Image 5" />
+                      <img loading="lazy" src="/src/assets/project-image/Dracra-tech.webp" alt="Core360 Project Image 1" />
+                      <img loading="lazy" src="/src/assets/project-image/dracratech1.webp" alt="Core360 Project Image 2" />
+                      <img loading="lazy" src="/src/assets/project-image/dracratech2.webp" alt="Core360 Project Image 3" />
+                      <img loading="lazy" src="/src/assets/project-image/dracratech3.webp" alt="Core360 Project Image 4" />
+                      <img loading="lazy" src="/src/assets/project-image/dracratech4.webp" alt="Core360 Project Image 5" />
                     </figure>
                   </div>
                 </div>
@@ -217,9 +207,9 @@ const Project = () => {
                     onClick={() => openSlider('briind', 0)}
                   >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/brind.webp" alt="Briind Project Image 1" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind.webp" alt="Briind Project Image 2" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/briind1.webp" alt="Briind Project Image 3" />
+                      <img loading="lazy" src="/src/assets/project-image/brind.webp" alt="Briind Project Image 1" />
+                      <img loading="lazy" src="/src/assets/project-image/briind.webp" alt="Briind Project Image 2" />
+                      <img loading="lazy" src="/src/assets/project-image/briind1.webp" alt="Briind Project Image 3" />
                     </figure>
                   </div>
                 </div>
@@ -238,11 +228,11 @@ const Project = () => {
                     onClick={() => openSlider('fairway', 0)}
                   >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway.webp" alt="Fairway First Project Image 1" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway1.webp" alt="Fairway First Project Image 2" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway2.webp" alt="Fairway First Project Image 3" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway3.webp" alt="Fairway First Project Image 4" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/fairway4.webp" alt="Fairway First Project Image 5" />
+                      <img loading="lazy" src="/src/assets/project-image/fairway.webp" alt="Fairway First Project Image 1" />
+                      <img loading="lazy" src="/src/assets/project-image/fairway1.webp" alt="Fairway First Project Image 2" />
+                      <img loading="lazy" src="/src/assets/project-image/fairway2.webp" alt="Fairway First Project Image 3" />
+                      <img loading="lazy" src="/src/assets/project-image/fairway3.webp" alt="Fairway First Project Image 4" />
+                      <img loading="lazy" src="/src/assets/project-image/fairway4.webp" alt="Fairway First Project Image 5" />
                     </figure>
                   </div>
                 </div>
@@ -261,10 +251,10 @@ const Project = () => {
                     onClick={() => openSlider('lexis', 0)}
                   >
                     <figure>
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/Lexisnexis.webp" alt="Lexis Convey Project Image 1" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis1.webp" alt="Lexis Convey Project Image 2" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis2.webp" alt="Lexis Convey Project Image 3" />
-                      <img loading="lazy" src="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/project-image/lexisnexis3.webp" alt="Lexis Convey Project Image 4" />
+                      <img loading="lazy" src="/src/assets/project-image/Lexisnexis.webp" alt="Lexis Convey Project Image 1" />
+                      <img loading="lazy" src="/src/assets/project-image/lexisnexis1.webp" alt="Lexis Convey Project Image 2" />
+                      <img loading="lazy" src="/src/assets/project-image/lexisnexis2.webp" alt="Lexis Convey Project Image 3" />
+                      <img loading="lazy" src="/src/assets/project-image/lexisnexis3.webp" alt="Lexis Convey Project Image 4" />
                     </figure>
                   </div>
                 </div>

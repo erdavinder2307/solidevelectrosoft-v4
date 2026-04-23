@@ -104,15 +104,6 @@ const Faq = () => {
   };
   
   useEffect(() => {
-    const gtag = (...args) => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(args);
-    };
-
-    gtag('js', new Date());
-    gtag('config', 'GT-KFNT9K9X');
-    gtag('config', 'GT-MBLK2C2Q');
-
     document.documentElement.className = 'no-js';
   }, []);
 
@@ -125,7 +116,7 @@ const Faq = () => {
 
       <Breadcrumb
         title="FAQ"
-        backgroundImage="https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/qn-v2.webp"
+        backgroundImage="/src/assets/img/bg/newbgimage/qn.webp"
       />
 
       <main>

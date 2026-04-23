@@ -102,7 +102,7 @@ export const uploadImageWithThumbnail = async (file, uploadFunction, folder = 'i
       });
       thumbnailUrl = await uploadFunction(thumbnailFile, `${folder}/thumbnails`);
     } catch (thumbError) {
-      console.warn('Thumbnail generation failed, continuing without thumbnail:', thumbError);
+      if (import.meta.env.DEV) console.warn('Thumbnail generation failed, continuing without thumbnail:', thumbError);
       // Continue with original image as fallback
       thumbnailUrl = originalUrl;
     }

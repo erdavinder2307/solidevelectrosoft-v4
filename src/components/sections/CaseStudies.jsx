@@ -21,7 +21,7 @@ const CaseStudies = ({
       client: 'LexisNexis',
       title: 'Modernizing Legal Conveyancing',
       description: 'How we helped LexisNexis transform their legacy conveyancing system into a modern, cloud-native platform.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/lexisnexis.webp',
+      image: '/src/assets/img/client/lexisnexis.webp',
       metrics: [
         { value: '40%', label: 'Faster Processing' },
         { value: '99.9%', label: 'Uptime' },
@@ -35,7 +35,7 @@ const CaseStudies = ({
       client: 'Fairway Independent',
       title: 'Mobile-First Mortgage Experience',
       description: 'Building a seamless mobile experience for mortgage applications and customer communications.',
-      image: 'https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/client/fairway-independent.webp',
+      image: '/src/assets/img/client/fairway-independent.webp',
       metrics: [
         { value: '4.8★', label: 'App Store Rating' },
         { value: '50K+', label: 'Active Users' },

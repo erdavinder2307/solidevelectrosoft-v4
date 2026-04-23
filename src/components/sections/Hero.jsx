@@ -6,22 +6,22 @@ import "slick-carousel/slick/slick-theme.css";
 const Hero = () => {
   const slides = [
     {
-      background: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/lightforyourbusiness.webp",
+      background: "/src/assets/img/bg/newbgimage/lightforyourbusiness.webp",
       subtitle: "Steps in the Right Direction...",
       title: "Your Imagination <br> Meets Creativity"
     },
     {
-      background: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/hero-bg.webp",
+      background: "/src/assets/img/bg/newbgimage/hero-bg.webp",
       subtitle: "Steps in the Right Direction...",
       title: "Best Alternative <br> Solutions"
     },
     {
-      background: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/growth-of-company.webp",
+      background: "/src/assets/img/bg/newbgimage/growth-of-company.webp",
       subtitle: "Steps in the Right Direction...",
       title: "Web Design Solutions <br>For Any Channel"
     },
     {
-      background: "https://solidevwebsitev3.blob.core.windows.net/solidev/assets/img/bg/newbgimage/team-work.webp",
+      background: "/src/assets/img/bg/newbgimage/team-work.webp",
       subtitle: "Steps in the Right Direction...",
       title: "World Class Team <br> Build for You"
     }
