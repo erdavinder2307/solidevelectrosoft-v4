@@ -1,7 +1,7 @@
 {
   "routes": [
     {
-      "route": "/admin*",
+      "route": "/admin",
       "headers": {
         "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet"
       }
