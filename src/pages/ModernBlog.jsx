@@ -4,10 +4,11 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { FloatingCTA } from '../components/ui';
 import { useAIAssistant } from '../hooks/useAIAssistant';
-import { pageSEO, generateTitle, generateCanonicalURL } from '../utils/seo';
+import { useSEO } from '../hooks/useSEO';
 import * as blogsService from '../services/blogsService';
 import BlogCard from '../components/blog/BlogCard';
 import CTABanner from '../components/sections/CTABanner';
+import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 const ModernBlog = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
@@ -16,13 +17,21 @@ const ModernBlog = () => {
   const [page, setPage] = useState(1);
   const [perPage] = useState(6);
 
-  useEffect(() => {
-    document.title = generateTitle('Blog');
-    const canonical = document.querySelector("link[rel='canonical']");
-    if (canonical) canonical.setAttribute('href', generateCanonicalURL('/blog'));
-    const metaDesc = document.querySelector("meta[name='description']");
-    if (metaDesc) metaDesc.setAttribute('content', 'Latest articles and updates from Solidev Electrosoft. Insights on software development, AI, and digital transformation.');
+  useSEO({
+    title: 'Blog',
+    description: 'Latest articles and updates from Solidev Electrosoft. Insights on software development, AI, and digital transformation.',
+    canonical: '/blog',
+    ogType: 'website',
+    schemas: [
+      ...getCommonSchemas(),
+      generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
+        { name: 'Blog', url: 'https://www.solidevelectrosoft.com/blog' },
+      ]),
+    ],
+  });
 
+  useEffect(() => {
     fetchBlogs();
   }, []);
 

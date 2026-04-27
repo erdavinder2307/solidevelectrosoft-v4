@@ -1,4 +1,18 @@
 {
+  "routes": [
+    {
+      "route": "/admin*",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet"
+      }
+    },
+    {
+      "route": "/admin/*",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet"
+      }
+    }
+  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [

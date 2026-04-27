@@ -35,11 +35,11 @@ const About = () => {
     // Add canonical URL
     const existingCanonical = document.querySelector('link[rel="canonical"]');
     if (existingCanonical) {
-      existingCanonical.href = 'https://solidevelectrosoft.com/about.html';
+      existingCanonical.href = 'https://www.solidevelectrosoft.com/about';
     } else {
       const canonical = document.createElement('link');
       canonical.rel = 'canonical';
-      canonical.href = 'https://solidevelectrosoft.com/about.html';
+      canonical.href = 'https://www.solidevelectrosoft.com/about';
       document.head.appendChild(canonical);
     }
 
@@ -57,17 +57,17 @@ const About = () => {
     };
 
     addMetaTag('og:type', 'website');
-    addMetaTag('og:url', 'https://solidevelectrosoft.com/about.html');
+    addMetaTag('og:url', 'https://www.solidevelectrosoft.com/about');
     addMetaTag('og:title', 'About Solidev Electrosoft - Professional Software Development');
     addMetaTag('og:description', 'Learn about Solidev Electrosoft, a leading software development company established in 2018. Expert team specializing in .NET, Angular, React, Unity 3D.');
-    addMetaTag('og:image', '/src/assets/img/logo/logo.png');
+    addMetaTag('og:image', 'https://www.solidevelectrosoft.com/assets/img/logo.png');
 
     // Twitter meta tags
     addMetaTag('twitter:card', 'summary_large_image');
-    addMetaTag('twitter:url', 'https://solidevelectrosoft.com/about.html');
+    addMetaTag('twitter:url', 'https://www.solidevelectrosoft.com/about');
     addMetaTag('twitter:title', 'About Solidev Electrosoft - Professional Software Development');
     addMetaTag('twitter:description', 'Learn about Solidev Electrosoft, a leading software development company established in 2018.');
-    addMetaTag('twitter:image', '/src/assets/img/logo/logo.png');
+    addMetaTag('twitter:image', 'https://www.solidevelectrosoft.com/assets/img/logo.png');
 
     return () => {
       // Cleanup meta tags if needed

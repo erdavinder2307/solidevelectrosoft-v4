@@ -76,30 +76,6 @@ const ModernProducts = () => {
     }
   };
 
-  useEffect(() => {
-    // SEO
-    document.title = 'Our Products | Solidev Electrosoft - Apps & Platforms';
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 
-        'Explore our portfolio of apps and platforms. From healthcare systems to fitness trackers, ' +
-        'discover the products we\'ve built for real users worldwide.'
-      );
-    }
-
-    // Canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/products');
-
-    // page_view is handled globally by RouteTracker in App.jsx
-  }, []);
-
   const stats = [
     { 
       number: products.length, 

@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, addDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { validatePortfolio, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase, generateThumbnail } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
 import { FaGlobe, FaGooglePlay, FaApple } from 'react-icons/fa';
+
+const slugify = (s) =>
+  (s || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const PortfolioForm = () => {
   const { id } = useParams();
@@ -19,8 +26,14 @@ const PortfolioForm = () => {
 
   const [formData, setFormData] = useState({
     projectName: '',
+    slug: '',
     client: '',
     description: '',
+    metaTitle: '',
+    metaDescription: '',
+    canonicalUrl: '',
+    ogImage: '',
+    seoKeywords: '',
     category: '',
     logo: '',
     logoFile: null,
@@ -54,6 +67,14 @@ const PortfolioForm = () => {
     }
   }, [id, isEditing]);
 
+  const isPortfolioSlugUnique = async (slugCandidate) => {
+    const q = query(collection(db, 'portfolios'), where('slug', '==', slugCandidate), limit(1));
+    const snap = await getDocs(q);
+    if (snap.empty) return true;
+    if (isEditing && snap.docs[0].id === id) return true;
+    return false;
+  };
+
   const fetchPortfolio = async () => {
     try {
       const docSnap = await getDoc(doc(db, 'portfolios', id));
@@ -61,6 +82,12 @@ const PortfolioForm = () => {
         const data = docSnap.data();
         setFormData({
           ...data,
+          slug: data.slug || '',
+          metaTitle: data.metaTitle || '',
+          metaDescription: data.metaDescription || '',
+          canonicalUrl: data.canonicalUrl || '',
+          ogImage: data.ogImage || '',
+          seoKeywords: data.seoKeywords || '',
           images: data.images || [],
           imageFiles: [],
           technologies: data.technologies || [],
@@ -85,7 +112,10 @@ const PortfolioForm = () => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: name === 'slug' ? slugify(value) : (type === 'checkbox' ? checked : value),
+      ...(name === 'projectName' && (!isEditing || !prev.slug || prev.slug === slugify(prev.projectName))
+        ? { slug: slugify(value) }
+        : {}),
     }));
     if (errors[name]) {
       setErrors((prev) => ({
@@ -179,13 +209,34 @@ const PortfolioForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const normalizedSlug = slugify(formData.slug || formData.projectName);
+
     const validationErrors = validatePortfolio({
       ...formData,
       isNew: !isEditing,
     });
 
+    if (!normalizedSlug) {
+      validationErrors.slug = 'Slug is required';
+    }
+
     if (hasErrors(validationErrors)) {
       setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const slugAvailable = await isPortfolioSlugUnique(normalizedSlug);
+      if (!slugAvailable) {
+        setErrors({
+          slug: 'Slug already exists. Please choose a unique slug.',
+          general: 'Please resolve SEO slug conflicts before saving.',
+        });
+        return;
+      }
+    } catch (slugError) {
+      console.error('Error checking portfolio slug uniqueness:', slugError);
+      setErrors({ general: 'Failed to validate slug uniqueness. Please try again.' });
       return;
     }
 
@@ -239,8 +290,14 @@ const PortfolioForm = () => {
 
       const dataToSave = {
         projectName: formData.projectName,
+        slug: normalizedSlug,
         client: formData.client,
         description: formData.description,
+        metaTitle: formData.metaTitle || '',
+        metaDescription: formData.metaDescription || '',
+        canonicalUrl: formData.canonicalUrl || '',
+        ogImage: formData.ogImage || '',
+        seoKeywords: formData.seoKeywords || '',
         category: formData.category,
         logo: logoUrl,
         images: allImages,
@@ -419,6 +476,145 @@ const PortfolioForm = () => {
               {errors.description}
             </p>
           )}
+        </div>
+
+        {/* SEO Fields */}
+        <div style={{ marginBottom: '24px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '10px', background: '#f9fafb' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+            SEO Settings
+          </h3>
+
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              URL Slug
+            </label>
+            <input
+              type="text"
+              name="slug"
+              value={formData.slug}
+              onChange={handleInputChange}
+              placeholder="e.g., enterprise-crm-platform"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: errors.slug ? '2px solid #ef4444' : '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+            {errors.slug && (
+              <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                {errors.slug}
+              </p>
+            )}
+          </div>
+
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              Meta Title
+            </label>
+            <input
+              type="text"
+              name="metaTitle"
+              value={formData.metaTitle}
+              onChange={handleInputChange}
+              placeholder="Optimized portfolio page title"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              Meta Description
+            </label>
+            <textarea
+              name="metaDescription"
+              value={formData.metaDescription}
+              onChange={handleInputChange}
+              rows="3"
+              placeholder="Short summary shown in search snippets"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+                fontFamily: 'inherit',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              Canonical URL (optional)
+            </label>
+            <input
+              type="text"
+              name="canonicalUrl"
+              value={formData.canonicalUrl}
+              onChange={handleInputChange}
+              placeholder="https://www.solidevelectrosoft.com/portfolio/your-slug"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              Open Graph Image URL
+            </label>
+            <input
+              type="text"
+              name="ogImage"
+              value={formData.ogImage}
+              onChange={handleInputChange}
+              placeholder="https://.../og-image.png"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', color: '#374151' }}>
+              SEO Keywords (optional)
+            </label>
+            <input
+              type="text"
+              name="seoKeywords"
+              value={formData.seoKeywords}
+              onChange={handleInputChange}
+              placeholder="keyword1, keyword2, keyword3"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
         </div>
 
         {/* Category */}

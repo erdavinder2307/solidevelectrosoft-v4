@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import ProjectLogo from '../components/ui/ProjectLogo';
 import { ConfidentialPlaceholder } from '../components/ui';
@@ -12,6 +12,7 @@ import { db } from '../config/firebase';
 import { trackPortfolioViewed, trackExternalLinkClicked } from '../utils/analytics';
 import { useSEO } from '../hooks/useSEO';
 import { generateBreadcrumbSchema } from '../utils/structuredData';
+import { siteConfig } from '../utils/seo';
 
 /**
  * Portfolio Details Page
@@ -25,6 +26,17 @@ const PortfolioDetails = () => {
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+
+  const resolveCanonicalPath = (canonicalUrl, fallbackPath) => {
+    if (!canonicalUrl) return fallbackPath;
+    if (canonicalUrl.startsWith('/')) return canonicalUrl;
+    try {
+      const parsed = new URL(canonicalUrl);
+      return `${parsed.pathname}${parsed.search}`;
+    } catch {
+      return fallbackPath;
+    }
+  };
 
   useEffect(() => {
     fetchProject();
@@ -42,13 +54,28 @@ const PortfolioDetails = () => {
     try {
       setLoading(true);
       setError(null);
-      const docSnap = await getDoc(doc(db, 'portfolios', id));
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      let projectDoc = await getDoc(doc(db, 'portfolios', id));
+
+      if (!projectDoc.exists()) {
+        const bySlug = query(collection(db, 'portfolios'), where('slug', '==', id), limit(1));
+        const slugResult = await getDocs(bySlug);
+        if (!slugResult.empty) {
+          projectDoc = slugResult.docs[0];
+        }
+      }
+
+      if (projectDoc.exists()) {
+        const data = projectDoc.data();
         const projectData = {
-          id: docSnap.id,
+          id: projectDoc.id,
           title: data.projectName,
+          slug: data.slug || '',
           description: data.description,
+          metaTitle: data.metaTitle || '',
+          metaDescription: data.metaDescription || '',
+          canonicalUrl: data.canonicalUrl || '',
+          ogImage: data.ogImage || '',
+          seoKeywords: data.seoKeywords || '',
           category: data.category,
           logo: data.logo || '',
           thumbnailUrl: data.thumbnailUrl || '',
@@ -78,34 +105,39 @@ const PortfolioDetails = () => {
   };
 
   // Dynamic SEO based on project data
+  const projectPath = project ? `/portfolio/${project.slug || project.id}` : '/portfolio';
+
   useSEO({
-    title: project ? `${project.title} | Portfolio` : 'Portfolio Project',
-    description: project?.description || 'View this software development project from Solidev Electrosoft',
-    canonical: `/portfolio/${id}`,
-    ogImage: project?.thumbnailUrl || project?.logo,
+    title: project ? (project.metaTitle || `${project.title} | Portfolio`) : 'Portfolio Project',
+    description: project?.metaDescription || project?.description || 'View this software development project from Solidev Electrosoft',
+    keywords: project?.seoKeywords || undefined,
+    canonical: project ? resolveCanonicalPath(project.canonicalUrl, projectPath) : '/portfolio',
+    ogImage: project?.ogImage || project?.thumbnailUrl || project?.logo,
     ogType: 'article',
     schemas: project ? [
       generateBreadcrumbSchema([
-        { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
-        { name: 'Portfolio', url: 'https://www.solidevelectrosoft.com/portfolio' },
-        { name: project.title, url: `https://www.solidevelectrosoft.com/portfolio/${id}` },
+        { name: 'Home', url: `${siteConfig.siteUrl}/` },
+        { name: 'Portfolio', url: `${siteConfig.siteUrl}/portfolio` },
+        { name: project.title, url: `${siteConfig.siteUrl}${resolveCanonicalPath(project.canonicalUrl, projectPath)}` },
       ]),
     ] : [],
   });
 
   useEffect(() => {
     if (project) {
-      document.title = `${project.title} | Solidev Electrosoft`;
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', project.description || '');
-      }
-
       // GA4 EVENT: Track portfolio project view
       // Business value: Measures which projects generate the most interest
       trackPortfolioViewed(project.id);
     }
   }, [project]);
+
+  useEffect(() => {
+    if (!project) return;
+    const preferredSegment = project.slug || project.id;
+    if (id !== preferredSegment) {
+      navigate(`/portfolio/${preferredSegment}`, { replace: true });
+    }
+  }, [id, navigate, project]);
 
   if (loading) {
     return (
@@ -599,6 +631,35 @@ const PortfolioDetails = () => {
             </div>
           </section>
         )}
+
+        {/* Related Links for SEO and lead flow */}
+        <section
+          style={{
+            padding: 'clamp(24px, 6vw, 48px) 16px',
+            borderTop: '1px solid #e5e7eb',
+            background: '#ffffff',
+          }}
+        >
+          <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: 'clamp(18px, 4vw, 20px)', fontWeight: '600', color: '#111827', marginBottom: '18px' }}>
+              Explore More Work
+            </h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <Link to="/services" style={{ padding: '10px 14px', borderRadius: '999px', background: '#eef2ff', color: '#4338ca', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                Explore Development Services
+              </Link>
+              <Link to="/products" style={{ padding: '10px 14px', borderRadius: '999px', background: '#ecfdf5', color: '#166534', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                Discover Product Portfolio
+              </Link>
+              <Link to="/blog" style={{ padding: '10px 14px', borderRadius: '999px', background: '#ecfeff', color: '#155e75', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                Read Engineering Insights
+              </Link>
+              <Link to="/contact" style={{ padding: '10px 14px', borderRadius: '999px', background: '#fff7ed', color: '#9a3412', textDecoration: 'none', fontSize: '13px', fontWeight: '600' }}>
+                Start a Similar Project
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <ModernFooter />
     </>

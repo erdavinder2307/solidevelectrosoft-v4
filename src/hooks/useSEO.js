@@ -8,7 +8,7 @@
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { generateCanonicalURL, generateTitle } from '../utils/seo';
+import { generateCanonicalURL, generateTitle, siteConfig } from '../utils/seo';
 
 /**
  * Set document title
@@ -95,6 +95,7 @@ export const useSEO = (config = {}) => {
       schemas = [],
       robots = 'index, follow',
     } = config;
+    const resolvedOgImage = ogImage || siteConfig.defaultOgImage;
     
     // Set title
     if (title) {
@@ -125,23 +126,24 @@ export const useSEO = (config = {}) => {
     if (description) {
       setMetaTag('og:description', description, true);
     }
+    setMetaTag('og:site_name', siteConfig.siteName, true);
     setMetaTag('og:type', ogType, true);
+    setMetaTag('og:locale', 'en_US', true);
     setMetaTag('og:url', canonicalURL, true);
-    if (ogImage) {
-      setMetaTag('og:image', ogImage, true);
-    }
+    setMetaTag('og:image', resolvedOgImage, true);
+    setMetaTag('og:image:width', '1200', true);
+    setMetaTag('og:image:height', '630', true);
     
     // Twitter Card tags
     setMetaTag('twitter:card', 'summary_large_image');
+    setMetaTag('twitter:site', siteConfig.twitterHandle);
     if (title) {
       setMetaTag('twitter:title', generateTitle(title));
     }
     if (description) {
       setMetaTag('twitter:description', description);
     }
-    if (ogImage) {
-      setMetaTag('twitter:image', ogImage);
-    }
+    setMetaTag('twitter:image', resolvedOgImage);
     
     // Inject structured data
     if (schemas && schemas.length > 0) {

@@ -75,6 +75,7 @@ const ModernHome = () => {
         const data = doc.data();
         return {
           id: doc.id,
+          slug: data.slug || '',
           title: data.projectName || 'Untitled Project',
           category: mapCategory(data.category),
           description: data.description || '',
@@ -82,7 +83,7 @@ const ModernHome = () => {
           isLogo: Boolean(data.logo),
           status: data.status || 'completed',
           tags: data.technologies || [],
-          link: `/portfolio/${doc.id}`,
+          link: `/portfolio/${data.slug || doc.id}`,
           displayOrder: data.displayOrder || 0,
         };
       });

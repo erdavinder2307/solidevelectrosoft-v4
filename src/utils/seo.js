@@ -13,6 +13,7 @@
 export const siteConfig = {
   siteName: 'Solidev Electrosoft',
   siteUrl: 'https://www.solidevelectrosoft.com',
+  defaultOgImage: 'https://www.solidevelectrosoft.com/assets/img/og-image.png',
   defaultTitle: 'Solidev Electrosoft | Custom Software Development & AI Solutions',
   titleTemplate: '%s | Solidev Electrosoft',
   defaultDescription: 'Expert custom software development, mobile apps, AI solutions, and MVP development. 10+ years experience building scalable applications for startups and enterprises.',
@@ -137,6 +138,7 @@ export const pageSEO = {
  */
 export const generateTitle = (pageTitle) => {
   if (!pageTitle) return siteConfig.defaultTitle;
+  if (pageTitle.includes(`| ${siteConfig.siteName}`)) return pageTitle;
   return `${pageTitle} | ${siteConfig.siteName}`;
 };
 
@@ -158,7 +160,7 @@ export const generateOGTags = (pageData) => {
     'og:title': pageData.title || siteConfig.defaultTitle,
     'og:description': pageData.description || siteConfig.defaultDescription,
     'og:url': generateCanonicalURL(pageData.canonical || '/'),
-    'og:image': pageData.image || `${siteConfig.siteUrl}/assets/img/og-image.png`,
+    'og:image': pageData.image || siteConfig.defaultOgImage,
   };
 };
 
@@ -171,7 +173,7 @@ export const generateTwitterTags = (pageData) => {
     'twitter:site': siteConfig.twitterHandle,
     'twitter:title': pageData.title || siteConfig.defaultTitle,
     'twitter:description': pageData.description || siteConfig.defaultDescription,
-    'twitter:image': pageData.image || `${siteConfig.siteUrl}/assets/img/og-image.png`,
+    'twitter:image': pageData.image || siteConfig.defaultOgImage,
   };
 };
 

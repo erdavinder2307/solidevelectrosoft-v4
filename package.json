@@ -6,9 +6,11 @@
   "homepage": "https://erdavinder2307.github.io/solidevelectrosoft-v4",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generateSitemap.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "sitemap": "node scripts/generateSitemap.js",
     "migrate": "node scripts/migrateInitialData.js",
     "migrate:logo": "node scripts/migrateProductLogo.js"
   },

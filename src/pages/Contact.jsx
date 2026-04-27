@@ -95,6 +95,8 @@ const Contact = () => {
   useEffect(() => {
     document.documentElement.className = 'no-js';
     document.title = 'Contact Solidev Electrosoft - Get In Touch for Web & Mobile Development Services';
+    const canonicalUrl = 'https://www.solidevelectrosoft.com/contact';
+    const socialImage = 'https://www.solidevelectrosoft.com/assets/img/og-image.png';
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
@@ -103,13 +105,36 @@ const Contact = () => {
 
     const existingCanonical = document.querySelector('link[rel="canonical"]');
     if (existingCanonical) {
-      existingCanonical.href = 'https://solidevelectrosoft.com/contact.html';
+      existingCanonical.href = canonicalUrl;
     } else {
       const c = document.createElement('link');
       c.rel = 'canonical';
-      c.href = 'https://solidevelectrosoft.com/contact.html';
+      c.href = canonicalUrl;
       document.head.appendChild(c);
     }
+
+    const setMeta = (key, value, isProperty = true) => {
+      const attr = isProperty ? 'property' : 'name';
+      let meta = document.querySelector(`meta[${attr}="${key}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, key);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', value);
+    };
+
+    setMeta('og:type', 'website');
+    setMeta('og:site_name', 'Solidev Electrosoft');
+    setMeta('og:url', canonicalUrl);
+    setMeta('og:title', document.title);
+    setMeta('og:description', 'Contact Solidev Electrosoft for professional web development, mobile app development, and software solutions. Located in Mohali, India. Get a free consultation today!');
+    setMeta('og:image', socialImage);
+    setMeta('twitter:card', 'summary_large_image', false);
+    setMeta('twitter:title', document.title, false);
+    setMeta('twitter:description', 'Contact Solidev Electrosoft for professional web development, mobile app development, and software solutions. Located in Mohali, India. Get a free consultation today!', false);
+    setMeta('twitter:image', socialImage, false);
+    setMeta('twitter:url', canonicalUrl, false);
   }, []);
 
   return (

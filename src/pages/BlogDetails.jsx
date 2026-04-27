@@ -4,26 +4,55 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import { FloatingCTA } from '../components/ui';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { useSEO } from '../hooks/useSEO';
 import * as blogsService from '../services/blogsService';
 import { getReadingTime, formatReadingTime } from '../utils/blogUtils';
 import { siteConfig } from '../utils/seo';
-
-const safeSetMeta = (name, content) => {
-  if (!content) return;
-  let el = document.querySelector(`meta[name=\"${name}\"]`);
-  if (!el) {
-    el = document.createElement('meta');
-    el.setAttribute('name', name);
-    document.head.appendChild(el);
-  }
-  el.setAttribute('content', content);
-};
+import { generateArticleSchema, generateBreadcrumbSchema } from '../utils/structuredData';
 
 const BlogDetails = () => {
   const { slug } = useParams();
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const canonicalPath = blog?.slug ? `/blog/${blog.slug}` : '/blog';
+  const description = blog?.metaDescription || blog?.excerpt || siteConfig.defaultDescription;
+  const ogImage = blog?.ogImage || blog?.coverImageUrl;
+  const publishDate = blog?.publishDate
+    ? (blog.publishDate.seconds
+      ? new Date(blog.publishDate.seconds * 1000).toISOString()
+      : new Date(blog.publishDate).toISOString())
+    : undefined;
+  const modifiedDate = blog?.updatedAt
+    ? (blog.updatedAt.seconds
+      ? new Date(blog.updatedAt.seconds * 1000).toISOString()
+      : new Date(blog.updatedAt).toISOString())
+    : publishDate;
+
+  useSEO({
+    title: blog?.metaTitle || blog?.title || 'Blog',
+    description,
+    canonical: canonicalPath,
+    ogImage,
+    ogType: 'article',
+    schemas: blog
+      ? [
+          generateArticleSchema({
+            title: blog.title,
+            description,
+            image: ogImage,
+            publishDate,
+            modifiedDate,
+          }),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: `${siteConfig.siteUrl}/` },
+            { name: 'Blog', url: `${siteConfig.siteUrl}/blog` },
+            { name: blog.title, url: `${siteConfig.siteUrl}/blog/${blog.slug}` },
+          ]),
+        ]
+      : [],
+  });
 
   useEffect(() => {
     fetch();
@@ -38,60 +67,6 @@ const BlogDetails = () => {
         return;
       }
       setBlog(b);
-
-      // SEO
-      document.title = b.metaTitle || b.title || siteConfig.defaultTitle;
-      safeSetMeta('description', b.metaDescription || b.excerpt || siteConfig.defaultDescription);
-      
-      // Open Graph
-      const ogTitleEl = document.querySelector("meta[property='og:title']");
-      if (!ogTitleEl) {
-        const meta = document.createElement('meta');
-        meta.setAttribute('property', 'og:title');
-        meta.setAttribute('content', b.ogTitle || b.title);
-        document.head.appendChild(meta);
-      } else ogTitleEl.setAttribute('content', b.ogTitle || b.title);
-
-      const ogDescEl = document.querySelector("meta[property='og:description']");
-      if (!ogDescEl) {
-        const meta = document.createElement('meta');
-        meta.setAttribute('property', 'og:description');
-        meta.setAttribute('content', b.ogDescription || b.excerpt);
-        document.head.appendChild(meta);
-      } else ogDescEl.setAttribute('content', b.ogDescription || b.excerpt);
-
-      const ogImageEl = document.querySelector("meta[property='og:image']");
-      if (!ogImageEl && (b.ogImage || b.coverImageUrl)) {
-        const meta = document.createElement('meta');
-        meta.setAttribute('property', 'og:image');
-        meta.setAttribute('content', b.ogImage || b.coverImageUrl);
-        document.head.appendChild(meta);
-      } else if (ogImageEl) ogImageEl.setAttribute('content', b.ogImage || b.coverImageUrl || '');
-
-      // canonical
-      const canonical = document.querySelector("link[rel='canonical']");
-      if (canonical) canonical.setAttribute('href', `${siteConfig.siteUrl}/blog/${b.slug}`);
-
-      // JSON-LD schema
-      const existing = document.getElementById('blog-schema');
-      if (existing) existing.remove();
-
-      const schema = {
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        'headline': b.title,
-        'description': b.excerpt,
-        'image': b.coverImageUrl || undefined,
-        'author': { '@type': 'Organization', 'name': siteConfig.organization.name },
-        'datePublished': b.publishDate ? (b.publishDate.seconds ? new Date(b.publishDate.seconds * 1000).toISOString() : new Date(b.publishDate).toISOString()) : undefined,
-        'dateModified': b.updatedAt ? (b.updatedAt.seconds ? new Date(b.updatedAt.seconds * 1000).toISOString() : new Date(b.updatedAt).toISOString()) : undefined,
-      };
-
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.id = 'blog-schema';
-      script.text = JSON.stringify(schema);
-      document.head.appendChild(script);
 
     } catch (err) {
       console.error(err);

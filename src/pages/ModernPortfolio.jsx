@@ -63,6 +63,7 @@ const ModernPortfolio = () => {
         const data = doc.data();
         return {
           id: doc.id,
+          slug: data.slug || '',
           title: data.projectName,
           category: mapCategory(data.category),
           type: data.category,
@@ -118,30 +119,6 @@ const ModernPortfolio = () => {
     if (!isoString) return new Date().getFullYear().toString();
     return new Date(isoString).getFullYear().toString();
   };
-
-  useEffect(() => {
-    // SEO
-    document.title = 'Portfolio | Solidev Electrosoft - Our Work';
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', 
-        'Explore our portfolio of successful projects. Web applications, mobile apps, and AI solutions ' +
-        'delivered for startups and enterprises worldwide.'
-      );
-    }
-
-    // Canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', 'https://www.solidevelectrosoft.com/portfolio');
-
-    // page_view is handled globally by RouteTracker in App.jsx
-  }, []);
 
   const filters = [
     { id: 'all', label: 'All Projects' },
@@ -407,7 +384,7 @@ const ModernPortfolio = () => {
                     >
                       {/* Project Logo or Name-based Fallback */}
                       <Link
-                        to={`/portfolio/${project.id}`}
+                        to={`/portfolio/${project.slug || project.id}`}
                         style={{ textDecoration: 'none', display: 'block' }}
                       >
                         <div
@@ -493,7 +470,7 @@ const ModernPortfolio = () => {
 
                         {/* Title */}
                         <Link
-                          to={`/portfolio/${project.id}`}
+                          to={`/portfolio/${project.slug || project.id}`}
                           style={{ textDecoration: 'none', display: 'block' }}
                         >
                           <h3
@@ -528,7 +505,7 @@ const ModernPortfolio = () => {
                           </p>
                           {project.description && project.description.split(' ').length > 30 && (
                             <Link
-                              to={`/portfolio/${project.id}`}
+                              to={`/portfolio/${project.slug || project.id}`}
                               style={{
                                 display: 'inline-block',
                                 fontSize: '14px',
@@ -753,7 +730,7 @@ const ModernPortfolio = () => {
                             Client: <strong style={{ color: '#374151' }}>{project.client}</strong>
                           </span>
                           <Link
-                            to={`/portfolio/${project.id}`}
+                            to={`/portfolio/${project.slug || project.id}`}
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',

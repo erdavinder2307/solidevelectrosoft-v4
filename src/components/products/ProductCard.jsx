@@ -121,6 +121,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
 
   const truncatedDescription = truncateText(description, 25);
   const isDescriptionTruncated = description && description.split(' ').length > 25;
+  const productPath = `/product/${product.slug || product.id}`;
 
   return (
     <motion.div
@@ -163,7 +164,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
         >
           {/* Product Logo */}
           <Link
-            to={`/product/${product.id}`}
+            to={productPath}
             style={{
               textDecoration: 'none',
               display: 'block',
@@ -239,7 +240,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
 
         {/* Product Name */}
         <Link
-          to={`/product/${product.id}`}
+          to={productPath}
           style={{
             textDecoration: 'none',
             display: 'block',
@@ -276,7 +277,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
           </p>
           {isDescriptionTruncated && (
             <a
-              href={`/product/${product.id}`}
+              href={productPath}
               style={{
                 display: 'inline-block',
                 fontSize: '13px',
@@ -681,7 +682,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                       // Pass product with sorted screenshots
                       onViewScreenshots({ ...product, screenshots: sortedScreenshots });
                     } else {
-                      navigate(`/product/${product.id}`);
+                      navigate(productPath);
                     }
                   }}
                   style={{

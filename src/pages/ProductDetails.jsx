@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { FaApple, FaGooglePlay, FaGlobe, FaCheck } from 'react-icons/fa';
 import ModernHeader from '../components/layout/ModernHeader';
@@ -11,6 +11,7 @@ import PlaceholderImage from '../components/products/PlaceholderImage';
 import { trackProductViewed, trackProductScreenshotsOpened, trackExternalLinkClicked } from '../utils/analytics';
 import { useSEO } from '../hooks/useSEO';
 import { generateSoftwareApplicationSchema, generateBreadcrumbSchema } from '../utils/structuredData';
+import { siteConfig } from '../utils/seo';
 
 /**
  * Product Details Page
@@ -25,6 +26,17 @@ const ProductDetails = () => {
   const [selectedScreenshot, setSelectedScreenshot] = useState(0);
   const [showAllScreenshots, setShowAllScreenshots] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const resolveCanonicalPath = (canonicalUrl, fallbackPath) => {
+    if (!canonicalUrl) return fallbackPath;
+    if (canonicalUrl.startsWith('/')) return canonicalUrl;
+    try {
+      const parsed = new URL(canonicalUrl);
+      return `${parsed.pathname}${parsed.search}`;
+    } catch {
+      return fallbackPath;
+    }
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -42,15 +54,25 @@ const ProductDetails = () => {
     try {
       setLoading(true);
       setError(null);
-      const docSnap = await getDoc(doc(db, 'products', id));
-      if (docSnap.exists()) {
-        setProduct({
-          id: docSnap.id,
-          ...docSnap.data(),
-        });
-      } else {
-        setError('Product not found');
+      let productDoc = await getDoc(doc(db, 'products', id));
+
+      if (!productDoc.exists()) {
+        const bySlug = query(collection(db, 'products'), where('slug', '==', id), limit(1));
+        const slugResult = await getDocs(bySlug);
+        if (!slugResult.empty) {
+          productDoc = slugResult.docs[0];
+        }
       }
+
+      if (!productDoc.exists()) {
+        setError('Product not found');
+        return;
+      }
+
+      setProduct({
+        id: productDoc.id,
+        ...productDoc.data(),
+      });
     } catch (err) {
       console.error('Error fetching product:', err);
       setError('Failed to load product details');
@@ -67,22 +89,33 @@ const ProductDetails = () => {
     }
   }, [product]);
 
+  useEffect(() => {
+    if (!product) return;
+    const preferredSegment = product.slug || product.id;
+    if (id !== preferredSegment) {
+      navigate(`/product/${preferredSegment}`, { replace: true });
+    }
+  }, [id, navigate, product]);
+
   // SEO: always call hook at top-level with dynamic data
+  const productPath = product ? `/product/${product.slug || product.id}` : '/products';
+
   useSEO({
-    title: product ? product.title : 'Product Details',
+    title: product ? (product.metaTitle || product.title) : 'Product Details',
     description: product
-      ? (product.description || `${product.title} - Custom software application by Solidev Electrosoft`)
+      ? (product.metaDescription || product.description || `${product.title} - Custom software application by Solidev Electrosoft`)
       : 'Detailed view of a software product by Solidev Electrosoft.',
-    canonical: product ? `/product/${product?.id}` : '/products',
-    ogImage: product?.thumbnailUrl || product?.logo,
+    keywords: product?.seoKeywords || undefined,
+    canonical: product ? resolveCanonicalPath(product.canonicalUrl, productPath) : '/products',
+    ogImage: product?.ogImage || product?.thumbnailUrl || product?.logo,
     ogType: 'product',
     schemas: product
       ? [
           generateSoftwareApplicationSchema(product),
           generateBreadcrumbSchema([
-            { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
-            { name: 'Products', url: 'https://www.solidevelectrosoft.com/products' },
-            { name: product.title, url: `https://www.solidevelectrosoft.com/product/${product.id}` },
+            { name: 'Home', url: `${siteConfig.siteUrl}/` },
+            { name: 'Products', url: `${siteConfig.siteUrl}/products` },
+            { name: product.title, url: `${siteConfig.siteUrl}${resolveCanonicalPath(product.canonicalUrl, productPath)}` },
           ]),
         ]
       : [],
@@ -568,6 +601,35 @@ const ProductDetails = () => {
             </div>
           </section>
         )}
+
+        {/* Related Links for SEO and lead flow */}
+        <section
+          style={{
+            padding: 'clamp(24px, 6vw, 48px) 16px',
+            borderTop: '1px solid #e5e7eb',
+            background: '#ffffff',
+          }}
+        >
+          <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: 'clamp(18px, 4vw, 20px)', fontWeight: '600', color: '#111827', marginBottom: '18px' }}>
+              Continue Exploring
+            </h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <Link to="/services/mobile-app-development" style={{ padding: '10px 14px', borderRadius: '999px', background: '#eef2ff', color: '#4338ca', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                Mobile App Development Services
+              </Link>
+              <Link to="/services/web-development" style={{ padding: '10px 14px', borderRadius: '999px', background: '#ecfeff', color: '#155e75', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                Custom Web Development Services
+              </Link>
+              <Link to="/portfolio" style={{ padding: '10px 14px', borderRadius: '999px', background: '#ecfdf5', color: '#166534', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+                See Related Client Work
+              </Link>
+              <Link to="/contact" style={{ padding: '10px 14px', borderRadius: '999px', background: '#fff7ed', color: '#9a3412', textDecoration: 'none', fontSize: '13px', fontWeight: '600' }}>
+                Request a Similar Product
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <ModernFooter />
     </>
