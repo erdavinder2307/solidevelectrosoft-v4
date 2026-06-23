@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#0068d6"/>
+  <text
+    x="16"
+    y="24"
+    text-anchor="middle"
+    font-family="'Arial Black', 'Arial Bold', Arial, sans-serif"
+    font-size="19"
+    font-weight="900"
+    letter-spacing="-1"
+    fill="#ffffff"
+  >SE</text>
+</svg>
