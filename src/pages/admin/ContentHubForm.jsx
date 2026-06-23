@@ -158,7 +158,7 @@ const ContentHubForm = () => {
         // Filter to active/coming-soon client-side; sort by name
         const visible = all
           .filter((p) => p.status !== 'inactive' && p.status !== 'archived')
-          .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+          .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
         setProducts(visible);
       } catch (err) {
         console.error('ContentHubForm: failed to load products', err);
@@ -222,7 +222,7 @@ const ContentHubForm = () => {
     setForm((p) => ({
       ...p,
       relatedProductId: selectedId,
-      relatedProductName: product?.name || '',
+      relatedProductName: product?.title || '',
       relatedProductSlug: product?.slug || '',
     }));
   };
@@ -389,7 +389,7 @@ const ContentHubForm = () => {
             <select style={s.select} value={form.relatedProductId} onChange={handleProductChange}>
               <option value="">— None —</option>
               {products.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+                <option key={p.id} value={p.id}>{p.title}</option>
               ))}
             </select>
             <span style={s.hint}>A product badge will appear on the feed card.</span>
