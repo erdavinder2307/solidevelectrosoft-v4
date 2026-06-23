@@ -18,6 +18,10 @@ import VideoList from '../../pages/admin/VideoList';
 import VideoForm from '../../pages/admin/VideoForm';
 import BlogsList from '../../pages/admin/BlogsList';
 import BlogForm from '../../pages/admin/BlogForm';
+import ContentHubList from '../../pages/admin/ContentHubList';
+import ContentHubForm from '../../pages/admin/ContentHubForm';
+import ContentHubComments from '../../pages/admin/ContentHubComments';
+import FeedCommentsList from '../../pages/admin/FeedCommentsList';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -39,6 +43,8 @@ const AdminLayout = () => {
     { path: '/admin/portfolios', icon: '💼', label: 'Portfolios' },
     { path: '/admin/videos', icon: '🎥', label: 'Videos' },
     { path: '/admin/blogs', icon: '✍️', label: 'Blogs' },
+    { path: '/admin/content-hub', icon: '📡', label: 'Content Hub' },
+    { path: '/admin/feed-comments', icon: '💬', label: 'Feed Comments' },
     { path: '/admin/team-members', icon: '👥', label: 'Team Members' },
     { path: '/admin/testimonials', icon: '⭐', label: 'Testimonials' },
     { path: '/admin/story-images', icon: '🖼️', label: 'Story Images' },
@@ -205,6 +211,11 @@ const AdminLayout = () => {
             <Route path="clients" element={<ClientEngagements />} />
             <Route path="clients/new" element={<ClientEngagementForm />} />
             <Route path="clients/:id" element={<ClientEngagementForm />} />
+            <Route path="content-hub" element={<ContentHubList />} />
+            <Route path="content-hub/new" element={<ContentHubForm />} />
+            <Route path="content-hub/:id/edit" element={<ContentHubForm />} />
+            <Route path="content-hub/:postId/comments" element={<ContentHubComments />} />
+            <Route path="feed-comments" element={<FeedCommentsList />} />
           </Routes>
         </main>
       </div>

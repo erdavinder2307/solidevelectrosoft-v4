@@ -1130,7 +1130,7 @@ const PortfolioForm = () => {
           
           {/* Web App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ display: 'flex', marginBottom: '6px', fontSize: '14px', color: '#6b7280', alignItems: 'center', gap: '8px' }}>
               <FaGlobe size={16} /> Web App URL
             </label>
             <input
@@ -1153,7 +1153,7 @@ const PortfolioForm = () => {
 
           {/* Android App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ display: 'flex', marginBottom: '6px', fontSize: '14px', color: '#6b7280', alignItems: 'center', gap: '8px' }}>
               <FaGooglePlay size={16} /> Android App URL (Play Store)
             </label>
             <input
@@ -1176,7 +1176,7 @@ const PortfolioForm = () => {
 
           {/* iOS App URL */}
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ display: 'flex', marginBottom: '6px', fontSize: '14px', color: '#6b7280', alignItems: 'center', gap: '8px' }}>
               <FaApple size={16} /> iOS App URL (App Store)
             </label>
             <input

@@ -24,6 +24,7 @@ import {
   MVPDevelopmentService,
   ModernBlog,
   BlogDetails,
+  UpdateDetails,
 } from './pages';
 
 // Import product and portfolio details pages
@@ -62,6 +63,7 @@ import './assets/css/style.css';
 
 // Import modern CSS
 import './styles/modern.css';
+import './styles/feed.css';
 
 // Import custom React app styles
 import './components/styles/react-app.css';
@@ -146,6 +148,9 @@ function App() {
             {/* Blog Routes */}
             <Route path="/blog" element={<ModernBlog />} />
             <Route path="/blog/:slug" element={<BlogDetails />} />
+
+            {/* Updates Routes (company_update, founder_insight, milestone, etc.) */}
+            <Route path="/updates/:slug" element={<UpdateDetails />} />
             
             {/* Services Routes */}
             <Route path="/services" element={<ServicesPage />} />

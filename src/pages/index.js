@@ -17,6 +17,7 @@ export { default as Videos } from './Videos';
 export { default as ServicesPage } from './ServicesPage';
 export { default as ModernBlog } from './ModernBlog';
 export { default as BlogDetails } from './BlogDetails';
+export { default as UpdateDetails } from './UpdateDetails';
 
 // Service Detail Pages
 export { default as WebDevelopmentService } from './services/WebDevelopment';

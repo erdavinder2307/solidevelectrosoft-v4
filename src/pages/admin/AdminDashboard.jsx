@@ -13,6 +13,7 @@ const AdminDashboard = () => {
     storyImages: 0,
     videos: 0,
     blogs: 0,
+    feedPosts: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +28,7 @@ const AdminDashboard = () => {
         const storySnap = await getDocs(collection(db, 'story_images'));
         const videosSnap = await getDocs(collection(db, 'videos'));
         const blogsSnap = await getDocs(collection(db, 'blogs'));
+        const feedSnap = await getDocs(collection(db, 'feedPosts'));
 
         setStats({
           products: productsSnap.size,
@@ -37,6 +39,7 @@ const AdminDashboard = () => {
           storyImages: storySnap.size,
           videos: videosSnap.size,
           blogs: blogsSnap.size,
+          feedPosts: feedSnap.size,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -104,6 +107,13 @@ const AdminDashboard = () => {
       icon: '🤝',
       color: '#10b981',
       link: '/admin/clients',
+    },
+    {
+      title: 'Content Hub Posts',
+      value: stats.feedPosts,
+      icon: '📡',
+      color: '#0068d6',
+      link: '/admin/content-hub',
     },
   ];
 

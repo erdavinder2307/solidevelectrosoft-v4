@@ -10,6 +10,7 @@ import ModernPortfolio from '../components/sections/ModernPortfolio';
 import ProductsSection from '../components/sections/ProductsSection';
 import ModernTestimonials from '../components/sections/ModernTestimonials';
 import CTABanner from '../components/sections/CTABanner';
+import InsightsUpdates from '../components/sections/InsightsUpdates';
 import FeaturedVideos from '../components/sections/FeaturedVideos';
 import { FloatingCTA, SmartImage } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
@@ -145,6 +146,9 @@ const ModernHome = () => {
         />
 
         {/* Case Studies temporarily hidden */}
+
+        {/* Insights & Updates Feed */}
+        <InsightsUpdates />
 
         {/* Mid-page CTA */}
         <CTABanner

@@ -6,28 +6,28 @@
 
   <url>
     <loc>https://www.solidevelectrosoft.com/</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/about</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/ai-ml-solutions</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/blog</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -42,6 +42,13 @@
   <url>
     <loc>https://www.solidevelectrosoft.com/blog/ai-app-growth</loc>
     <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.solidevelectrosoft.com/blog/ai-chatgpt-jira-sprint-management</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -69,28 +76,28 @@
 
   <url>
     <loc>https://www.solidevelectrosoft.com/contact</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/faq</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/mobile-app-development</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/portfolio</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -159,8 +166,8 @@
   </url>
 
   <url>
-    <loc>https://www.solidevelectrosoft.com/product/adopals</loc>
-    <lastmod>2025-12-19</lastmod>
+    <loc>https://www.solidevelectrosoft.com/product/adopals-pet-adoption-platform</loc>
+    <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -174,7 +181,7 @@
 
   <url>
     <loc>https://www.solidevelectrosoft.com/product/mindset-fuel</loc>
-    <lastmod>2026-02-05</lastmod>
+    <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -187,22 +194,22 @@
   </url>
 
   <url>
-    <loc>https://www.solidevelectrosoft.com/product/smart-invoice-pro</loc>
-    <lastmod>2025-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.solidevelectrosoft.com/product/solid-apps</loc>
-    <lastmod>2025-12-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
     <loc>https://www.solidevelectrosoft.com/product/solidcare</loc>
     <lastmod>2025-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.solidevelectrosoft.com/product/solidev-books</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.solidevelectrosoft.com/product/solidev-store</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -216,56 +223,56 @@
 
   <url>
     <loc>https://www.solidevelectrosoft.com/products</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/services</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/services/ai-solutions</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/services/mobile-app-development</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/services/mvp-development</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/services/web-development</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/startup-mvp</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://www.solidevelectrosoft.com/web-development</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
