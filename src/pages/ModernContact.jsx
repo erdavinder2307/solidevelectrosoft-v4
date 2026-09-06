@@ -549,7 +549,7 @@ const ModernContact = () => {
                 Our Office Location
               </h2>
               <p style={{ fontSize: 'var(--text-lg)', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                Visit us in Hyderabad, India. We'd love to meet and discuss your next project over a cup of coffee.
+                Visit us in Mohali, India. We'd love to meet and discuss your next project over a cup of coffee.
               </p>
             </motion.div>
 
