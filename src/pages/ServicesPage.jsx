@@ -57,6 +57,7 @@ const Services = () => {
       description: 'A software team built from AI agents, plus scheduled automations, workflow automation and chatbots, with human approval at every important step.',
       features: ['Custom AI chatbots', 'Predictive analytics', 'Computer vision', 'Process automation'],
       link: '/services/ai-solutions',
+      proof: { before: 'View', linkText: 'AI projects', after: " we've delivered.", to: '/portfolio', ariaLabel: 'View AI projects we have delivered' },
       color: '#06b6d4',
     },
     {
@@ -65,6 +66,7 @@ const Services = () => {
       description: 'Custom web applications built with modern frameworks. From enterprise portals to customer-facing platforms.',
       features: ['React / Next.js / Vue', 'Node.js / .NET / Python', 'Cloud-native architecture', 'API development'],
       link: '/services/web-development',
+      proof: { before: 'See our', linkText: 'web applications', after: ' in production.', to: '/products', ariaLabel: 'View web applications in production' },
       color: '#3b82f6',
     },
     {
@@ -81,6 +83,7 @@ const Services = () => {
       description: 'Launch your startup faster with our fixed-price MVP packages. From idea to market in weeks.',
       features: ['Fixed-price packages', '4-8 week delivery', 'Full source code ownership', 'Scale-ready architecture'],
       link: '/services/mvp-development',
+      proof: { before: 'Check our', linkText: 'startup success stories', after: '.', to: '/products', ariaLabel: 'View startup success stories' },
       color: '#22c55e',
     },
   ];
@@ -207,46 +210,18 @@ const Services = () => {
 
                       <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 1.7 }}>
                         {service.description}
-                        {index === 0 && (
+                        {service.proof && (
                           <>
-                            {' '}See our{' '}
+                            {' '}{service.proof.before}{' '}
                             <span
-                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/products'); }}
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(service.proof.to); }}
                               style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
                               role="link"
-                              aria-label="View web applications in production"
+                              aria-label={service.proof.ariaLabel}
                             >
-                              web applications
+                              {service.proof.linkText}
                             </span>
-                            {' '}in production.
-                          </>
-                        )}
-                        {index === 2 && (
-                          <>
-                            {' '}View{' '}
-                            <span
-                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/portfolio'); }}
-                              style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
-                              role="link"
-                              aria-label="View AI projects we have delivered"
-                            >
-                              AI projects
-                            </span>
-                            {' '}we've delivered.
-                          </>
-                        )}
-                        {index === 3 && (
-                          <>
-                            {' '}Check our{' '}
-                            <span
-                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('/products'); }}
-                              style={{ color: service.color, textDecoration: 'none', fontWeight: '600', cursor: 'pointer' }}
-                              role="link"
-                              aria-label="View startup success stories"
-                            >
-                              startup success stories
-                            </span>
-                            .
+                            {service.proof.after}
                           </>
                         )}
                       </p>
