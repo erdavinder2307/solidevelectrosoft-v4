@@ -20,7 +20,7 @@ December 22, 2025
 - Mobile-compatible event tracking
 - Prevents double-firing with debounce utilities
 - Comprehensive console logging for debugging
-- Works with existing GA4 setup (GT-KFNT9K9X, GT-MBLK2C2Q)
+- Works with existing GA4 setup (GT-MBLK2C2Q)
 
 **Core Functions**:
 - `initializeAnalytics()` - Initialize GA4 with app metadata

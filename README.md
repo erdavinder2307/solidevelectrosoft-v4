@@ -50,7 +50,7 @@ src/
 - Mobile-responsive navigation
 
 ### SEO & Analytics
-- Google Analytics integration (GT-KFNT9K9X, GT-MBLK2C2Q)
+- Google Analytics (GT-MBLK2C2Q) and Google Ads conversion tracking (AW-18359572635)
 - Proper meta tags and descriptions
 - Favicon and social media integration
 - Schema markup ready structure

@@ -12,8 +12,11 @@
  * - Prevent double-firing on re-renders
  */
 
-// GA4 Measurement IDs (loaded via gtag.js in App.jsx)
-const GA_MEASUREMENT_IDS = ['GT-KFNT9K9X', 'GT-MBLK2C2Q'];
+import { reportAdsConversion } from './adsConversions';
+
+// GA4 Measurement IDs (loaded via gtag.js in index.html).
+// GT-KFNT9K9X was removed: it is Adoplas' tag and only forwards to Adoplas' Google Ads account.
+const GA_MEASUREMENT_IDS = ['GT-MBLK2C2Q'];
 
 /**
  * Initialize Google Analytics
@@ -294,6 +297,7 @@ export const trackContactFormSubmitted = (source = 'direct') => {
   trackEvent('contact_form_submitted', {
     source,
   });
+  reportAdsConversion('lead');
 };
 
 /**

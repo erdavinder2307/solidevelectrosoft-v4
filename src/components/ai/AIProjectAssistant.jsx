@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendMessageToAI, sendRequirementsToEmail } from '../../services/aiService';
 import { 
-  trackAISessionStarted, 
-  trackAIQuestionAnswered, 
-  trackAISessionCompleted 
+  trackAISessionStarted,
+  trackAIQuestionAnswered,
+  trackAISessionCompleted,
+  trackContactFormSubmitted
 } from '../../utils/analytics';
 
 /**
@@ -296,6 +297,7 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
         selectedStage: selectedStageObj?.name || selectedStage || 'Custom Project',
       });
 
+      trackContactFormSubmitted('ai_assistant');
       setSubmitSuccess(true);
     } catch (error) {
       console.error('Submit Error:', error);

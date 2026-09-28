@@ -11,6 +11,7 @@ import emailService from '../services/emailService';
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema, generateFAQSchema } from '../utils/structuredData';
+import { trackContactFormSubmitted } from '../utils/analytics';
 
 const Faq = () => {
   const [formData, setFormData] = useState({
@@ -72,6 +73,7 @@ const Faq = () => {
       });
       
       if (result.success) {
+        trackContactFormSubmitted('faq');
         setResponseMessage(result.message);
         setShowResponse(true);
         setFormData({ name: '', email: '', message: '' });
@@ -92,6 +94,7 @@ const Faq = () => {
         setShowResponse(true);
         
         if (fallbackResult.success) {
+          trackContactFormSubmitted('faq');
           setFormData({ name: '', email: '', message: '' });
         }
       } catch (fallbackError) {

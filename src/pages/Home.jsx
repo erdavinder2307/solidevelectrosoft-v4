@@ -26,11 +26,6 @@ import {
 
 const Home = () => {
   useEffect(() => {
-    // Fire Ads conversion after GA is ready (correct tag ID)
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'conversion', { send_to: 'AW-17044850693/MgRjCLiyz4EbEIWQz78_' });
-    }
-
     // Set document class
     document.documentElement.className = 'no-js';
 

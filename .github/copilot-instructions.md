@@ -28,7 +28,7 @@ Use this as your quick-start map to work productively in this repo. Keep edits a
 Inside each page’s `useEffect`:
 - Set `document.title` and the `<meta name="description">` content.
 - Ensure a canonical link exists/updated: `link[rel="canonical"]`.
-- Fire GA gtag events using the global IDs (already injected): `GT-KFNT9K9X` and `GT-MBLK2C2Q`.
+- Fire GA gtag events via `src/utils/analytics.js` (GA4 tag `GT-MBLK2C2Q`, injected in index.html). Google Ads conversions (AW-18359572635) go through `src/utils/adsConversions.js`. Do not add `GT-KFNT9K9X` or `AW-17044850693` — those belong to Adoplas.
 See `src/pages/Home.jsx` and `src/pages/Contact.jsx` for examples.
 
 ### Email flow and environment configuration
@@ -61,7 +61,7 @@ if (result.success) await emailService.sendConfirmationEmail(email, name, messag
 - Page: create `src/pages/Services.jsx`, export in `src/pages/index.js`, add routes in `App.jsx` for `/services` and `/services.html`, and add SEO useEffect like in `Home.jsx`.
 
 ### External integrations present
-- Google Analytics via gtag in `index.html` and page useEffects (IDs: GT-KFNT9K9X, GT-MBLK2C2Q).
+- Google Analytics via gtag in `index.html` (GA4: GT-MBLK2C2Q; Google Ads: AW-18359572635).
 - Azure Communication Services for email (see above). A legacy PHP fallback exists at `public/mail.php` for server-side environments; don’t add new PHP.
 
 ### Do/Don’t
