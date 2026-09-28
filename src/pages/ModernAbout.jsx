@@ -27,6 +27,7 @@ import team7 from '../assets/img/team/team7.png';
 import team8 from '../assets/img/team/team8.png';
 
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { activeAITeam, aiBadgeStyle, AI_TEAM_DISCLOSURE } from '../data/aiTeam';
 
 /**
  * Modern About Page
@@ -708,6 +709,80 @@ const ModernAbout = () => {
                 </motion.div>
               ))}
             </motion.div>
+
+            {/* AI team: hard-coded, not from team_members (those are real staff only) */}
+            <div
+              style={{
+                marginTop: '64px',
+                paddingTop: '48px',
+                borderTop: '1px dashed #d1d5db',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111827', marginBottom: '32px' }}>
+                …and our AI team
+              </h3>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '32px',
+                  maxWidth: '900px',
+                  margin: '0 auto',
+                }}
+                className="team-grid"
+              >
+                {activeAITeam.map((member) => (
+                  <motion.div
+                    key={member.name}
+                    variants={itemVariants}
+                    style={{
+                      textAlign: 'center',
+                      padding: '32px',
+                      background: '#f9fafb',
+                      borderRadius: '16px',
+                      border: '1px solid #e5e7eb',
+                      transition: 'all 0.3s ease',
+                    }}
+                    className="team-card"
+                  >
+                    <div style={{ position: 'relative', width: '120px', height: '120px', margin: '0 auto 20px' }}>
+                      <img
+                        src={member.image}
+                        alt={member.alt}
+                        width={120}
+                        height={120}
+                        loading="lazy"
+                        decoding="async"
+                        style={{
+                          display: 'block',
+                          width: '120px',
+                          height: '120px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          border: '4px solid #e5e7eb',
+                        }}
+                      />
+                      <span style={{ ...aiBadgeStyle, right: '4px', bottom: '4px' }}>AI</span>
+                    </div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
+                      {member.name}
+                    </h3>
+                    <p style={{ fontSize: '14px', color: '#3b82f6', marginBottom: 0 }}>{member.role}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+              <p style={{ fontSize: '14px', color: '#6b7280', maxWidth: '640px', margin: '24px auto 12px' }}>
+                {AI_TEAM_DISCLOSURE}
+              </p>
+              <Link to="/ai-employee" style={{ fontSize: '15px', fontWeight: '600', color: '#3b82f6', textDecoration: 'none' }}>
+                Meet the AI team →
+              </Link>
+            </div>
           </div>
         </section>
 

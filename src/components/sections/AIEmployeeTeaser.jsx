@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { activeAITeam, aiBadgeStyle, AI_TEAM_DISCLOSURE } from '../../data/aiTeam';
 
 const stats = [
   { value: '18', label: 'changes approved' },
@@ -31,6 +32,39 @@ const AIEmployeeTeaser = () => (
         className="ai-employee-teaser"
       >
         <div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
+            <div style={{ display: 'flex' }}>
+              {activeAITeam.map((member, index) => (
+                <div key={member.name} style={{ position: 'relative', marginLeft: index === 0 ? 0 : '-12px' }}>
+                  <img
+                    src={member.image}
+                    alt={member.alt}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      display: 'block',
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: '2px solid var(--bg-secondary)',
+                    }}
+                  />
+                  <span style={{ ...aiBadgeStyle, right: '-4px', bottom: '-4px', padding: '0 5px', fontSize: '9px' }}>AI</span>
+                </div>
+              ))}
+            </div>
+            <div>
+              <span style={{ display: 'block', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
+                Asha, Arjun and Meera · our AI team
+              </span>
+              <span style={{ display: 'block', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
+                {AI_TEAM_DISCLOSURE}
+              </span>
+            </div>
+          </div>
           <span className="modern-label modern-mb-4" style={{ display: 'block' }}>
             New · AI Employee
           </span>

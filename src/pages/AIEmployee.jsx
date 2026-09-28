@@ -8,7 +8,7 @@ import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
 import {
-  FaClipboardList, FaCode, FaVial, FaUserCheck, FaSearch,
+  FaUserCheck,
   FaRocket, FaCalendarCheck, FaKey, FaTrashAlt, FaCodeBranch, FaUserSecret,
   FaUsers, FaClock, FaInbox, FaComments, FaDesktop, FaCalendarAlt,
 } from 'react-icons/fa';
@@ -16,11 +16,12 @@ import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 import { TRADEMARK_LINE } from '../utils/trademarks';
+import { aiTeam, aiBadgeStyle, PORTRAIT_SIZE, AI_TEAM_DISCLOSURE } from '../data/aiTeam';
 
 const team = [
-  { icon: FaClipboardList, title: 'AI Project Manager', description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
-  { icon: FaCode, title: 'AI Developer', description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
-  { icon: FaVial, title: 'AI Tester', description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
+  { member: aiTeam.asha, description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
+  { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
+  { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
 
@@ -285,21 +286,51 @@ const AIEmployee = () => {
           <div className="modern-container">
             <SectionHeader title="Meet the team" />
             <div className="modern-grid modern-grid-4">
-              {team.map((member, index) => (
-                <motion.div key={member.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
+              {team.map((item, index) => (
+                <motion.div key={item.member?.name ?? item.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
                   <div
                     style={{
                       ...cardStyle,
-                      ...(member.human && {
+                      ...(item.human && {
                         background: 'var(--bg-dark)',
                         border: '1px solid var(--bg-dark)',
                       }),
                     }}
                   >
-                    <IconBox icon={member.icon} />
-                    <h3 style={{ ...cardTitleStyle, ...(member.human && { color: 'white' }) }}>{member.title}</h3>
-                    <p style={{ ...cardTextStyle, ...(member.human && { color: 'var(--color-neutral-400)' }) }}>
-                      {member.description}
+                    {item.member ? (
+                      <>
+                        <div style={{ position: 'relative' }}>
+                          <img
+                            src={item.member.image}
+                            alt={item.member.alt}
+                            width={PORTRAIT_SIZE}
+                            height={PORTRAIT_SIZE}
+                            loading="lazy"
+                            decoding="async"
+                            style={{
+                              display: 'block',
+                              width: '100%',
+                              height: 'auto',
+                              aspectRatio: '1 / 1',
+                              objectFit: 'cover',
+                              borderRadius: 'var(--radius-lg)',
+                            }}
+                          />
+                          <span style={aiBadgeStyle}>AI</span>
+                        </div>
+                        <h3 style={{ ...cardTitleStyle, marginBottom: 0 }}>{item.member.name}</h3>
+                        <p style={{ fontSize: 'var(--text-sm)', fontWeight: '600', color: 'var(--color-primary-500)', margin: '0 0 var(--space-2)' }}>
+                          {item.member.role}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <IconBox icon={item.icon} />
+                        <h3 style={{ ...cardTitleStyle, color: 'white' }}>{item.title}</h3>
+                      </>
+                    )}
+                    <p style={{ ...cardTextStyle, ...(item.human && { color: 'var(--color-neutral-400)' }) }}>
+                      {item.description}
                     </p>
                   </div>
                 </motion.div>
@@ -321,11 +352,27 @@ const AIEmployee = () => {
                 gap: 'var(--space-4)',
               }}
             >
-              <IconBox icon={FaSearch} muted />
+              <img
+                src={aiTeam.kabir.image}
+                alt={aiTeam.kabir.alt}
+                width={56}
+                height={56}
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  flexShrink: 0,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(100%)',
+                  opacity: 0.8,
+                }}
+              />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>
                   <h3 style={{ fontSize: 'var(--text-base)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>
-                    AI Reviewer
+                    {aiTeam.kabir.name} · {aiTeam.kabir.role}
                   </h3>
                   <span className="modern-badge" style={{ background: 'var(--bg-tertiary)', color: 'var(--text-secondary)' }}>
                     Coming soon
@@ -337,6 +384,10 @@ const AIEmployee = () => {
                 </p>
               </div>
             </motion.div>
+
+            <p style={{ ...noteStyle, marginTop: 'var(--space-6)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+              {AI_TEAM_DISCLOSURE}
+            </p>
           </div>
         </section>
 
