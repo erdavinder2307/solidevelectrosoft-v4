@@ -73,7 +73,8 @@ const Faq = () => {
       });
       
       if (result.success) {
-        trackContactFormSubmitted('faq');
+        // The fallback path reports success without sending anything; only count delivered enquiries.
+        if (!result.fallback) trackContactFormSubmitted('faq');
         setResponseMessage(result.message);
         setShowResponse(true);
         setFormData({ name: '', email: '', message: '' });
@@ -94,7 +95,6 @@ const Faq = () => {
         setShowResponse(true);
         
         if (fallbackResult.success) {
-          trackContactFormSubmitted('faq');
           setFormData({ name: '', email: '', message: '' });
         }
       } catch (fallbackError) {

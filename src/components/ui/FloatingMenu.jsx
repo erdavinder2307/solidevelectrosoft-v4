@@ -1,8 +1,15 @@
 import { useState } from 'react';
+import emailService from '../../services/emailService';
+import { trackContactFormSubmitted } from '../../utils/analytics';
+
+const SEND_FAILED_MESSAGE =
+  "Sorry, we couldn't send your query. Please WhatsApp or call us on +91 91158 66828.";
 
 const FloatingMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // { type: 'success' | 'error', message }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,6 +22,7 @@ const FloatingMenu = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setSubmitStatus(null);
   };
 
   const handleModalOverlayClick = (e) => {
@@ -23,23 +31,36 @@ const FloatingMenu = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {
-      name: formData.get('name'),
-      phone: formData.get('phone'),
-      message: formData.get('message')
-    };
-    
-    // Handle form submission here
-    console.log('Form submitted:', data);
-    
-    // For now, just close the modal
-    closeModal();
-    
-    // Reset form
-    e.target.reset();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const result = await emailService.sendContactFormEmail({
+        name: formData.get('name'),
+        email: 'Not provided', // this form asks for a phone number only
+        phone: formData.get('phone'),
+        subject: 'Floating Menu Query',
+        message: formData.get('message'),
+      });
+
+      // The fallback path reports success without sending anything, so it counts as a failure here.
+      if (result.success && !result.fallback) {
+        trackContactFormSubmitted('floating_menu');
+        setSubmitStatus({ type: 'success', message: result.message });
+        form.reset();
+      } else {
+        setSubmitStatus({ type: 'error', message: SEND_FAILED_MESSAGE });
+      }
+    } catch (error) {
+      console.error('Query form submission error:', error);
+      setSubmitStatus({ type: 'error', message: SEND_FAILED_MESSAGE });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -114,7 +135,25 @@ const FloatingMenu = () => {
                 <label htmlFor="queryMessage">Message</label>
                 <textarea id="queryMessage" name="message" rows="4" required></textarea>
               </div>
-              <button type="submit" className="submit-btn">Submit Query</button>
+              {submitStatus && (
+                <div
+                  role={submitStatus.type === 'error' ? 'alert' : 'status'}
+                  style={{
+                    padding: 12,
+                    marginBottom: 16,
+                    borderRadius: 5,
+                    textAlign: 'center',
+                    backgroundColor: submitStatus.type === 'success' ? '#d4edda' : '#f8d7da',
+                    color: submitStatus.type === 'success' ? '#155724' : '#721c24',
+                    border: `1px solid ${submitStatus.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`,
+                  }}
+                >
+                  {submitStatus.message}
+                </div>
+              )}
+              <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Submit Query'}
+              </button>
             </form>
           </div>
         </div>
