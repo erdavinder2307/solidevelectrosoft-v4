@@ -15,9 +15,7 @@ import {
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
-
-const TRADEMARK_LINE =
-  'Claude, Cursor, GitHub Copilot, ChatGPT, GitHub, Jira, Confluence, Microsoft Teams, OneDrive and Microsoft 365 are trademarks of their respective owners. Solidev Electrosoft is not affiliated with or endorsed by them.';
+import { TRADEMARK_LINE } from '../utils/trademarks';
 
 const team = [
   { icon: FaClipboardList, title: 'AI Project Manager', description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },

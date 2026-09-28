@@ -52,6 +52,14 @@ const Services = () => {
 
   const services = [
     {
+      icon: FaBrain,
+      title: 'AI Software Team & Automation',
+      description: 'A software team built from AI agents, plus scheduled automations, workflow automation and chatbots, with human approval at every important step.',
+      features: ['Custom AI chatbots', 'Predictive analytics', 'Computer vision', 'Process automation'],
+      link: '/services/ai-solutions',
+      color: '#06b6d4',
+    },
+    {
       icon: FaGlobe,
       title: 'Web Application Development',
       description: 'Custom web applications built with modern frameworks. From enterprise portals to customer-facing platforms.',
@@ -66,14 +74,6 @@ const Services = () => {
       features: ['React Native / Flutter', 'Native iOS (Swift)', 'Native Android (Kotlin)', 'App Store optimization'],
       link: '/services/mobile-app-development',
       color: '#8b5cf6',
-    },
-    {
-      icon: FaBrain,
-      title: 'AI & Machine Learning',
-      description: 'Intelligent solutions powered by AI. Chatbots, analytics, computer vision, and automation.',
-      features: ['Custom AI chatbots', 'Predictive analytics', 'Computer vision', 'Process automation'],
-      link: '/services/ai-solutions',
-      color: '#06b6d4',
     },
     {
       icon: FaRocket,

@@ -49,8 +49,8 @@ const WhyChooseUs = ({
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
         </svg>
       ),
-      title: "Performance First",
-      description: "Every system optimized for speed. We don't ship slow code—load times, queries, and API responses are engineered to perform.",
+      title: "We Run on It Ourselves",
+      description: "Our own team works with an AI project manager, developer and tester every day, so we build yours with tools and guardrails we have already tested on ourselves.",
     },
     {
       icon: (

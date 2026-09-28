@@ -45,9 +45,9 @@ export const siteConfig = {
  */
 export const pageSEO = {
   home: {
-    title: 'Custom Software Development & AI Solutions',
-    description: 'Solidev Electrosoft delivers custom software development, mobile apps, AI/ML solutions, and MVP development. 10+ years experience building scalable applications for startups and enterprises.',
-    keywords: 'custom software development, mobile app development, AI solutions, MVP development, react development, node.js development',
+    title: 'AI Software Teams & Custom Software Development',
+    description: 'Need a software team without hiring? Solidev Electrosoft builds AI software teams and automation on Claude, Cursor, GitHub Copilot and ChatGPT, backed by 13+ years of senior engineering.',
+    keywords: 'AI software development team, AI employee, AI automation, AI agents, custom software development, mobile app development, MVP development',
     canonical: '/',
     ogType: 'website',
   },
@@ -85,9 +85,9 @@ export const pageSEO = {
   },
   
   servicesAI: {
-    title: 'AI & Machine Learning Solutions',
-    description: 'Custom AI/ML solutions including chatbots, predictive analytics, computer vision, and NLP. Leverage AI to automate and optimize your business processes.',
-    keywords: 'AI development, machine learning solutions, chatbot development, AI consulting, ML implementation',
+    title: 'AI Software Team & Automation | AI Agents, Workflows, Chatbots',
+    description: 'A software team built from AI agents, plus scheduled tasks, workflow automation, document triage, AI testing and chatbots — on Claude, Cursor, GitHub Copilot and ChatGPT, with human approval built in.',
+    keywords: 'AI software development team, AI automation, AI agents, AI employee, workflow automation, Claude Code, Cursor, GitHub Copilot, ChatGPT, AI chatbot development, AI testing',
     canonical: '/services/ai-solutions',
     ogType: 'service',
   },
