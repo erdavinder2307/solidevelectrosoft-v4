@@ -4,6 +4,7 @@ import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import ModernHero from '../components/sections/ModernHero';
 import SocialProof from '../components/sections/SocialProof';
+import AIEmployeeTeaser from '../components/sections/AIEmployeeTeaser';
 import ModernServices from '../components/sections/ModernServices';
 import WhyChooseUs from '../components/sections/WhyChooseUs';
 import ModernPortfolio from '../components/sections/ModernPortfolio';
@@ -118,6 +119,9 @@ const ModernHome = () => {
             link: '/portfolio',
           }}
         />
+
+        {/* AI Employee teaser */}
+        <AIEmployeeTeaser />
 
         {/* Social Proof - Past Client Engagements (Text-only) */}
         <SocialProof 

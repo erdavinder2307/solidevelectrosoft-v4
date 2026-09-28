@@ -24,6 +24,7 @@ const ModernHeader = () => {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/services', label: 'Services', hasDropdown: true },
+    { path: '/ai-employee', label: 'AI Team' },
     { path: '/products', label: 'Products' },
     { path: '/portfolio', label: 'Portfolio' },
     { path: '/blog', label: 'Blog' },
@@ -158,6 +159,7 @@ const ModernHeader = () => {
                       display: 'flex',
                       alignItems: 'center',
                       gap: 'var(--space-1)',
+                      whiteSpace: 'nowrap',
                     }}
                     className="nav-link-hover"
                   >

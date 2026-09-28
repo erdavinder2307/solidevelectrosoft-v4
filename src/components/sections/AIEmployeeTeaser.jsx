@@ -1,0 +1,71 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const stats = [
+  { value: '18', label: 'changes approved' },
+  { value: '14', label: 'test runs, none failed' },
+  { value: '83 min', label: 'to fix a live outage' },
+];
+
+/**
+ * AI Employee Teaser
+ * Short homepage section that points to the /ai-employee page
+ */
+const AIEmployeeTeaser = () => (
+  <section className="modern-section-sm" style={{ background: 'var(--bg-primary)' }}>
+    <div className="modern-container">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.5 }}
+        style={{
+          padding: 'var(--space-8)',
+          borderRadius: 'var(--radius-xl)',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-light)',
+          display: 'grid',
+          gap: 'var(--space-8)',
+        }}
+        className="ai-employee-teaser"
+      >
+        <div>
+          <span className="modern-label modern-mb-4" style={{ display: 'block' }}>
+            New · AI Employee
+          </span>
+          <h2 className="modern-h3" style={{ marginBottom: 'var(--space-4)' }}>
+            We run our own software team on AI — and we can build yours
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-6)' }}>
+            An AI project manager, developer and tester plan, build and test our software every hour on Claude, with
+            a person approving every step. Need a team without hiring? We'll build one for you.
+          </p>
+          <Link to="/ai-employee" className="modern-btn modern-btn-primary">
+            Meet the AI employee
+            <span>→</span>
+          </Link>
+        </div>
+
+        <div style={{ display: 'grid', gap: 'var(--space-4)', alignContent: 'center' }}>
+          {stats.map((stat) => (
+            <div key={stat.label} style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)' }}>
+              <span style={{ fontSize: 'var(--text-3xl)', fontWeight: '700', color: 'var(--color-primary-500)', minWidth: '7rem' }}>
+                {stat.value}
+              </span>
+              <span style={{ color: 'var(--text-secondary)' }}>{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+
+    <style>{`
+      @media (min-width: 1024px) {
+        .ai-employee-teaser { grid-template-columns: 2fr 1fr; }
+      }
+    `}</style>
+  </section>
+);
+
+export default AIEmployeeTeaser;

@@ -34,6 +34,9 @@ import PortfolioDetails from './pages/PortfolioDetails';
 // Import videos page
 import Videos from './pages/Videos';
 
+// Import AI Employee page
+import AIEmployee from './pages/AIEmployee';
+
 // Import search
 import { SearchProvider } from './contexts/SearchContext';
 import { SearchModal } from './components/search';
@@ -139,6 +142,8 @@ function App() {
             <Route path="/products" element={<ModernProducts />} />
             <Route path="/products.html" element={<ModernProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/ai-employee" element={<AIEmployee />} />
+            <Route path="/ai-employee.html" element={<AIEmployee />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
             
             {/* Videos Routes */}

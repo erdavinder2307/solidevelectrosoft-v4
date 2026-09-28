@@ -124,6 +124,14 @@ export const pageSEO = {
     ogType: 'website',
   },
   
+  aiEmployee: {
+    title: 'AI Software Team — Skip the Hiring | AI Employee',
+    description: 'Need a software team without hiring? We build one for you out of AI: an AI project manager, developer and tester on Claude, Cursor, GitHub Copilot and ChatGPT, set up by senior engineers, approved by you.',
+    keywords: 'AI software development team, AI employee, AI developer, AI agents, AI automation, Claude Code, Cursor, GitHub Copilot, ChatGPT, software team without hiring, AI software testing',
+    canonical: '/ai-employee',
+    ogType: 'website',
+  },
+
   faq: {
     title: 'FAQ | Common Questions About Our Services',
     description: 'Frequently asked questions about our software development services, pricing, process, and technologies. Get answers before starting your project.',
