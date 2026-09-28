@@ -37,7 +37,7 @@ const ModernHeader = () => {
   const serviceItems = [
     { path: '/services/web-development', label: 'Web App Development' },
     { path: '/services/mobile-app-development', label: 'Mobile App Development' },
-    { path: '/services/ai-solutions', label: 'AI-Powered Solutions' },
+    { path: '/services/ai-solutions', label: 'AI Team & Automation' },
     { path: '/services/mvp-development', label: 'MVP Development' },
   ];
 

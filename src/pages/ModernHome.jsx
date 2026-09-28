@@ -157,8 +157,8 @@ const ModernHome = () => {
         {/* Mid-page CTA */}
         <CTABanner
           variant="gradient"
-          title="Need a System That Actually Works?"
-          subtitle="Senior engineering team with 13+ years building production software. Let's discuss your project."
+          title="Need a Software Team Without Hiring?"
+          subtitle="We build one for you out of AI — set up and checked by senior engineers with 13+ years of production experience."
           primaryCTA={{
             text: '✨ Chat with AI Assistant',
             onClick: openAI,
@@ -185,8 +185,8 @@ const ModernHome = () => {
         {/* Final CTA */}
         <CTABanner
           variant="dark"
-          title="Ship Production Software Faster"
-          subtitle="Healthcare, finance, legal tech, SaaS—we've built it. Let's discuss what you need built next."
+          title="Your Software Team Is One Call Away"
+          subtitle="An AI software team and the production software it builds — healthcare, finance, legal tech, SaaS. Let's talk about what to build first."
           primaryCTA={{
             text: '✨ Start with AI Assistant',
             onClick: openAI,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { TRADEMARK_LINE } from '../../utils/trademarks';
 
 /**
  * Modern Hero Section
@@ -8,20 +9,21 @@ import { motion } from 'framer-motion';
  * Mobile-first responsive design
  */
 const ModernHero = ({
-  badge = "Backed by Over a Decade of Software Delivery",
-  headline = "Production-Ready",
-  headlineHighlight = "Web & Mobile Systems",
-  headlineSuffix = "Built for Scale",
-  subheadline = "We deliver secure, scalable applications for healthcare, finance, legal tech, and SaaS. Senior engineering team with 13+ years shipping real products to production.",
+  badge = "AI software teams, backed by 13+ years of senior engineering",
+  headline = "A Full Software Team,",
+  headlineHighlight = "Built With AI",
+  headlineSuffix = "No Hiring Needed",
+  subheadline = "An AI project manager, developer and tester on Claude, Cursor, GitHub Copilot and ChatGPT — set up and supervised by our senior engineers — building production web and mobile software for healthcare, finance, legal tech and SaaS.",
   primaryCTA = { text: "✨ Chat with AI", link: "/contact" },
   secondaryCTA = { text: "View Our Work", link: "/products" },
   stats = [
     { value: "13+", label: "Years Experience" },
     { value: "25+", label: "Systems Delivered" },
+    { value: "3", label: "AI Agents on Our Own Team" },
     { value: "4", label: "Core Industries" },
-    { value: "100%", label: "Production Grade" },
   ],
   backgroundImage = null,
+  footnote = TRADEMARK_LINE,
 }) => {
   // Animation variants
   const containerVariants = {
@@ -266,6 +268,20 @@ const ModernHero = ({
               </div>
             ))}
           </motion.div>
+
+          {footnote && (
+            <motion.p
+              variants={itemVariants}
+              style={{
+                marginTop: 'var(--space-6)',
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-neutral-500)',
+                maxWidth: '720px',
+              }}
+            >
+              {footnote}
+            </motion.p>
+          )}
         </motion.div>
       </div>
 

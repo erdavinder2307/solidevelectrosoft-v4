@@ -8,17 +8,79 @@ import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
-import { FaRobot, FaChartLine, FaSearch, FaBolt, FaHospital, FaMoneyBillWave, FaStore, FaWrench } from 'react-icons/fa';
+import { FaRobot, FaChartLine, FaSearch, FaBolt, FaHospital, FaMoneyBillWave, FaStore, FaWrench, FaUsers, FaClock, FaInbox, FaVial, FaLanguage, FaBrain } from 'react-icons/fa';
 import { useSEO } from '../../hooks/useSEO';
 import { pageSEO } from '../../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema, generateServiceSchema } from '../../utils/structuredData';
+import { TRADEMARK_LINE } from '../../utils/trademarks';
 
 /**
- * AI & Machine Learning Solutions Service Page
+ * AI Software Team & Automation Service Page
  */
 const AISolutionsService = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   
+  const solutions = [
+    {
+      icon: FaUsers,
+      title: 'AI Software Team',
+      description: 'A manager, developer and tester working your task list every hour, with you approving each step.',
+      link: '/ai-employee',
+      bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+      accentColor: '#8b5cf6',
+      shadowColor: '#8b5cf620',
+    },
+    {
+      icon: FaClock,
+      title: 'Scheduled Tasks & Routines',
+      description: 'Jobs that run every morning, hour or week: reports, reminders, data checks, follow-ups.',
+      bgGradient: 'linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%)',
+      accentColor: '#06b6d4',
+      shadowColor: '#06b6d420',
+    },
+    {
+      icon: FaBolt,
+      title: 'Workflow & Process Automation',
+      description: 'Intelligent automation to streamline workflows and eliminate repetitive tasks',
+      features: ['Document Processing', 'Data Entry Automation', 'Workflow Optimization', 'Email Classification'],
+      bgGradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+      accentColor: '#f59e0b',
+      shadowColor: '#f59e0b20',
+    },
+    {
+      icon: FaInbox,
+      title: 'Inbox & Document Triage',
+      description: 'Sort incoming mail and documents, draft replies, and flag what needs you. Nothing is sent without approval.',
+      bgGradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
+      accentColor: '#ec4899',
+      shadowColor: '#ec489920',
+    },
+    {
+      icon: FaVial,
+      title: 'AI Testing & QA',
+      description: 'Every change checked in real browsers and on phone emulators, with screenshots and a written result.',
+      bgGradient: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+      accentColor: '#10b981',
+      shadowColor: '#10b98120',
+    },
+    {
+      icon: FaRobot,
+      title: 'Custom AI Chatbots & Assistants',
+      description: 'Intelligent conversational AI for customer support, sales, and internal operations',
+      features: ['Natural Language Processing', '24/7 Customer Support', 'Multi-language Support', 'CRM Integration'],
+      bgGradient: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+      accentColor: '#3b82f6',
+      shadowColor: '#3b82f620',
+    },
+  ];
+
+  const mlSolutions = [
+    { icon: FaChartLine, title: 'Predictive Analytics', description: 'Data-driven insights to forecast trends, optimize operations, and reduce costs' },
+    { icon: FaSearch, title: 'Computer Vision', description: 'Image and video analysis for quality control, security, and automation' },
+    { icon: FaLanguage, title: 'Natural Language Processing', description: 'Text analysis, sentiment detection, and language understanding' },
+    { icon: FaBrain, title: 'Machine Learning Models', description: 'Custom ML models trained on your data' },
+  ];
+
   // SEO Configuration
   useSEO({
     title: pageSEO.servicesAI.title,
@@ -29,14 +91,11 @@ const AISolutionsService = () => {
     schemas: [
       ...getCommonSchemas(),
       generateServiceSchema({
-        name: 'AI & Machine Learning Solutions',
-        description: 'Custom AI and machine learning solutions including chatbots, predictive analytics, computer vision, and natural language processing.',
+        name: 'AI Software Team & Automation',
+        description: 'A software team built from AI agents, plus scheduled tasks, workflow automation, document triage, AI testing and chatbots, with human approval built in.',
         offerings: [
-          { name: 'Custom AI Chatbots', description: 'Intelligent conversational AI for customer support and sales' },
-          { name: 'Predictive Analytics', description: 'Data-driven insights to forecast trends and optimize operations' },
-          { name: 'Computer Vision', description: 'Image and video analysis for automation and quality control' },
-          { name: 'Natural Language Processing', description: 'Text analysis, sentiment detection, and language understanding' },
-          { name: 'Machine Learning Models', description: 'Custom ML models trained on your data' },
+          ...solutions.map(({ title, description }) => ({ name: title, description })),
+          ...mlSolutions.map(({ title, description }) => ({ name: title, description })),
         ],
       }),
       generateBreadcrumbSchema([
@@ -46,45 +105,6 @@ const AISolutionsService = () => {
       ]),
     ],
   });
-
-  const solutions = [
-    {
-      icon: FaRobot,
-      title: 'Custom AI Chatbots',
-      description: 'Intelligent conversational AI for customer support, sales, and internal operations',
-      features: ['Natural Language Processing', '24/7 Customer Support', 'Multi-language Support', 'CRM Integration'],
-      bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
-      accentColor: '#8b5cf6',
-      shadowColor: '#8b5cf620',
-    },
-    {
-      icon: FaChartLine,
-      title: 'Predictive Analytics',
-      description: 'Data-driven insights to forecast trends, optimize operations, and reduce costs',
-      features: ['Sales Forecasting', 'Demand Prediction', 'Risk Assessment', 'Customer Churn Analysis'],
-      bgGradient: 'linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%)',
-      accentColor: '#06b6d4',
-      shadowColor: '#06b6d420',
-    },
-    {
-      icon: FaSearch,
-      title: 'Computer Vision',
-      description: 'Image and video analysis for quality control, security, and automation',
-      features: ['Object Detection', 'Image Classification', 'OCR & Document Processing', 'Video Analytics'],
-      bgGradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
-      accentColor: '#ec4899',
-      shadowColor: '#ec489920',
-    },
-    {
-      icon: FaBolt,
-      title: 'Process Automation',
-      description: 'Intelligent automation to streamline workflows and eliminate repetitive tasks',
-      features: ['Document Processing', 'Data Entry Automation', 'Workflow Optimization', 'Email Classification'],
-      bgGradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
-      accentColor: '#f59e0b',
-      shadowColor: '#f59e0b20',
-    },
-  ];
 
   const useCases = [
     {
@@ -226,13 +246,13 @@ const AISolutionsService = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Unlock the Power of{' '}
+                AI Software Team{' '}
                 <span style={{
                   background: 'linear-gradient(135deg, #8b5cf6, #22d3ee)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}>
-                  Artificial Intelligence
+                  & Automation
                 </span>
               </motion.h1>
 
@@ -247,17 +267,8 @@ const AISolutionsService = () => {
                   lineHeight: 1.7,
                 }}
               >
-                From intelligent chatbots to predictive analytics, we help businesses 
-                leverage AI to automate processes and gain insights. Integrate into{' '}
-                <Link to="/services/web-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
-                  web apps
-                </Link>,{' '}
-                <Link to="/services/mobile-app-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
-                  mobile apps
-                </Link>, or start an{' '}
-                <Link to="/services/mvp-development" style={{ color: 'var(--color-primary-400)', textDecoration: 'underline' }}>
-                  AI-powered MVP
-                </Link>.
+                A software team built from AI, and agents that take repetitive work off the rest of your business —
+                planning, triage, testing, reporting and follow-ups — on guardrails you control. We run our own team this way.
               </motion.p>
 
               <motion.div
@@ -284,6 +295,19 @@ const AISolutionsService = () => {
                   💬 Discuss Your Use Case
                 </a>
               </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                style={{
+                  marginTop: 'var(--space-6)',
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-neutral-400)',
+                }}
+              >
+                Built on Claude, Cursor, GitHub Copilot and ChatGPT
+              </motion.p>
             </div>
           </div>
         </section>
@@ -391,6 +415,7 @@ const AISolutionsService = () => {
                     </p>
 
                     {/* Features Tags */}
+                    {solution.features && (
                     <div
                       style={{
                         display: 'flex',
@@ -420,6 +445,16 @@ const AISolutionsService = () => {
                         </span>
                       ))}
                     </div>
+                    )}
+
+                    {solution.link && (
+                      <Link
+                        to={solution.link}
+                        style={{ color: 'var(--primary)', fontWeight: '600', position: 'relative', zIndex: 1 }}
+                      >
+                        Meet the AI employee →
+                      </Link>
+                    )}
 
                     {/* Bottom accent border */}
                     <div
@@ -457,6 +492,39 @@ const AISolutionsService = () => {
               transform: translateY(-2px);
             }
           `}</style>
+        </section>
+
+        {/* Machine learning (secondary) */}
+        <section style={{ padding: 'var(--space-12) 0', background: 'var(--bg-primary)' }}>
+          <div className="modern-container">
+            <h2 className="modern-h3" style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
+              Machine learning, when you need it
+            </h2>
+            <div className="modern-grid-4" style={{ gap: 'var(--space-4)' }}>
+              {mlSolutions.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    style={{
+                      padding: 'var(--space-5)',
+                      background: 'var(--bg-secondary)',
+                      borderRadius: 'var(--radius-lg)',
+                      border: '1px solid var(--border-light)',
+                    }}
+                  >
+                    <Icon size={22} color="var(--color-primary-500)" />
+                    <h3 style={{ fontSize: 'var(--text-base)', fontWeight: '700', color: 'var(--text-primary)', margin: 'var(--space-3) 0 var(--space-2)' }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+                      {item.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {/* Use Cases by Industry */}
@@ -803,6 +871,12 @@ const AISolutionsService = () => {
             link: '/portfolio',
           }}
         />
+
+        <div className="modern-container" style={{ padding: 'var(--space-6) 0' }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'center', margin: 0 }}>
+            {TRADEMARK_LINE}
+          </p>
+        </div>
       </main>
       <ModernFooter />
       <FloatingCTA onQuoteClick={openAI} />

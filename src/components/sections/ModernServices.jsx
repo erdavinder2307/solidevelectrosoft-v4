@@ -8,13 +8,34 @@ import { motion } from 'framer-motion';
  */
 const ModernServices = ({
   badge = "Core Capabilities",
-  title = "Enterprise-Grade",
-  titleHighlight = "Software Engineering",
+  title = "AI Software Teams &",
+  titleHighlight = "Engineering",
   subtitle = "Proven delivery across healthcare, finance, legal tech, and SaaS. We build systems that scale, perform, and last.",
   services = null,
 }) => {
   // Default services if not provided
   const defaultServices = [
+    {
+      id: 'ai-software-team',
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+          <rect x="9" y="9" width="6" height="6"/>
+          <line x1="9" y1="1" x2="9" y2="4"/>
+          <line x1="15" y1="1" x2="15" y2="4"/>
+          <line x1="9" y1="20" x2="9" y2="23"/>
+          <line x1="15" y1="20" x2="15" y2="23"/>
+          <line x1="20" y1="9" x2="23" y2="9"/>
+          <line x1="20" y1="14" x2="23" y2="14"/>
+          <line x1="1" y1="9" x2="4" y2="9"/>
+          <line x1="1" y1="14" x2="4" y2="14"/>
+        </svg>
+      ),
+      title: "AI Software Team & Automation",
+      description: "A project manager, developer and tester built from AI agents, plus scheduled tasks and routines for the rest of your business. Set up by senior engineers, approved by you.",
+      features: ["AI Software Team", "Scheduled Tasks & Routines", "Inbox & Document Triage", "AI Testing & QA"],
+      link: "/services/ai-solutions",
+    },
     {
       id: 'web-development',
       icon: (
@@ -26,7 +47,7 @@ const ModernServices = ({
       ),
       title: "Web Application Development",
       description: "Production-ready web systems using Angular, React, .NET Core, and Python. Built for security, performance, and long-term maintenance.",
-      features: ["Enterprise Portals", "SaaS Platforms", "Healthcare Systems", "Financial Applications"],
+      features: ["Enterprise Portals", "SaaS Platforms", "Healthcare Systems", "Financial Applications", "Cloud & DevOps on Azure and Firebase"],
       link: "/services/web-development",
     },
     {
@@ -41,18 +62,6 @@ const ModernServices = ({
       description: "Native iOS/Android and cross-platform apps with Flutter. Designed for reliability and seamless user experience.",
       features: ["Native iOS & Android", "Flutter Cross-Platform", "Offline-First Architecture", "Payment Integration"],
       link: "/services/mobile-app-development",
-    },
-    {
-      id: 'cloud-solutions',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-        </svg>
-      ),
-      title: "Cloud & Infrastructure",
-      description: "Scalable cloud architecture on Azure and Firebase. CI/CD pipelines, monitoring, and infrastructure as code.",
-      features: ["Azure Cloud Services", "Firebase Backend", "DevOps & CI/CD", "CosmosDB & MongoDB"],
-      link: "/services/cloud-solutions",
     },
     {
       id: 'mvp-development',
