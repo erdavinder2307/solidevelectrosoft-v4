@@ -51,6 +51,7 @@ const ModernHeader = () => {
       ],
     },
     { path: '/about', label: 'About' },
+    { path: '/contact', label: 'Contact' },
   ];
 
   useEffect(() => {
