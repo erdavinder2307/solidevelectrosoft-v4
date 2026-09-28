@@ -16,29 +16,41 @@ import logoLight from '../../assets/img/logo/logo 3.png';
 const ModernHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
   const { openSearch } = useSearch();
   const location = useLocation();
 
-  // Navigation items
+  // Navigation items; an item with `children` renders as a dropdown (desktop) or a group (mobile).
+  // Items without a `path` have no page of their own.
   const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/services', label: 'Services', hasDropdown: true },
-    { path: '/ai-employee', label: 'AI Team' },
-    { path: '/products', label: 'Products' },
-    { path: '/portfolio', label: 'Portfolio' },
-    { path: '/blog', label: 'Blog' },
-    { path: '/videos', label: 'Learning' },
+    { path: '/ai-employee', label: 'AI Team', accent: true },
+    {
+      path: '/services',
+      label: 'Services',
+      children: [
+        { path: '/services/web-development', label: 'Web App Development' },
+        { path: '/services/mobile-app-development', label: 'Mobile App Development' },
+        { path: '/services/ai-solutions', label: 'AI Team & Automation' },
+        { path: '/services/mvp-development', label: 'MVP Development' },
+      ],
+    },
+    {
+      label: 'Our Work',
+      children: [
+        { path: '/portfolio', label: 'Client projects' },
+        { path: '/products', label: 'Our products' },
+      ],
+    },
+    {
+      label: 'Resources',
+      children: [
+        { path: '/blog', label: 'Blog' },
+        { path: '/videos', label: 'Videos' },
+        { path: '/faq', label: 'FAQ' },
+      ],
+    },
     { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
-  ];
-
-  // Service dropdown items
-  const serviceItems = [
-    { path: '/services/web-development', label: 'Web App Development' },
-    { path: '/services/mobile-app-development', label: 'Mobile App Development' },
-    { path: '/services/ai-solutions', label: 'AI Team & Automation' },
-    { path: '/services/mvp-development', label: 'MVP Development' },
   ];
 
   useEffect(() => {
@@ -53,6 +65,7 @@ const ModernHeader = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
   }, [location.pathname]);
 
   // Prevent body scroll when mobile menu is open
@@ -70,6 +83,19 @@ const ModernHeader = () => {
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
+  };
+
+  const isItemActive = (item) =>
+    (item.path && isActive(item.path)) || (item.children || []).some((child) => isActive(child.path));
+
+  const handleDropdownKeyDown = (event) => {
+    if (event.key !== 'Escape') return;
+    setOpenDropdown(null);
+    event.currentTarget.querySelector('.nav-link-hover')?.focus();
+  };
+
+  const handleDropdownBlur = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) setOpenDropdown(null);
   };
 
   return (
@@ -142,111 +168,148 @@ const ModernHeader = () => {
               }}
               className="modern-lg-flex"
             >
-              {navItems.map((item) => (
-                <div key={item.path} style={{ position: 'relative' }} className="nav-item-wrapper">
-                  <Link
-                    to={item.path}
-                    style={{
-                      padding: 'var(--space-2) var(--space-4)',
-                      fontSize: 'var(--text-sm)',
-                      fontWeight: '500',
-                      color: isActive(item.path) 
-                        ? 'var(--color-primary-500)' 
-                        : (isScrolled ? 'var(--text-secondary)' : 'rgba(255,255,255,0.9)'),
-                      textDecoration: 'none',
-                      borderRadius: 'var(--radius-md)',
-                      transition: 'all var(--transition-default)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 'var(--space-1)',
-                      whiteSpace: 'nowrap',
-                    }}
-                    className="nav-link-hover"
-                  >
+              {navItems.map((item) => {
+                const hasDropdown = Boolean(item.children);
+                const isOpen = openDropdown === item.label;
+                const topStyle = {
+                  padding: 'var(--space-2) var(--space-4)',
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: item.accent ? '600' : '500',
+                  fontFamily: 'inherit',
+                  color: isItemActive(item)
+                    ? 'var(--color-primary-500)'
+                    : (isScrolled ? 'var(--text-secondary)' : 'rgba(255,255,255,0.9)'),
+                  textDecoration: 'none',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  borderRadius: 'var(--radius-md)',
+                  transition: 'all var(--transition-default)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-1)',
+                  whiteSpace: 'nowrap',
+                };
+                const topContent = (
+                  <>
+                    {item.accent && (
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          background: 'var(--color-primary-500)',
+                        }}
+                      />
+                    )}
                     {item.label}
-                    {item.hasDropdown && (
+                    {hasDropdown && (
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <polyline points="6 9 12 15 18 9"/>
                       </svg>
                     )}
-                  </Link>
-                  
-                  {/* Dropdown for Services */}
-                  {item.hasDropdown && (
-                    <div 
-                      className="nav-dropdown"
-                      style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        paddingTop: '8px',
-                        opacity: 0,
-                        visibility: 'hidden',
-                        transition: 'all 0.2s ease',
-                        zIndex: 1001,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      <div 
+                  </>
+                );
+
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: 'relative' }}
+                    className="nav-item-wrapper"
+                    {...(hasDropdown && {
+                      onMouseEnter: () => setOpenDropdown(item.label),
+                      onMouseLeave: () => setOpenDropdown(null),
+                      onFocus: (event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget)) setOpenDropdown(item.label);
+                      },
+                      onBlur: handleDropdownBlur,
+                      onKeyDown: handleDropdownKeyDown,
+                    })}
+                  >
+                    {item.path ? (
+                      <Link
+                        to={item.path}
+                        style={topStyle}
+                        className="nav-link-hover"
+                        {...(hasDropdown && { 'aria-haspopup': 'true', 'aria-expanded': isOpen })}
+                      >
+                        {topContent}
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setOpenDropdown(isOpen ? null : item.label)}
+                        style={topStyle}
+                        className="nav-link-hover"
+                        aria-haspopup="true"
+                        aria-expanded={isOpen}
+                      >
+                        {topContent}
+                      </button>
+                    )}
+
+                    {hasDropdown && (
+                      <div
+                        className="nav-dropdown"
                         style={{
-                          background: 'var(--bg-primary)',
-                          border: '1px solid var(--border-light)',
-                          borderRadius: 'var(--radius-lg)',
-                          boxShadow: 'var(--shadow-xl)',
-                          padding: 'var(--space-2)',
-                          minWidth: '220px',
+                          position: 'absolute',
+                          top: '100%',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          paddingTop: '8px',
+                          opacity: isOpen ? 1 : 0,
+                          visibility: isOpen ? 'visible' : 'hidden',
+                          transition: 'all 0.2s ease',
+                          zIndex: 1001,
+                          pointerEvents: isOpen ? 'auto' : 'none',
                         }}
                       >
-                        {serviceItems.map((service) => (
-                          <Link
-                            key={service.path}
-                            to={service.path}
-                            style={{
-                              display: 'block',
-                              padding: 'var(--space-3) var(--space-4)',
-                              fontSize: 'var(--text-sm)',
-                              color: 'var(--text-secondary)',
-                              textDecoration: 'none',
-                              borderRadius: 'var(--radius-md)',
-                              transition: 'all var(--transition-fast)',
-                            }}
-                            className="dropdown-link"
-                          >
-                            {service.label}
-                          </Link>
-                        ))}
+                        <div
+                          style={{
+                            background: 'var(--bg-primary)',
+                            border: '1px solid var(--border-light)',
+                            borderRadius: 'var(--radius-lg)',
+                            boxShadow: 'var(--shadow-xl)',
+                            padding: 'var(--space-2)',
+                            minWidth: '220px',
+                          }}
+                        >
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.path}
+                              to={child.path}
+                              style={{
+                                display: 'block',
+                                padding: 'var(--space-3) var(--space-4)',
+                                fontSize: 'var(--text-sm)',
+                                color: 'var(--text-secondary)',
+                                textDecoration: 'none',
+                                borderRadius: 'var(--radius-md)',
+                                transition: 'all var(--transition-fast)',
+                              }}
+                              className="dropdown-link"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Desktop CTA & Mobile Menu Button */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-              {/* Search trigger — desktop */}
+              {/* Search trigger */}
               <button
                 type="button"
                 onClick={openSearch}
-                className="nh-search-btn modern-lg-flex"
-                style={{ display: 'none' }}
-                aria-label="Open search (Ctrl+K)"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <span className="nh-search-label">Search</span>
-                <kbd className="nh-search-shortcut">⌘K</kbd>
-              </button>
-
-              {/* Search trigger — mobile icon */}
-              <button
-                type="button"
-                onClick={openSearch}
-                className="nh-search-icon-btn modern-lg-hidden"
-                aria-label="Open search"
+                className="nh-search-icon-btn"
+                aria-label="Search (⌘K)"
+                title="Search (⌘K / Ctrl+K)"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
                   <circle cx="11" cy="11" r="8" />
@@ -259,7 +322,7 @@ const ModernHeader = () => {
                 className="modern-btn modern-btn-primary modern-lg-block"
                 style={{ display: 'none' }}
               >
-                ✨ Free AI Consultation
+                ✨ Book a free call
               </button>
 
               {/* Mobile Menu Button */}
@@ -353,51 +416,54 @@ const ModernHeader = () => {
               }}
             >
               <nav style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.path}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Link
-                      to={item.path}
-                      style={{
-                        display: 'block',
-                        padding: 'var(--space-4)',
-                        fontSize: 'var(--text-xl)',
-                        fontWeight: '600',
-                        color: isActive(item.path) ? 'var(--color-primary-500)' : 'var(--text-primary)',
-                        textDecoration: 'none',
-                        borderRadius: 'var(--radius-lg)',
-                        transition: 'all var(--transition-default)',
-                      }}
+                {navItems.map((item, index) => {
+                  const topStyle = {
+                    display: 'block',
+                    padding: 'var(--space-4)',
+                    fontSize: 'var(--text-xl)',
+                    fontWeight: '600',
+                    color: isItemActive(item) ? 'var(--color-primary-500)' : 'var(--text-primary)',
+                    textDecoration: 'none',
+                    borderRadius: 'var(--radius-lg)',
+                    transition: 'all var(--transition-default)',
+                  };
+                  return (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
                     >
-                      {item.label}
-                    </Link>
-                    
-                    {/* Service sub-items in mobile */}
-                    {item.hasDropdown && (
-                      <div style={{ paddingLeft: 'var(--space-4)', marginTop: 'var(--space-2)' }}>
-                        {serviceItems.map((service) => (
-                          <Link
-                            key={service.path}
-                            to={service.path}
-                            style={{
-                              display: 'block',
-                              padding: 'var(--space-3) var(--space-4)',
-                              fontSize: 'var(--text-base)',
-                              color: 'var(--text-secondary)',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            {service.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                ))}
+                      {item.path ? (
+                        <Link to={item.path} style={topStyle}>
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <div style={topStyle}>{item.label}</div>
+                      )}
+
+                      {item.children && (
+                        <div style={{ paddingLeft: 'var(--space-4)', marginTop: 'var(--space-2)' }}>
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.path}
+                              to={child.path}
+                              style={{
+                                display: 'block',
+                                padding: 'var(--space-3) var(--space-4)',
+                                fontSize: 'var(--text-base)',
+                                color: isActive(child.path) ? 'var(--color-primary-500)' : 'var(--text-secondary)',
+                                textDecoration: 'none',
+                              }}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </nav>
 
               {/* Mobile CTA */}
@@ -412,7 +478,7 @@ const ModernHeader = () => {
                   className="modern-btn modern-btn-primary"
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
-                  ✨ Chat with AI
+                  ✨ Book a free call
                 </button>
               </motion.div>
 
@@ -486,13 +552,8 @@ const ModernHeader = () => {
           color: var(--text-primary) !important;
         }
         
-        .nav-item-wrapper:hover .nav-dropdown {
-          opacity: 1 !important;
-          visibility: visible !important;
-          pointer-events: auto !important;
-        }
-        
-        .dropdown-link:hover {
+        .dropdown-link:hover,
+        .dropdown-link:focus-visible {
           background: var(--bg-tertiary);
           color: var(--text-primary) !important;
         }
