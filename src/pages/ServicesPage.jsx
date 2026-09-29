@@ -138,12 +138,19 @@ const Services = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="modern-h1"
+                className="modern-h1 services-hero-title"
                 style={{ color: 'white', marginTop: 'var(--space-4)', marginBottom: 'var(--space-6)' }}
               >
                 End-to-End{' '}
                 <span className="gradient-text">Software Development</span>
               </motion.h1>
+              <style>{`
+                @media (max-width: 479px) {
+                  .modern-h1.services-hero-title {
+                    font-size: clamp(2.25rem, 1rem + 8vw, 3.75rem);
+                  }
+                }
+              `}</style>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
