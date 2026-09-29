@@ -236,6 +236,7 @@ const ModernHero = ({
           {/* Stats */}
           <motion.div
             variants={itemVariants}
+            className="hero-stats-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
@@ -330,6 +331,11 @@ const ModernHero = ({
         @media (min-width: 480px) {
           .hero-cta-container {
             flex-direction: row !important;
+          }
+        }
+        @media (max-width: 479px) {
+          .hero-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
       `}</style>
