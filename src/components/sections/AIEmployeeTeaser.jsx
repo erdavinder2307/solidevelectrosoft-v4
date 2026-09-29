@@ -52,7 +52,8 @@ const AIEmployeeTeaser = () => (
                       border: '2px solid var(--bg-secondary)',
                     }}
                   />
-                  <span style={{ ...aiBadgeStyle, right: '-4px', bottom: '-4px', padding: '0 5px', fontSize: '9px' }}>AI</span>
+                  {/* zIndex keeps each badge above the next overlapping portrait */}
+                  <span style={{ ...aiBadgeStyle, right: '-4px', bottom: '-4px', padding: '0 5px', fontSize: '9px', zIndex: 1 }}>AI</span>
                 </div>
               ))}
             </div>
