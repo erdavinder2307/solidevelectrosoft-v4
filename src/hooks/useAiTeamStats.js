@@ -26,8 +26,13 @@ const parseStats = (data) => {
   return stats;
 };
 
-export const formatStatsDate = (iso) =>
-  new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// "30 Sep 2026", in IST (toLocaleDateString gives "Sept" in some browsers).
+export const formatStatsDate = (iso) => {
+  const ist = new Date(Date.parse(iso) + 330 * 60 * 1000);
+  return `${ist.getUTCDate()} ${MONTHS[ist.getUTCMonth()]} ${ist.getUTCFullYear()}`;
+};
 
 /**
  * Live counters of our own AI team (public, counts only), refreshed daily.
