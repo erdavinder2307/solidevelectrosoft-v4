@@ -3,7 +3,7 @@ import arjunImg from '../assets/img/ai-team/arjun-ai-developer-800.jpg';
 import meeraImg from '../assets/img/ai-team/meera-ai-tester-800.jpg';
 import kabirImg from '../assets/img/ai-team/kabir-ai-reviewer-800.jpg';
 
-// AI characters, not staff. Kabir (AI Reviewer) is not running yet: show him only as "coming soon".
+// AI characters, not staff.
 export const aiTeam = {
   asha: { name: 'Asha', role: 'AI Project Manager', image: ashaImg, alt: 'AI-generated illustration of Asha, the AI project manager' },
   arjun: { name: 'Arjun', role: 'AI Developer', image: arjunImg, alt: 'AI-generated illustration of Arjun, the AI developer' },
@@ -11,7 +11,7 @@ export const aiTeam = {
   kabir: { name: 'Kabir', role: 'AI Reviewer', image: kabirImg, alt: 'AI-generated illustration of Kabir, the AI reviewer' },
 };
 
-export const activeAITeam = [aiTeam.asha, aiTeam.arjun, aiTeam.meera];
+export const activeAITeam = [aiTeam.asha, aiTeam.arjun, aiTeam.meera, aiTeam.kabir];
 
 export const PORTRAIT_SIZE = 800;
 

@@ -731,12 +731,12 @@ const ModernAbout = () => {
                 viewport={{ once: true }}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
                   gap: '32px',
-                  maxWidth: '900px',
+                  maxWidth: '1100px',
                   margin: '0 auto',
                 }}
-                className="team-grid"
+                className="team-grid ai-team-grid"
               >
                 {activeAITeam.map((member) => (
                   <motion.div
@@ -913,6 +913,9 @@ const ModernAbout = () => {
             gap: 48px !important;
           }
           .values-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .ai-team-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
