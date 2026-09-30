@@ -69,7 +69,7 @@ const ModernFooter = ({ onQuoteClick = null }) => {
     services: [
       { label: 'Web App Development', path: '/services/web-development' },
       { label: 'Mobile App Development', path: '/services/mobile-app-development' },
-      { label: 'AI-Powered Solutions', path: '/services/ai-solutions' },
+      { label: 'AI Team & Automation', path: '/services/ai-solutions' },
       { label: 'MVP Development', path: '/services/mvp-development' },
     ],
     company: [
