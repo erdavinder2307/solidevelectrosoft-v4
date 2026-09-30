@@ -63,7 +63,7 @@ const AIEmployeeTeaser = () => {
               </div>
               <div>
                 <span style={{ display: 'block', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-                  Asha, Arjun, Meera and Kabir · our AI team
+                  Asha, Arjun, Meera, Kabir and Naina · our AI team
                 </span>
                 <span style={{ display: 'block', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
                   {AI_TEAM_DISCLOSURE}

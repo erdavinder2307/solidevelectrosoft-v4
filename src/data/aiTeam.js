@@ -2,6 +2,7 @@ import ashaImg from '../assets/img/ai-team/asha-ai-project-manager-800.jpg';
 import arjunImg from '../assets/img/ai-team/arjun-ai-developer-800.jpg';
 import meeraImg from '../assets/img/ai-team/meera-ai-tester-800.jpg';
 import kabirImg from '../assets/img/ai-team/kabir-ai-reviewer-800.jpg';
+import nainaImg from '../assets/img/ai-team/naina-ai-growth-lead-800.jpg';
 
 // AI characters, not staff.
 export const aiTeam = {
@@ -9,9 +10,10 @@ export const aiTeam = {
   arjun: { name: 'Arjun', role: 'AI Developer', image: arjunImg, alt: 'AI-generated illustration of Arjun, the AI developer' },
   meera: { name: 'Meera', role: 'AI Tester', image: meeraImg, alt: 'AI-generated illustration of Meera, the AI tester' },
   kabir: { name: 'Kabir', role: 'AI Reviewer', image: kabirImg, alt: 'AI-generated illustration of Kabir, the AI reviewer' },
+  naina: { name: 'Naina', role: 'AI Growth Lead', image: nainaImg, alt: 'AI-generated illustration of Naina, the AI growth lead' },
 };
 
-export const activeAITeam = [aiTeam.asha, aiTeam.arjun, aiTeam.meera, aiTeam.kabir];
+export const activeAITeam = [aiTeam.asha, aiTeam.arjun, aiTeam.meera, aiTeam.kabir, aiTeam.naina];
 
 export const PORTRAIT_SIZE = 800;
 
@@ -32,4 +34,4 @@ export const aiBadgeStyle = {
 };
 
 export const AI_TEAM_DISCLOSURE =
-  'Asha, Arjun, Meera and Kabir are AI agents shown as AI-generated illustrations, not real people.';
+  'Asha, Arjun, Meera, Kabir and Naina are AI agents shown as AI-generated illustrations, not real people.';
