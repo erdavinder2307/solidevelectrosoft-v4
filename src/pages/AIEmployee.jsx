@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
+import ControlDemo from '../components/sections/ControlDemo';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
@@ -12,6 +13,7 @@ import {
   FaUserCheck,
   FaRocket, FaCalendarCheck, FaKey, FaTrashAlt, FaCodeBranch, FaUserSecret,
   FaUsers, FaClock, FaInbox, FaComments, FaDesktop, FaCalendarAlt,
+  FaMobileAlt, FaImage, FaShieldAlt, FaDatabase, FaVial, FaSearch,
 } from 'react-icons/fa';
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
@@ -44,6 +46,12 @@ const taskSteps = [
   { title: 'Released', description: 'You review it and publish it.', you: true },
 ];
 
+const controlPoints = [
+  { icon: FaMobileAlt, title: 'One page, one tap', description: 'Approve, skip or ask for a change. Your AI team picks it up within 30 minutes.' },
+  { icon: FaImage, title: 'A picture for every decision', description: 'A sketch of the screen, a before-and-after diagram or a simple chart. No code to read.' },
+  { icon: FaShieldAlt, title: 'Nothing risky without you', description: 'Changes to live data, releases and merges wait for your tap.' },
+];
+
 const guardrails = [
   { icon: FaRocket, title: 'Never releases to customers', description: 'publishing stays with you.' },
   { icon: FaCalendarCheck, title: 'Never handles money or filings', description: 'it prepares checklists; it never pays, files or signs.' },
@@ -51,6 +59,9 @@ const guardrails = [
   { icon: FaTrashAlt, title: 'Never deletes anything', description: 'files, tasks and history always stay.' },
   { icon: FaCodeBranch, title: 'Works on its own copy', description: 'your team\'s unfinished work is never touched.' },
   { icon: FaUserSecret, title: 'Keeps secrets out', description: 'no passwords or keys in reports, chats or code.' },
+  { icon: FaDatabase, title: 'Live data changes', description: 'a dry run first, the real run only on your tap.' },
+  { icon: FaVial, title: 'Releases go to test users first', description: 'you submit to the store.' },
+  { icon: FaSearch, title: 'An AI reviewer reads every change', description: 'you decide to merge.' },
 ];
 
 const toolGroups = [
@@ -444,6 +455,40 @@ const AIEmployee = () => {
             <motion.p {...fadeUp} style={noteStyle}>
               Steps 3 and 7 are always a person. Nothing reaches your customers without your click.
             </motion.p>
+          </div>
+        </section>
+
+        {/* You stay in control */}
+        <section
+          id="you-stay-in-control"
+          className="modern-section"
+          style={{ background: 'linear-gradient(180deg, var(--color-primary-50) 0%, var(--bg-primary) 100%)' }}
+        >
+          <div className="modern-container">
+            <SectionHeader
+              title="You stay in control"
+              intro="Everything that needs you sits on one page. Each decision comes with a picture, so you can say yes from your phone in seconds."
+            />
+            <div className="modern-grid modern-grid-3" style={{ marginBottom: 'var(--space-12)' }}>
+              {controlPoints.map((point, index) => (
+                <motion.div key={point.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
+                  <div style={{ ...cardStyle, display: 'flex', gap: 'var(--space-4)' }}>
+                    <IconBox icon={point.icon} />
+                    <div style={{ minWidth: 0 }}>
+                      <h3 style={{ ...cardTitleStyle, marginTop: 0 }}>{point.title}</h3>
+                      <p style={cardTextStyle}>{point.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <ControlDemo />
+            <p style={noteStyle}>
+              Every morning your AI team also suggests what to build next from your roadmap, with a picture.
+            </p>
+            <p style={{ ...noteStyle, marginTop: 'var(--space-3)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+              The demo uses example tasks. {AI_TEAM_DISCLOSURE}
+            </p>
           </div>
         </section>
 
