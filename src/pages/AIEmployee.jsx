@@ -26,6 +26,7 @@ const team = [
   { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
   { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
   { member: aiTeam.kabir, description: 'Reads every change twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
+  { member: aiTeam.naina, description: 'Finds customers. Researches the market, spots what stops people from buying, and drafts the plan and the messages to win them — a person approves and sends every one.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
 
@@ -318,7 +319,7 @@ const AIEmployee = () => {
         <section className="modern-section modern-bg-light">
           <div className="modern-container">
             <SectionHeader title="Meet the team" />
-            <div className="modern-grid modern-grid-4">
+            <div className="modern-grid modern-grid-3">
               {team.map((item, index) => (
                 <motion.div key={item.member?.name ?? item.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
                   <div

@@ -731,8 +731,8 @@ const ModernAbout = () => {
                 viewport={{ once: true }}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '32px',
+                  gridTemplateColumns: 'repeat(5, 1fr)',
+                  gap: '24px',
                   maxWidth: '1100px',
                   margin: '0 auto',
                 }}
@@ -744,7 +744,7 @@ const ModernAbout = () => {
                     variants={itemVariants}
                     style={{
                       textAlign: 'center',
-                      padding: '32px',
+                      padding: '32px 16px',
                       background: '#f9fafb',
                       borderRadius: '16px',
                       border: '1px solid #e5e7eb',
@@ -916,7 +916,7 @@ const ModernAbout = () => {
             grid-template-columns: repeat(2, 1fr) !important;
           }
           .ai-team-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-columns: repeat(3, 1fr) !important;
           }
         }
         
