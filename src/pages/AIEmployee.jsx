@@ -7,6 +7,7 @@ import CTABanner from '../components/sections/CTABanner';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
+import { useAiTeamStats, formatStatsDate } from '../hooks/useAiTeamStats';
 import {
   FaUserCheck,
   FaRocket, FaCalendarCheck, FaKey, FaTrashAlt, FaCodeBranch, FaUserSecret,
@@ -22,6 +23,7 @@ const team = [
   { member: aiTeam.asha, description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
   { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
   { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
+  { member: aiTeam.kabir, description: 'Reads every change twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
 
@@ -38,6 +40,7 @@ const taskSteps = [
   { title: 'Approved', description: 'You reply "go" or "skip".', you: true },
   { title: 'Built', description: 'The developer makes the change on a separate copy.' },
   { title: 'Checked', description: 'The tester tries it on a test machine.' },
+  { title: 'Reviewed', description: 'Kabir, our AI reviewer, reads the change and says whether it is ready.' },
   { title: 'Released', description: 'You review it and publish it.', you: true },
 ];
 
@@ -62,11 +65,29 @@ const whyPoints = [
   { title: 'Senior engineers behind it', description: '13+ years of shipping software, so the AI\'s work is set up and checked by people who know what good looks like.' },
 ];
 
-const numbers = [
-  { value: '18', label: 'changes built, tested and approved' },
-  { value: '14', label: 'test runs, none failed' },
-  { value: '₹180', label: 'extra tax a ₹1,000 invoice picked up after editing: a billing bug our AI caught with its own tests, fixed the same day' },
-  { value: '83 min', label: 'from "our login page is broken" to working again' },
+const liveCounters = (stats) => [
+  {
+    value: stats.improvementsShipped,
+    title: 'Improvements shipped',
+    label: 'Fixes and new features our AI team built and a person approved',
+  },
+  {
+    value: stats.checksRun,
+    title: 'Checks run',
+    label: 'Times our AI tester tried a change the way a real user would',
+  },
+  {
+    value: stats.problemsCaught,
+    title: 'Problems caught',
+    label: `Bugs our AI tester found before customers reported them — ${stats.problemsFixed} already fixed`,
+  },
+  stats.reviewsWritten > 0
+    ? {
+      value: stats.reviewsWritten,
+      title: 'Reviews written',
+      label: 'Changes our AI reviewer read line by line before a person decided to publish them',
+    }
+    : { value: 'New', title: 'Reviews written', label: 'Started 30 Sep 2026' },
 ];
 
 const capabilities = [
@@ -154,6 +175,7 @@ const scrollToHowItWorks = () => {
  */
 const AIEmployee = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const stats = useAiTeamStats();
 
   useSEO({
     title: pageSEO.aiEmployee.title,
@@ -337,54 +359,6 @@ const AIEmployee = () => {
               ))}
             </div>
 
-            <motion.div
-              {...fadeUp}
-              className="ai-employee-coming-soon"
-              style={{
-                marginTop: 'var(--space-6)',
-                padding: 'var(--space-5) var(--space-6)',
-                borderRadius: 'var(--radius-xl)',
-                border: '1px dashed var(--border-light)',
-                background: 'var(--bg-secondary)',
-                opacity: 0.75,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--space-4)',
-              }}
-            >
-              <img
-                src={aiTeam.kabir.image}
-                alt={aiTeam.kabir.alt}
-                width={56}
-                height={56}
-                loading="lazy"
-                decoding="async"
-                style={{
-                  width: '56px',
-                  height: '56px',
-                  flexShrink: 0,
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  filter: 'grayscale(100%)',
-                  opacity: 0.8,
-                }}
-              />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>
-                  <h3 style={{ fontSize: 'var(--text-base)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>
-                    {aiTeam.kabir.name} · {aiTeam.kabir.role}
-                  </h3>
-                  <span className="modern-badge" style={{ background: 'var(--bg-tertiary)', color: 'var(--text-secondary)' }}>
-                    Coming soon
-                  </span>
-                </div>
-                <p style={{ ...cardTextStyle, color: 'var(--text-muted)' }}>
-                  Reads every change before you do. A plain-language review of what changed, what could break, and
-                  whether it is ready to release, so your final check takes minutes.
-                </p>
-              </div>
-            </motion.div>
-
             <p style={{ ...noteStyle, marginTop: 'var(--space-6)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
               {AI_TEAM_DISCLOSURE}
             </p>
@@ -468,7 +442,7 @@ const AIEmployee = () => {
               ))}
             </ol>
             <motion.p {...fadeUp} style={noteStyle}>
-              Steps 3 and 6 are always a person. Nothing reaches your customers without your click.
+              Steps 3 and 7 are always a person. Nothing reaches your customers without your click.
             </motion.p>
           </div>
         </section>
@@ -550,16 +524,21 @@ const AIEmployee = () => {
           </div>
         </section>
 
-        {/* We use it every day */}
+        {/* Our AI team, live */}
         <section className="modern-section" style={{ background: 'var(--bg-dark)' }}>
           <div className="modern-container">
             <motion.div {...fadeUp} style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto var(--space-12)' }}>
-              <h2 className="modern-h2" style={{ color: 'white', marginBottom: 'var(--space-2)' }}>We use it every day</h2>
-              <p style={{ color: 'var(--color-neutral-400)', margin: 0 }}>Our own first week, 22–25 September 2026.</p>
+              <h2 className="modern-h2" style={{ color: 'white', marginBottom: 'var(--space-2)' }}>Our AI team, live</h2>
+              <p style={{ color: 'var(--color-neutral-400)', margin: 0 }}>
+                Real numbers from our own work since 22 September 2026. Updated every morning.
+              </p>
+              <p style={{ color: 'var(--color-neutral-500)', fontSize: 'var(--text-sm)', margin: 'var(--space-2) 0 0' }}>
+                Last updated {formatStatsDate(stats.updated)}
+              </p>
             </motion.div>
             <div className="modern-grid modern-grid-4">
-              {numbers.map((stat, index) => (
-                <motion.div key={stat.value} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
+              {liveCounters(stats).map((stat, index) => (
+                <motion.div key={stat.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.1 }}>
                   <div
                     style={{
                       ...cardStyle,
@@ -570,7 +549,8 @@ const AIEmployee = () => {
                     <div style={{ fontSize: 'var(--text-4xl)', fontWeight: '700', color: 'var(--color-primary-400)', lineHeight: 1.1 }}>
                       {stat.value}
                     </div>
-                    <p style={{ ...cardTextStyle, color: 'var(--color-neutral-400)', marginTop: 'var(--space-3)' }}>{stat.label}</p>
+                    <h3 style={{ ...cardTitleStyle, color: 'white', margin: 'var(--space-3) 0 var(--space-2)' }}>{stat.title}</h3>
+                    <p style={{ ...cardTextStyle, color: 'var(--color-neutral-400)' }}>{stat.label}</p>
                   </div>
                 </motion.div>
               ))}
@@ -579,10 +559,9 @@ const AIEmployee = () => {
               {...fadeUp}
               style={{ ...noteStyle, color: 'var(--color-neutral-300)', lineHeight: 1.8, textAlign: 'left' }}
             >
-              One Friday morning the login page of our SolidCare app started failing. The AI developer looked past the
-              misleading error, found the server had lost its database connection, and told us exactly what to change.
-              A person made the one change only a person may make, and login was back 83 minutes after the report. By
-              the afternoon three follow-up fixes were built and tested.
+              One Friday, the login on our SolidCare app stopped working. Our AI developer found the real cause and told
+              us exactly what to change. We made that one change ourselves, and people could log in again 83 minutes
+              after the problem was reported.
             </motion.p>
           </div>
         </section>
@@ -654,7 +633,7 @@ const AIEmployee = () => {
             .ai-employee-steps { grid-template-columns: repeat(3, 1fr); }
           }
           @media (min-width: 1200px) {
-            .ai-employee-steps { grid-template-columns: repeat(6, 1fr); }
+            .ai-employee-steps { grid-template-columns: repeat(7, 1fr); }
           }
           .ai-employee-page h3 { overflow-wrap: anywhere; }
         `}</style>
