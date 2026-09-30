@@ -412,7 +412,9 @@ const ModernAbout = () => {
                 <SmartImage
                   src={displayStoryImage}
                   alt="Solidev Team"
-                  aspectRatio={null}
+                  // Reserve the box before the image loads, so the sections below do not jump on phones.
+                  // Story images are 16:9.
+                  aspectRatio={16 / 9}
                   style={{
                     width: '100%',
                     borderRadius: '24px',
