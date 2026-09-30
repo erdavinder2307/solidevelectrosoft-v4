@@ -76,9 +76,12 @@ const AIEmployeeTeaser = () => {
             <h2 className="modern-h3" style={{ marginBottom: 'var(--space-4)' }}>
               We run our own software team on AI — and we can build yours
             </h2>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-6)' }}>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-3)' }}>
               An AI project manager, developer and tester plan, build and test our software every hour on Claude, with
               a person approving every step. Need a team without hiring? We'll build one for you.
+            </p>
+            <p style={{ color: 'var(--text-primary)', fontWeight: 600, marginBottom: 'var(--space-6)' }}>
+              You approve from one page, with a picture for every decision.
             </p>
             <Link to="/ai-employee" className="modern-btn modern-btn-primary">
               Meet the AI employee
