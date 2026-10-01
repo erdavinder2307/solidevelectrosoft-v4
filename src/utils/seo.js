@@ -16,7 +16,7 @@ export const siteConfig = {
   defaultOgImage: 'https://www.solidevelectrosoft.com/assets/img/og-image.png',
   defaultTitle: 'Solidev Electrosoft | Custom Software Development & AI Solutions',
   titleTemplate: '%s | Solidev Electrosoft',
-  defaultDescription: 'Expert custom software development, mobile apps, AI solutions, and MVP development. 10+ years experience building scalable applications for startups and enterprises.',
+  defaultDescription: 'Expert custom software development, mobile apps, AI solutions, and MVP development. 13+ years experience building scalable applications for startups and enterprises.',
   twitterHandle: '@solidevelectrosoft',
   social: {
     linkedin: 'https://www.linkedin.com/company/solidev-electrosoft',
