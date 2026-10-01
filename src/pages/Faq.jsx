@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Header, Footer } from '../components/layout';
+import { ModernHeader, ModernFooter } from '../components/layout';
 import {
   PreLoader,
   BackToTop,
@@ -8,6 +8,7 @@ import {
   FloatingMenu,
 } from '../components/ui';
 import Breadcrumb from '../components/sections/Breadcrumb';
+import faqBackground from '../assets/img/bg/newbgimage/qn.webp';
 import emailService from '../services/emailService';
 import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
@@ -123,11 +124,11 @@ const Faq = () => {
       <PreLoader />
       <BackToTop />
       <MouseCursor />
-      <Header />
+      <ModernHeader />
 
       <Breadcrumb
         title="FAQ"
-        backgroundImage="/src/assets/img/bg/newbgimage/qn.webp"
+        backgroundImage={faqBackground}
       />
 
       <main>
@@ -675,7 +676,7 @@ const Faq = () => {
 
       </main>
 
-      <Footer />
+      <ModernFooter />
       <FloatingMenu />
     </div>
   );
