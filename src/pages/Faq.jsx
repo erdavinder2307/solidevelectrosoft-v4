@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Header, Footer } from '../components/layout';
 import {
   PreLoader,
@@ -12,6 +13,7 @@ import { useSEO } from '../hooks/useSEO';
 import { pageSEO } from '../utils/seo';
 import { getCommonSchemas, generateBreadcrumbSchema, generateFAQSchema } from '../utils/structuredData';
 import { trackContactFormSubmitted } from '../utils/analytics';
+import { TRADEMARK_LINE } from '../utils/trademarks';
 
 const Faq = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +27,13 @@ const Faq = () => {
 
   // FAQ data for schema
   const faqs = [
-    { question: 'What kind of service do you provide?', answer: 'We are a web and Mobile applications development company that specializes in creating customized web applications, Mobile applications and software solutions. Our services include web development, mobile app development, software automation, UI/UX design, and maintenance/support for existing applications.' },
+    { question: 'What kind of service do you provide?', answer: 'We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support.' },
+    { question: 'What is an AI employee?', answer: 'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera) and a reviewer (Kabir) — that plan work, build it and check it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.' },
+    { question: 'Can an AI team replace hiring developers?', answer: 'For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.' },
+    { question: 'Will AI automation make decisions without us?', answer: 'No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.' },
+    { question: 'What can you automate?', answer: 'Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.' },
+    { question: 'Is our data safe with AI agents?', answer: 'The agents work inside accounts you control and only see what you give them access to. They never put passwords or keys into reports or chats, never delete data, and never pay, file or sign anything.' },
+    { question: 'How do we start with AI automation?', answer: 'Book a free 30-minute call. We pick one workflow, run a pilot with every step on "ask first", and expand only where it proves itself. See https://www.solidevelectrosoft.com/ai-employee for how our own works.' },
     { question: 'How long does it take to build a Software application?', answer: 'It depends on the complexity and scale of the project. But since we have experienced developers in our ranks, we can meet your deadline, regardless of the complexity.' },
     { question: 'How much does a software application cost?', answer: 'The cost of a new website can vary significantly depending on several factors including the complexity of the design, the number of pages and features required, the level of customization needed, and the specific requirements of the project.' },
     { question: 'Will my application be mobile-friendly?', answer: 'Absolutely! Ensuring mobile-friendliness is a priority for us. We design and develop your application with responsive design principles in mind, making it accessible and optimized for a seamless user experience across different mobile devices.' },
@@ -145,7 +153,133 @@ const Faq = () => {
                     </h2>
                     <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#accordionExample">
                       <div className="accordion-body">
-                        We are a web and Mobile applications development company that specializes in creating customized web applications, Mobile applications and software solutions. Our services include web development, mobile app development, software automation, UI/UX design, and maintenance/support for existing applications. We work with various technologies such as Microsoft Technologies (Asp.net MVC, Asp.net Core), Python, Angular, React, Flutter and more.
+                        We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support. We work with various technologies such as Microsoft Technologies (Asp.net MVC, Asp.net Core), Python, Angular, React, Flutter and more.
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 1 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi1">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi1" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi1"
+                      >
+                        What is an AI employee?
+                      </button>
+                    </h2>
+                    <div id="collapseAi1" className="accordion-collapse collapse" aria-labelledby="faqAi1" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera) and a reviewer (Kabir) — that plan work, build it and check it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 2 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi2">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi2" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi2"
+                      >
+                        Can an AI team replace hiring developers?
+                      </button>
+                    </h2>
+                    <div id="collapseAi2" className="accordion-collapse collapse" aria-labelledby="faqAi2" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 3 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi3">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi3" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi3"
+                      >
+                        Will AI automation make decisions without us?
+                      </button>
+                    </h2>
+                    <div id="collapseAi3" className="accordion-collapse collapse" aria-labelledby="faqAi3" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 4 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi4">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi4" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi4"
+                      >
+                        What can you automate?
+                      </button>
+                    </h2>
+                    <div id="collapseAi4" className="accordion-collapse collapse" aria-labelledby="faqAi4" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 5 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi5">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi5" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi5"
+                      >
+                        Is our data safe with AI agents?
+                      </button>
+                    </h2>
+                    <div id="collapseAi5" className="accordion-collapse collapse" aria-labelledby="faqAi5" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'The agents work inside accounts you control and only see what you give them access to. They never put passwords or keys into reports or chats, never delete data, and never pay, file or sign anything.'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI FAQ 6 */}
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="faqAi6">
+                      <button 
+                        className="accordion-button collapsed" 
+                        type="button" 
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAi6" 
+                        aria-expanded="false" 
+                        aria-controls="collapseAi6"
+                      >
+                        How do we start with AI automation?
+                      </button>
+                    </h2>
+                    <div id="collapseAi6" className="accordion-collapse collapse" aria-labelledby="faqAi6" data-bs-parent="#accordionExample">
+                      <div className="accordion-body">
+                        {'Book a free 30-minute call. We pick one workflow, run a pilot with every step on "ask first", and expand only where it proves itself. '}See <Link to="/ai-employee">our AI employee page</Link> for how our own works.
                       </div>
                     </div>
                   </div>
@@ -401,6 +535,7 @@ const Faq = () => {
                   </div>
 
                 </div>
+                <p className="mt-30" style={{ fontSize: '0.8rem', color: 'var(--text-muted, #6b7280)' }}>{TRADEMARK_LINE}</p>
               </div>
             </div>
           </div>
