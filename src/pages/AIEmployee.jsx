@@ -25,7 +25,7 @@ const team = [
   { member: aiTeam.asha, description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
   { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
   { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
-  { member: aiTeam.kabir, description: 'Reads every change twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
+  { member: aiTeam.kabir, description: 'Checks our code changes twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
   { member: aiTeam.naina, description: 'Finds customers. Researches the market, spots what stops people from buying, and drafts the plan and the messages to win them — a person approves and sends every one.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
@@ -62,7 +62,7 @@ const guardrails = [
   { icon: FaUserSecret, title: 'Keeps secrets out', description: 'no passwords or keys in reports, chats or code.' },
   { icon: FaDatabase, title: 'Live data changes', description: 'a dry run first, the real run only on your tap.' },
   { icon: FaVial, title: 'Releases go to test users first', description: 'you submit to the store.' },
-  { icon: FaSearch, title: 'An AI reviewer reads every change', description: 'you decide to merge.' },
+  { icon: FaSearch, title: 'An AI reviewer checks our code changes before they ship', description: 'you decide to merge.' },
 ];
 
 const toolGroups = [
