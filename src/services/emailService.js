@@ -258,7 +258,8 @@ class SendEmailService {
     
     return {
       success: true,
-      message: `Thank you ${formData.name}! Your message has been received. We will get back to you within 24 hours. (Fallback mode - please configure Azure Communication Services for email delivery)`,
+      // Nothing was delivered; callers must treat `fallback: true` as a failed send.
+      message: 'Email sending is not available.',
       fallback: true
     };
   }
