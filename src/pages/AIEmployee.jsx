@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
 import ControlDemo from '../components/sections/ControlDemo';
+import TaskStory from '../components/sections/TaskStory';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
@@ -38,13 +39,13 @@ const workingDay = [
 ];
 
 const taskSteps = [
-  { title: 'Spotted', description: 'A bug, a test finding or a new idea.' },
-  { title: 'Proposed', description: 'The manager writes down why, how big, and what done means.' },
-  { title: 'Approved', description: 'You reply "go" or "skip".', you: true },
-  { title: 'Built', description: 'The developer makes the change on a separate copy.' },
-  { title: 'Checked', description: 'The tester tries it on a test machine.' },
-  { title: 'Reviewed', description: 'Kabir, our AI reviewer, reads the change and says whether it is ready.' },
-  { title: 'Released', description: 'You review it and publish it.', you: true },
+  { title: 'Spotted', description: 'A bug, a test finding or a new idea.', member: aiTeam.asha, picture: 'spotted' },
+  { title: 'Proposed', description: 'The manager writes down why, how big, and what done means.', member: aiTeam.asha, picture: 'proposed' },
+  { title: 'Approved', description: 'You reply "go" or "skip".', you: true, picture: 'approved' },
+  { title: 'Built', description: 'The developer makes the change on a separate copy.', member: aiTeam.arjun, picture: 'built' },
+  { title: 'Checked', description: 'The tester tries it on a test machine.', member: aiTeam.meera, picture: 'checked' },
+  { title: 'Reviewed', description: 'Kabir, our AI reviewer, reads the change and says whether it is ready.', member: aiTeam.kabir, picture: 'reviewed' },
+  { title: 'Released', description: 'You review it and publish it.', you: true, picture: 'released' },
 ];
 
 const controlPoints = [
@@ -187,6 +188,7 @@ const scrollToHowItWorks = () => {
  */
 const AIEmployee = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const reduceMotion = useReducedMotion();
   const stats = useAiTeamStats();
 
   useSEO({
@@ -415,44 +417,48 @@ const AIEmployee = () => {
         <section id="how-it-works" className="modern-section modern-bg-light" style={{ scrollMarginTop: '80px' }}>
           <div className="modern-container">
             <SectionHeader title="How one task travels" />
-            <ol className="ai-employee-steps" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {taskSteps.map((step, index) => (
-                <motion.li key={step.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.08 }}>
-                  <div
-                    style={{
-                      ...cardStyle,
-                      border: step.you ? '2px solid var(--color-primary-500)' : cardStyle.border,
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                      <span
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '50%',
-                          background: step.you ? 'var(--color-primary-500)' : 'var(--bg-tertiary)',
-                          color: step.you ? 'white' : 'var(--text-primary)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: '700',
-                          fontSize: 'var(--text-sm)',
-                        }}
-                      >
-                        {index + 1}
-                      </span>
-                      {step.you && (
-                        <span className="modern-badge" style={{ background: 'var(--color-primary-500)', color: 'white' }}>
-                          You
+            {reduceMotion ? (
+              <ol className="ai-employee-steps" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {taskSteps.map((step, index) => (
+                  <motion.li key={step.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.08 }}>
+                    <div
+                      style={{
+                        ...cardStyle,
+                        border: step.you ? '2px solid var(--color-primary-500)' : cardStyle.border,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
+                        <span
+                          style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: step.you ? 'var(--color-primary-500)' : 'var(--bg-tertiary)',
+                            color: step.you ? 'white' : 'var(--text-primary)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: '700',
+                            fontSize: 'var(--text-sm)',
+                          }}
+                        >
+                          {index + 1}
                         </span>
-                      )}
+                        {step.you && (
+                          <span className="modern-badge" style={{ background: 'var(--color-primary-500)', color: 'white' }}>
+                            You
+                          </span>
+                        )}
+                      </div>
+                      <h3 style={cardTitleStyle}>{step.title}</h3>
+                      <p style={cardTextStyle}>{step.description}</p>
                     </div>
-                    <h3 style={cardTitleStyle}>{step.title}</h3>
-                    <p style={cardTextStyle}>{step.description}</p>
-                  </div>
-                </motion.li>
-              ))}
-            </ol>
+                  </motion.li>
+                ))}
+              </ol>
+            ) : (
+              <TaskStory steps={taskSteps} />
+            )}
             <motion.p {...fadeUp} style={noteStyle}>
               Steps 3 and 7 are always a person. Nothing reaches your customers without your click.
             </motion.p>
