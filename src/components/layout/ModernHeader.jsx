@@ -254,6 +254,8 @@ const ModernHeader = () => {
                     {hasDropdown && (
                       <div
                         className="nav-dropdown"
+                        // visibility only turns hidden after the fade, so a closing menu would still take a fast Tab
+                        inert={!isOpen}
                         style={{
                           position: 'absolute',
                           top: '100%',
