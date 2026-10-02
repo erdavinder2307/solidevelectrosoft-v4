@@ -57,7 +57,7 @@ src/
 
 ### AI Project Requirements Assistant
 - **Backend**: Firebase Functions (Node.js 20)
-- **AI**: Claude Sonnet 4.5 API for intelligent requirements gathering
+- **AI**: Claude Sonnet 5.5 API for intelligent requirements gathering
 - **Email**: Azure Communication Services with verified domain
 - **Features**: 
   - Two modes: Requirements gathering & Consultation

@@ -232,11 +232,11 @@ firebase functions:log --only sendRequirements
 - 2M invocations/month free
 - Typical usage: 10-50 conversations/day = well within free tier
 
-### Claude Sonnet API
-- ~$3 per 1M input tokens
-- ~$15 per 1M output tokens
-- Typical conversation (10 messages): ~$0.05
-- 100 conversations/month: ~$5
+### Claude Sonnet API (Claude Sonnet 5.5)
+- ~$2 per 1M input tokens
+- ~$10 per 1M output tokens
+- Typical conversation (10 messages): ~$0.03
+- 100 conversations/month: ~$3-4
 
 ### Email (Gmail)
 - Free for basic usage
