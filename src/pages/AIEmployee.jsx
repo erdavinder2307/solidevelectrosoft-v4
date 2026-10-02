@@ -25,7 +25,7 @@ const team = [
   { member: aiTeam.asha, description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
   { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
   { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
-  { member: aiTeam.kabir, description: 'Reads every change twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
+  { member: aiTeam.kabir, description: 'Checks our code changes twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
   { member: aiTeam.naina, description: 'Finds customers. Researches the market, spots what stops people from buying, and drafts the plan and the messages to win them — a person approves and sends every one.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
