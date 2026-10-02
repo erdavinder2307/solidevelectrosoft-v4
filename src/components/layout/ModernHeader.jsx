@@ -343,6 +343,8 @@ const ModernHeader = () => {
                 }}
                 className="modern-lg-hidden"
                 aria-label="Toggle menu"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="modern-mobile-menu"
               >
                 <div style={{ position: 'relative', width: '24px', height: '16px' }}>
                   <span 
@@ -395,6 +397,7 @@ const ModernHeader = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            id="modern-mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

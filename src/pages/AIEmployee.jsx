@@ -62,7 +62,7 @@ const guardrails = [
   { icon: FaUserSecret, title: 'Keeps secrets out', description: 'no passwords or keys in reports, chats or code.' },
   { icon: FaDatabase, title: 'Live data changes', description: 'a dry run first, the real run only on your tap.' },
   { icon: FaVial, title: 'Releases go to test users first', description: 'you submit to the store.' },
-  { icon: FaSearch, title: 'An AI reviewer reads every change', description: 'you decide to merge.' },
+  { icon: FaSearch, title: 'An AI reviewer checks our code changes before they ship', description: 'you decide to merge.' },
 ];
 
 const toolGroups = [

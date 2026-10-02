@@ -264,6 +264,10 @@ const ControlDemo = () => {
         @media (min-width: 900px) {
           .control-demo { grid-template-columns: 360px 1fr; }
         }
+        /* Stacked on narrow screens: the track goes above the phone so it stays in view while it animates. */
+        @media (max-width: 899px) {
+          .control-demo-track-panel { order: -1; }
+        }
         .control-demo-phone {
           width: 100%;
           max-width: 360px;
