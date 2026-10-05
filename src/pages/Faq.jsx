@@ -73,6 +73,9 @@ const Faq = () => {
     setIsSubmitting(true);
     setShowResponse(false);
 
+    const sendFailedMessage =
+      "Sorry, we couldn't send your message. Please WhatsApp or call us on +91 91158 66828.";
+
     try {
       // Use Azure Communication Services for email
       const result = await emailService.sendContactFormEmail({
@@ -80,36 +83,21 @@ const Faq = () => {
         phone: 'N/A', // FAQ form doesn't have phone field
         subject: 'FAQ Page Contact Form'
       });
-      
-      if (result.success) {
-        // The fallback path reports success without sending anything; only count delivered enquiries.
-        if (!result.fallback) trackContactFormSubmitted('faq');
+
+      // The fallback path reports success without sending anything, so it counts as a failure here.
+      if (result.success && !result.fallback) {
+        trackContactFormSubmitted('faq');
         setResponseMessage(result.message);
         setShowResponse(true);
         setFormData({ name: '', email: '', message: '' });
       } else {
-        setResponseMessage(result.message);
+        setResponseMessage(sendFailedMessage);
         setShowResponse(true);
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      
-      try {
-        const fallbackResult = await emailService.sendEmailFallback({
-          ...formData,
-          phone: 'N/A',
-          subject: 'FAQ Page Contact Form'
-        });
-        setResponseMessage(fallbackResult.message);
-        setShowResponse(true);
-        
-        if (fallbackResult.success) {
-          setFormData({ name: '', email: '', message: '' });
-        }
-      } catch (fallbackError) {
-        setResponseMessage('Unable to send message. Please try again later or contact us directly at admin@solidevelectrosoft.com');
-        setShowResponse(true);
-      }
+      setResponseMessage(sendFailedMessage);
+      setShowResponse(true);
     } finally {
       setIsSubmitting(false);
     }
