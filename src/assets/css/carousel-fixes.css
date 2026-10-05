@@ -14,6 +14,12 @@ html, body {
   max-width: 100% !important;
 }
 
+/* clip, unlike hidden, does not make body and #root scroll containers, so position: sticky inside the page
+   still sticks to the window. Browsers without clip keep hidden from the rules above. */
+body, #root {
+  overflow-x: clip !important;
+}
+
 /* Header specific fixes to prevent vertical scroll issues */
 header {
   overflow-x: hidden !important;
