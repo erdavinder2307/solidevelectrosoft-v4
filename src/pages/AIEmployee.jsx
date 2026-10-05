@@ -57,7 +57,7 @@ const controlPoints = [
 const guardrails = [
   { icon: FaRocket, title: 'Never releases to customers', description: 'publishing stays with you.' },
   { icon: FaCalendarCheck, title: 'Never handles money or filings', description: 'it prepares checklists; it never pays, files or signs.' },
-  { icon: FaKey, title: 'Never types a password', description: 'a person signs in once; the agents reuse that session.' },
+  { icon: FaKey, title: 'Never sees a password', description: 'test logins live in a password manager; a sign-in tool hands the agents only the open session.' },
   { icon: FaTrashAlt, title: 'Never deletes anything', description: 'files, tasks and history always stay.' },
   { icon: FaCodeBranch, title: 'Works on its own copy', description: 'your team\'s unfinished work is never touched.' },
   { icon: FaUserSecret, title: 'Keeps secrets out', description: 'no passwords or keys in reports, chats or code.' },
