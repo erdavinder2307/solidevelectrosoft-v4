@@ -32,7 +32,7 @@ const ModernServices = ({
         </svg>
       ),
       title: "AI Software Team & Automation",
-      description: "A project manager, developer and tester built from AI agents, plus scheduled tasks and routines for the rest of your business. Set up by senior engineers, approved by you.",
+      description: "A project manager, developer, tester, reviewer and growth lead built from AI agents, plus scheduled tasks and routines for the rest of your business. Set up by senior engineers, approved by you.",
       features: ["AI Software Team", "Scheduled Tasks & Routines", "Inbox & Document Triage", "AI Testing & QA"],
       link: "/services/ai-solutions",
     },

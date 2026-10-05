@@ -104,7 +104,7 @@ const liveCounters = (stats) => [
 ];
 
 const capabilities = [
-  { icon: FaUsers, title: 'AI employees', description: 'A manager, developer and tester working your task list every hour, with you approving each step.' },
+  { icon: FaUsers, title: 'AI employees', description: 'A manager, developer, tester, reviewer and growth lead working your task list every hour, with you approving each step.' },
   { icon: FaClock, title: 'Scheduled tasks & routines', description: 'Jobs that run every morning, hour or week: reports, reminders, data checks, follow-ups.' },
   { icon: FaInbox, title: 'Inbox & document triage', description: 'Sort incoming mail and documents, draft replies, and flag what needs you. Nothing is sent without approval.' },
   { icon: FaComments, title: 'Reply watchers', description: 'Short replies in Teams or Slack turn into queued work, answers and updated task lists.' },
@@ -289,8 +289,8 @@ const AIEmployee = () => {
                   lineHeight: 1.7,
                 }}
               >
-                We build the whole team for you out of AI — a project manager, a developer and a tester that plan,
-                build and test your product every hour. Our senior engineers set it up and keep watch; you approve
+                We build the whole team for you out of AI — a project manager, a developer, a tester, a reviewer and a growth
+                lead that plan, build, test and review your product every hour. Our senior engineers set it up and keep watch; you approve
                 every step.
               </motion.p>
 
