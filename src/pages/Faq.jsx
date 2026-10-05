@@ -29,7 +29,7 @@ const Faq = () => {
   // FAQ data for schema
   const faqs = [
     { question: 'What kind of service do you provide?', answer: 'We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support.' },
-    { question: 'What is an AI employee?', answer: 'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera) and a reviewer (Kabir) — that plan work, build it and check it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.' },
+    { question: 'What is an AI employee?', answer: 'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera), a reviewer (Kabir) and a growth lead (Naina) — that plan work, build it, check it and look for ways to grow it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.' },
     { question: 'Can an AI team replace hiring developers?', answer: 'For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.' },
     { question: 'Will AI automation make decisions without us?', answer: 'No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.' },
     { question: 'What can you automate?', answer: 'Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.' },
@@ -163,7 +163,7 @@ const Faq = () => {
                     </h2>
                     <div id="collapseAi1" className="accordion-collapse collapse" aria-labelledby="faqAi1" data-bs-parent="#accordionExample">
                       <div className="accordion-body">
-                        {'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera) and a reviewer (Kabir) — that plan work, build it and check it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.'}
+                        {'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera), a reviewer (Kabir) and a growth lead (Naina) — that plan work, build it, check it and look for ways to grow it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.'}
                       </div>
                     </div>
                   </div>
