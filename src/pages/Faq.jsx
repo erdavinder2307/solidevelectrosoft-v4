@@ -77,15 +77,12 @@ const Faq = () => {
       "Sorry, we couldn't send your message. Please WhatsApp or call us on +91 91158 66828.";
 
     try {
-      // Use Azure Communication Services for email
       const result = await emailService.sendContactFormEmail({
         ...formData,
-        phone: 'N/A', // FAQ form doesn't have phone field
         subject: 'FAQ Page Contact Form'
       });
 
-      // The fallback path reports success without sending anything, so it counts as a failure here.
-      if (result.success && !result.fallback) {
+      if (result.success) {
         trackContactFormSubmitted('faq');
         setResponseMessage(result.message);
         setShowResponse(true);
