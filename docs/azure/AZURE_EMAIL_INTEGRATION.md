@@ -1,308 +1,63 @@
-# Azure Communication Services Email Integration
+# Email from the website
 
 ## Overview
-This project uses **Azure Communication Services** for sending emails through the AI Project Requirements Assistant. The integration is implemented in Firebase Functions and uses a verified custom domain `solidevelectrosoft.com`.
 
-## Architecture
+The website sends two kinds of email, through two different paths. Neither path puts an email key in this
+repository, in the browser build, in a workflow or in a `.env` file.
+
+| What | Sent by | How |
+|---|---|---|
+| Form submissions: Contact page, FAQ form, floating "call me back" form | The Solidev email API (an Azure Function kept in a separate, private repository) | The browser posts `{ useCase, fields, sendConfirmation }` to the API URL in `src/config/environment.js`. The API owns the recipients, the templates, the rate limits and the origin allow-list, and sends the submitter a confirmation. |
+| The AI Project Requirements Assistant's final summary, with a PDF attached | The Firebase Function `sendRequirements` (`functions/email/sendRequirements.js`) | The function sends with Azure Communication Services from the server. Its connection string lives only in the Functions runtime configuration (see below). |
 
 ```
-Frontend (React) 
-  → Firebase Functions (Node.js 20)
-    → Azure Communication Services Email API
-      → Email Delivery via solidevelectrosoft.com
+Browser form  ──POST { useCase, fields }──▶  Solidev email API  ──▶  Azure Communication Services
+AI assistant  ──POST summary + history──▶  Firebase Function   ──▶  Azure Communication Services
 ```
 
-## Azure Resources
+## Form submissions (email API)
 
-### Communication Services Resource
-- **Name**: `solidev-email-send-resource-3`
-- **Resource Group**: `solidev`
-- **Location**: Global (Data Location: India)
-- **Hostname**: `solidev-email-send-resource-3.india.communication.azure.com`
-- **Status**: Provisioning Succeeded ✅
+- Client: `src/services/emailService.js`. Use cases: `website-contact` (Contact page, FAQ form; the readable
+  project-type and budget labels are sent as `projectType` and `budget`) and `website-callback` (the floating form,
+  phone number only, no confirmation).
+- The client never sends a recipient, a subject, HTML or a key. A refused or failed call returns `{ success: false }`
+  and the form shows its "could not send" message; it never throws.
+- The API URL is the only email-related setting in this repository. If the API is ever hosted elsewhere, change it in
+  `src/config/environment.js`.
 
-### Email Domain Configuration
-- **Domain**: `solidevelectrosoft.com`
-- **Management**: Customer Managed
-- **Sender Address**: `admin@solidevelectrosoft.com`
-- **Recipient**: `davinder@solidevelectrosoft.com`
+## AI assistant requirements email (Firebase Function)
 
-### DNS Verification Status ✅
-- **Domain Verification**: ✅ Verified
-- **DKIM (Selector 1)**: ✅ Verified
-- **DKIM (Selector 2)**: ✅ Verified
-- **SPF**: ✅ Verified
-- **DMARC**: Not Started (optional)
+The function reads the Azure Communication Services connection string from the Functions runtime configuration key
+`azure.email.connection_string`. Set it once from a machine with Firebase CLI access, then deploy the functions:
 
-## Implementation Details
-
-### 1. Package Dependencies
-```json
-"@azure/communication-email": "^1.0.0"
-```
-
-### 2. Firebase Functions Configuration
 ```bash
-# Set Azure connection string
-firebase functions:config:set azure.email.connection_string="endpoint=https://solidev-email-send-resource-3.india.communication.azure.com/;accesskey=YOUR_KEY"
-
-# Deploy functions
+firebase functions:config:set azure.email.connection_string="<connection string from the Azure portal>"
 firebase deploy --only functions
 ```
 
-### 3. Code Implementation
+Rotating the key: regenerate it in the Azure portal, run the two commands above with the new value, and check one
+assistant submission afterwards. Nothing else in this repository uses the key.
 
-**File**: `functions/email/sendRequirements.js`
+Firebase is retiring `functions.config()` in favour of parameterized configuration and secrets (`defineSecret`); plan
+that move together with the next change to this function.
 
-```javascript
-const { EmailClient } = require('@azure/communication-email');
-const functions = require('firebase-functions');
+## Testing
 
-async function sendRequirementsEmail({ requirementsSummary, conversationHistory, userEmail }) {
-  // Get Azure connection string from Firebase config
-  const connectionString = functions.config().azure?.email?.connection_string;
-  
-  // Create Azure Email client
-  const emailClient = new EmailClient(connectionString);
-  
-  // Configure email message
-  const message = {
-    senderAddress: 'admin@solidevelectrosoft.com',
-    content: {
-      subject: 'New Project Requirements via AI Assistant',
-      html: emailBody,
-    },
-    recipients: {
-      to: [
-        { address: 'davinder@solidevelectrosoft.com', displayName: 'Davinder Pal' }
-      ],
-    },
-  };
-  
-  // Send email using Azure Communication Services
-  const poller = await emailClient.beginSend(message);
-  const result = await poller.pollUntilDone();
-  
-  return { messageId: result.id };
-}
-```
+- Forms, locally: `npm run dev`, submit a form with test data, and confirm in DevTools → Network one `POST` to the API
+  URL per submission. From `localhost` the API refuses the origin, so the form shows its "could not send" message;
+  that is expected.
+- Requirements email: call the deployed function with test data only (it emails the inbox configured in the function):
 
-## Azure CLI Commands
-
-### 1. Verify Azure Account
 ```bash
-az account show
-```
-
-### 2. List Communication Services Resources
-```bash
-az communication list --output table
-```
-
-### 3. Get Resource Details
-```bash
-az communication show \
-  --name solidev-email-send-resource-3 \
-  --resource-group solidev
-```
-
-### 4. Get Connection Strings
-```bash
-az communication list-key \
-  --name solidev-email-send-resource-3 \
-  --resource-group solidev
-```
-
-### 5. Check Email Domain Configuration
-```bash
-az resource show \
-  --ids "/subscriptions/YOUR_SUBSCRIPTION/resourceGroups/solidev/providers/Microsoft.Communication/emailServices/solidev-send-email/domains/solidevelectrosoft.com"
-```
-
-### 6. Send Test Email via Azure CLI
-```bash
-az communication email send \
-  --connection-string "YOUR_CONNECTION_STRING" \
-  --sender "admin@solidevelectrosoft.com" \
-  --to "davinder@solidevelectrosoft.com" \
-  --subject "Test Email" \
-  --text "This is a test email" \
-  --html "<h1>Test Email</h1><p>This is a test email.</p>"
-```
-
-## End-to-End Testing
-
-### Test via Firebase Function
-```bash
-curl -X POST "https://us-central1-solidev-electrosoft.cloudfunctions.net/sendRequirements" \
+curl -X POST "<functions base URL>/sendRequirements" \
   -H "Content-Type: application/json" \
-  -d '{
-    "requirementsSummary": "Test Requirements",
-    "conversationHistory": [
-      {"role": "user", "content": "Test message"},
-      {"role": "assistant", "content": "Test response"}
-    ],
-    "userEmail": "test@example.com"
-  }'
+  -d '{"requirementsSummary":"Test requirements","conversationHistory":[{"role":"user","content":"Test"}],"userEmail":"test@example.com"}'
 ```
 
-**Expected Response:**
-```json
-{
-  "success": true,
-  "message": "Requirements sent successfully",
-  "messageId": "f0006935-7118-4003-b362-4a4b195b89ab"
-}
-```
+## Troubleshooting
 
-### Test via Azure CLI
-```bash
-az communication email send \
-  --connection-string "$AZURE_CONNECTION_STRING" \
-  --sender "admin@solidevelectrosoft.com" \
-  --to "davinder@solidevelectrosoft.com" \
-  --subject "Azure CLI Test" \
-  --text "Direct test via Azure CLI"
-```
-
-**Expected Response:**
-```json
-{
-  "error": null,
-  "id": "5d737654-94b8-45e6-8ecf-4857e00b20f3",
-  "status": "Succeeded"
-}
-```
-
-## Migration from Nodemailer
-
-### Before (Nodemailer)
-- SMTP-based email delivery via Gmail
-- Required app password configuration
-- Limited to Gmail's sending limits
-- Configuration: `email.user` and `email.pass`
-
-### After (Azure Communication Services)
-- Direct API-based email delivery
-- Enterprise-grade email service
-- Custom verified domain support
-- Higher sending limits and better deliverability
-- Configuration: `azure.email.connection_string`
-
-## Configuration Updates Required
-
-### Firebase Functions Config
-```bash
-# Remove old Nodemailer config (optional)
-firebase functions:config:unset email.user
-firebase functions:config:unset email.pass
-
-# Add Azure config
-firebase functions:config:set azure.email.connection_string="YOUR_CONNECTION_STRING"
-```
-
-### Package.json Updates
-```json
-{
-  "dependencies": {
-    "@azure/communication-email": "^1.0.0",  // Added
-    "nodemailer": "^6.9.7"  // Can be removed after full migration
-  }
-}
-```
-
-## Email Template
-
-The email includes:
-- **Header**: Branded gradient header with AI Assistant branding
-- **Requirements Summary**: Structured project requirements from AI conversation
-- **User Contact**: Optional user email if provided
-- **Conversation History**: Full chat transcript
-- **Submission Details**: Timestamp and source information
-- **Footer**: Company branding with "Powered by Azure Communication Services"
-
-## Monitoring & Troubleshooting
-
-### Check Firebase Functions Logs
-```bash
-firebase functions:log
-```
-
-### View Azure Communication Services Metrics
-```bash
-# In Azure Portal
-Navigate to: Communication Services → Metrics
-Monitor: Email send operations, delivery status, errors
-```
-
-### Common Issues
-
-1. **"Azure Communication Services configuration missing"**
-   - Solution: Run `firebase functions:config:set azure.email.connection_string="..."`
-
-2. **"Email send failed"**
-   - Check DNS verification status
-   - Verify sender address matches verified domain
-   - Check Azure service health
-
-3. **Email not delivered**
-   - Check spam folder
-   - Verify DNS records (DKIM, SPF)
-   - Review Azure Communication Services logs
-
-## Cost Considerations
-
-### Azure Communication Services Pricing
-- **Email Sending**: $0.00025 per email (for first 1M emails/month)
-- **Example**: 1,000 emails = $0.25
-- **Volume Pricing**: Decreases with higher volumes
-
-### Comparison with Nodemailer/Gmail
-- Gmail SMTP: Free but with daily limits (500-2000 emails/day)
-- Azure: Pay-per-use with no daily limits
-- Better deliverability with verified domain
-
-## Security Best Practices
-
-1. **Never commit connection strings to Git**
-   - Use Firebase Functions config or environment variables
-   - Keep `.env` files in `.gitignore`
-
-2. **Rotate Access Keys Regularly**
-   ```bash
-   az communication regenerate-key \
-     --name solidev-email-send-resource-3 \
-     --resource-group solidev \
-     --key-type primary
-   ```
-
-3. **Monitor Email Operations**
-   - Set up Azure Monitor alerts
-   - Track failed deliveries
-   - Review bounce rates
-
-## References
-
-- [Azure Communication Services Email Documentation](https://learn.microsoft.com/azure/communication-services/concepts/email/email-overview)
-- [Azure CLI Communication Commands](https://learn.microsoft.com/cli/azure/communication)
-- [Firebase Functions Configuration](https://firebase.google.com/docs/functions/config-env)
-- [@azure/communication-email SDK](https://www.npmjs.com/package/@azure/communication-email)
-
-## Deployment Checklist
-
-- [x] Install `@azure/communication-email` package
-- [x] Update `sendRequirements.js` to use Azure Email Client
-- [x] Configure Firebase Functions with Azure connection string
-- [x] Deploy updated Firebase Functions
-- [x] Validate Azure Communication Services setup via CLI
-- [x] Perform end-to-end email test
-- [x] Verify DNS records and domain verification
-- [x] Test email delivery to production recipient
-- [x] Document configuration and testing procedures
-
-## Support
-
-For issues or questions:
-- **Azure Support**: Azure Portal → Support → New Support Request
-- **Firebase Support**: Firebase Console → Support
-- **Internal**: Contact davinder@solidevelectrosoft.com
+- `Azure Communication Services configuration missing` in the function logs: the runtime configuration key above is
+  not set for the deployed project.
+- A form shows "could not send" on the live site: check the email API's own logs (origin allow-list, rate limit,
+  validation) in its repository; the website only reports success or failure.
+- `firebase functions:log` shows the function's output; the email API has its own Application Insights.

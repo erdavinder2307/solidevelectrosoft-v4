@@ -24,10 +24,18 @@ class EmailService {
     }
   }
 
-  sendContactFormEmail({ name, email, phone, subject, message }) {
+  sendContactFormEmail({ name, email, phone, subject, projectType, budget, message }) {
     return this.send(
       'website-contact',
-      { name, email, phone: phone || undefined, subject: subject || undefined, message },
+      {
+        name,
+        email,
+        phone: phone || undefined,
+        subject: subject || undefined,
+        projectType: projectType || undefined,
+        budget: budget || undefined,
+        message,
+      },
       true
     );
   }
