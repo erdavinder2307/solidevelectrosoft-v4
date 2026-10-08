@@ -142,8 +142,7 @@ All original assets (CSS, images, fonts, JavaScript) have been preserved from th
 
 ## Documentation
 
-- [AZURE_EMAIL_INTEGRATION.md](./docs/azure/AZURE_EMAIL_INTEGRATION.md) - Complete guide for Azure Communication Services setup, configuration, and testing
-- [AZURE_EMAIL_SETUP.md](./docs/azure/AZURE_EMAIL_SETUP.md) - Azure Communication Services initial setup documentation
+- [AZURE_EMAIL_INTEGRATION.md](./docs/azure/AZURE_EMAIL_INTEGRATION.md) - How the website sends email (forms through the Solidev email API; the AI assistant's requirements email through a Firebase Function)
 - [CONTACT_FORM_SETUP.md](./docs/guides/CONTACT_FORM_SETUP.md) - Contact form implementation details
 - [ABOUT_PAGE_IMPLEMENTATION.md](./docs/guides/ABOUT_PAGE_IMPLEMENTATION.md) - About page structure and features
 - [MODERN_UX_ENHANCEMENTS.md](./docs/guides/MODERN_UX_ENHANCEMENTS.md) - Modern UX features and enhancements

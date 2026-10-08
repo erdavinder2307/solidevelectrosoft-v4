@@ -39,16 +39,14 @@ const FloatingMenu = () => {
     setSubmitStatus(null);
 
     try {
-      const result = await emailService.sendContactFormEmail({
+      // This form asks for a phone number only, so it is a call-back request.
+      const result = await emailService.sendCallbackRequest({
         name: formData.get('name'),
-        email: 'Not provided', // this form asks for a phone number only
         phone: formData.get('phone'),
-        subject: 'Floating Menu Query',
         message: formData.get('message'),
       });
 
-      // The fallback path reports success without sending anything, so it counts as a failure here.
-      if (result.success && !result.fallback) {
+      if (result.success) {
         trackContactFormSubmitted('floating_menu');
         setSubmitStatus({ type: 'success', message: result.message });
         form.reset();

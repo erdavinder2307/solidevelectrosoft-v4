@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { trackContactFormStarted, trackContactFormSubmitted, trackWhatsAppClicked } from '../../utils/analytics';
+import emailService from '../../services/emailService';
 
 /**
  * Modern Contact Form Component
@@ -62,29 +63,21 @@ const ModernContactForm = ({
     setSubmitStatus(null);
 
     try {
-      // Call Firebase function to send contact form
-      const response = await fetch(
-        'https://us-central1-solidev-electrosoft.cloudfunctions.net/sendContactForm',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            projectType: formData.projectType,
-            budget: formData.budget,
-            message: formData.message,
-          }),
-        }
-      );
+      // Send through the Solidev email API: it owns the recipients and templates and emails
+      // the sender a confirmation. The readable option labels go in, not the option values.
+      const labelOf = (options, value) =>
+        value ? options.find((option) => option.value === value)?.label || value : undefined;
+      const result = await emailService.sendContactFormEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        projectType: labelOf(projectTypes, formData.projectType),
+        budget: labelOf(budgetRanges, formData.budget),
+        message: formData.message,
+      });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to submit form');
+      if (!result.success) {
+        throw new Error('Failed to submit form');
       }
 
       // Call custom onSubmit if provided

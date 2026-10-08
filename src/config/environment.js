@@ -14,19 +14,9 @@ const getEnvVar = (key, defaultValue = '') => {
 
 export const environment = {
   production: false,
-  azure: {
-    // Azure Communication Services connection strings
-    // These should be set in .env.local file for security
-    primaryConnectionString: getEnvVar('VITE_AZURE_COMMUNICATION_CONNECTION_STRING', ''),
-    secondaryConnectionString: getEnvVar('VITE_AZURE_COMMUNICATION_SECONDARY_CONNECTION_STRING', ''),
-  },
-  email: {
-    senderName: 'Solidev Electrosoft',
-    senderEmail: 'admin@solidevelectrosoft.com',
-    recipientEmails: {
-      primary: 'admin@solidevelectrosoft.com',
-      cc: 'davinder@solidevelectrosoft.com'
-    }
+  emailApi: {
+    // Solidev email API (Azure Function); it accepts this site's origin for the website use cases.
+    sendUrl: 'https://solidev-email-api.azurewebsites.net/api/send',
   }
 };
 

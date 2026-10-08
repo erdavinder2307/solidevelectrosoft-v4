@@ -24,9 +24,6 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         env:
           # Vite environment variables passed from GitHub Secrets
-          VITE_AZURE_COMMUNICATION_CONNECTION_STRING: ${{ secrets.VITE_AZURE_COMMUNICATION_CONNECTION_STRING }}
-          VITE_AZURE_COMMUNICATION_SECONDARY_CONNECTION_STRING: ${{ secrets.VITE_AZURE_COMMUNICATION_SECONDARY_CONNECTION_STRING }}
-          VITE_EMAIL_SENDER_DOMAIN: ${{ secrets.VITE_EMAIL_SENDER_DOMAIN }}
           VITE_FIREBASE_FUNCTIONS_URL: ${{ secrets.VITE_FIREBASE_FUNCTIONS_URL }}
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}

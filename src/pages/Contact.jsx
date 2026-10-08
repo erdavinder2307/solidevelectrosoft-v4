@@ -38,11 +38,10 @@ const Contact = () => {
     setShowResponse(false);
 
     try {
-      // Use Azure Communication Services for email
+      // The email API also sends the submitter a confirmation.
       const result = await emailService.sendContactFormEmail(formData);
 
-      // The fallback path reports success without sending anything, so it counts as a failure here.
-      if (result.success && !result.fallback) {
+      if (result.success) {
         setResponseMessage(result.message);
         setShowResponse(true);
         
@@ -54,18 +53,6 @@ const Contact = () => {
           subject: '',
           message: ''
         });
-
-        // Optionally send confirmation email to the user
-        try {
-          await emailService.sendConfirmationEmail(
-            formData.email, 
-            formData.name, 
-            formData.message
-          );
-        } catch (confirmationError) {
-          console.warn('Failed to send confirmation email:', confirmationError);
-          // Don't show error to user as main email was sent successfully
-        }
       } else {
         setResponseMessage(SEND_FAILED_MESSAGE);
         setShowResponse(true);
