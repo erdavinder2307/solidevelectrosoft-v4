@@ -16,6 +16,36 @@ import { getCommonSchemas, generateBreadcrumbSchema, generateFAQSchema } from '.
 import { trackContactFormSubmitted } from '../utils/analytics';
 import { TRADEMARK_LINE } from '../utils/trademarks';
 
+// One list feeds both the accordion and the FAQPage JSON-LD, so the two cannot drift apart.
+// `answer` holds the paragraphs; an optional `link` is appended as a router link on the page.
+const FAQS = [
+  { id: 'faq1', collapseId: 'collapseOne', question: 'What kind of service do you provide?', answer: ['We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support. We work with various technologies such as Microsoft Technologies (Asp.net MVC, Asp.net Core), Python, Angular, React, Flutter and more.'] },
+  { id: 'faqAi1', collapseId: 'collapseAi1', question: 'What is an AI employee?', answer: ['A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera), a reviewer (Kabir) and a growth lead (Naina) — that plan work, build it, check it and look for ways to grow it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.'] },
+  { id: 'faqAi2', collapseId: 'collapseAi2', question: 'Can an AI team replace hiring developers?', answer: ['For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.'] },
+  { id: 'faqAi3', collapseId: 'collapseAi3', question: 'Will AI automation make decisions without us?', answer: ['No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.'] },
+  { id: 'faqAi4', collapseId: 'collapseAi4', question: 'What can you automate?', answer: ['Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.'] },
+  { id: 'faqAi5', collapseId: 'collapseAi5', question: 'Is our data safe with AI agents?', answer: ['The agents work inside accounts you control and only see what you give them access to. They never put passwords or keys into reports or chats, never delete data, and never pay, file or sign anything.'] },
+  { id: 'faqAi6', collapseId: 'collapseAi6', question: 'How do we start with AI automation?', answer: ['Book a free 30-minute call. We pick one workflow, run a pilot with every step on "ask first", and expand only where it proves itself.'], link: { before: 'See ', label: 'our AI employee page', to: '/ai-employee', after: ' for how our own works.' } },
+  { id: 'faq2', collapseId: 'collapseTwo', question: 'How long does it take to build a Software application?', answer: ['It depends on the complexity and scale of the project. But since we have experienced developers in our ranks, we can meet your deadline, regardless of the complexity.'] },
+  { id: 'faq3', collapseId: 'collapseThree', question: 'How much does a software application cost?', answer: ['The cost of a new website can vary significantly depending on several factors. These factors include the complexity of the design, the number of pages and features required, the level of customization needed, the platform or content management system (CMS) used, and the specific requirements of the project.'] },
+  { id: 'faq4', collapseId: 'collapseFour', question: 'Will my application be mobile-friendly?', answer: ["Absolutely! Ensuring mobile-friendliness is a priority for us. We understand the importance of reaching your audience on various devices. Our team will design and develop your application with responsive design principles in mind, making it accessible and optimized for a seamless user experience across different mobile devices, including smartphones and tablets. By leveraging technologies like Flutter, Media Query, React Native, or responsive web design, we'll ensure that your application adapts and functions flawlessly on mobile platforms."] },
+  { id: 'faq5', collapseId: 'collapseFive', question: 'How do I start my project with you?', answer: ['You can reach out to us by sending an email to admin@solidevelectrosoft.com. Please provide a brief description of your project, including your requirements, timeline, and any other relevant details. Our team will review your email and respond promptly to discuss the next steps.', 'OR', 'You can visit our website (www.solidevelectrosoft.com) and use the provided contact form or messaging feature to send us a direct message. Fill in the required information, including your name, email address, and a message describing your project. Our team will receive your message and get back to you as soon as possible.'] },
+  { id: 'faq6', collapseId: 'collapseSix', question: 'What are your hiring models?', answer: ['You can hire our highly qualified experts on full-time, part-time, hourly, monthly and weekly basis as per your convenience.'] },
+  { id: 'faq7', collapseId: 'collapseSeven', question: 'Can you handle ongoing maintenance?', answer: ['Absolutely! We offer ongoing maintenance services to ensure the continued smooth operation and optimal performance of your application. Our maintenance services are designed to keep your application up to date, secure, and functioning at its best.', "Our maintenance services can be tailored to meet your specific requirements and can be structured on an ongoing basis, whether it's monthly, quarterly, or as needed. We value long-term partnerships with our clients and are committed to providing continuous support to help your application thrive."] },
+  { id: 'faq8', collapseId: 'collapseEight', question: 'What happens if my application breaks?', answer: ['We understand that application issues can occur, and we have a dedicated support system in place to address such situations promptly. If your application breaks or experiences any technical issues, our team is here to assist you.', "First, we encourage you to reach out to our support team and provide detailed information about the problem you're encountering. Our experts will investigate the issue and work diligently to identify the cause and implement a solution. Depending on the severity and complexity of the problem, the resolution time may vary.", 'Additionally, we offer maintenance and support services to ensure the ongoing functionality and stability of your application. This can include regular updates, bug fixes, security patches, and performance optimizations to keep your application running smoothly.', 'Our goal is to minimize downtime and provide a swift resolution to any issues that arise. We strive to maintain open communication with our clients and keep you informed throughout the troubleshooting and resolution process.', 'Rest assured that we are committed to providing reliable support and ensuring the smooth operation of your application.'] },
+  { id: 'faq9', collapseId: 'collapseNine', question: 'How long does a application redesign take?', answer: ['The duration of an application redesign can vary depending on several factors, including the complexity of the application, the scope of changes required, and the availability of resources. Typically, a complete application redesign may take several weeks to a few months to ensure thorough planning, design, development, testing, and deployment.'] },
+  { id: 'faq10', collapseId: 'collapseTen', question: 'What are the types of companies have you worked with?', answer: ['We have worked with a diverse range of companies across various industries. We have designed and developed Software applications for both large sized and small sized business owners from domains like eCommerce, NGO, legal, medical, finance, and many more.'] },
+  { id: 'faq11', collapseId: 'collapseEleven', question: "I don't want to go elsewhere for web application hosting. Can I get it at Solidev Electrosoft?", answer: ['To provide our clients one stop solutions and help them save their costs, this is what our motto is. At Solidev Electrosoft, we provide comprehensive Software development solutions which include:', 'eCommerce Web Design and Development Services', 'Software Development', 'Web Application Design', 'Web Application Hosting', 'Payment Gateway Integration', 'Web Application Re-Designing', 'Web Application Maintenance', 'Mobile Application Development', 'You can either avail our services for a standalone project or as a part of an entire project.'] },
+  { id: 'faq12', collapseId: 'collapseTwelve', question: 'What kind of ready made product we have?', answer: ['Offer several ready-made products that can be customized to meet your specific needs. Here are two examples:', 'Electronic Health Record (EHR): Our electronic health record solution is designed to streamline and digitize the healthcare documentation process. It enables healthcare providers to efficiently manage patient records, track medical history, schedule appointments, generate reports, and more. The EHR system can be tailored to suit different healthcare settings, such as hospitals, clinics, and private practices.', 'Calling CRM: Our Calling CRM (Customer Relationship Management) software is designed to enhance customer interactions and streamline sales and support processes. It provides features for managing customer contacts, tracking communication history, scheduling follow-ups, analysing sales data, and optimizing customer engagement. The Calling CRM can be customized to fit various industries and business sizes.', "If you are interested in exploring our ready-made products or discussing how we can customize them to suit your business, please contact us at admin@solidevelectrosoft.com or through our website's messaging platform. Our team will be happy to provide further information and guidance."] },
+];
+
+const faqSchemaText = (faq) => {
+  const text = faq.answer.join('\n');
+  if (!faq.link) return text;
+  const { before, label, to, after } = faq.link;
+  return `${text} ${before}${label} (https://www.solidevelectrosoft.com${to})${after}`;
+};
+
 const Faq = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -26,23 +56,6 @@ const Faq = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [showResponse, setShowResponse] = useState(false);
 
-  // FAQ data for schema
-  const faqs = [
-    { question: 'What kind of service do you provide?', answer: 'We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support.' },
-    { question: 'What is an AI employee?', answer: 'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera), a reviewer (Kabir) and a growth lead (Naina) — that plan work, build it, check it and look for ways to grow it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.' },
-    { question: 'Can an AI team replace hiring developers?', answer: 'For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.' },
-    { question: 'Will AI automation make decisions without us?', answer: 'No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.' },
-    { question: 'What can you automate?', answer: 'Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.' },
-    { question: 'Is our data safe with AI agents?', answer: 'The agents work inside accounts you control and only see what you give them access to. They never put passwords or keys into reports or chats, never delete data, and never pay, file or sign anything.' },
-    { question: 'How do we start with AI automation?', answer: 'Book a free 30-minute call. We pick one workflow, run a pilot with every step on "ask first", and expand only where it proves itself. See https://www.solidevelectrosoft.com/ai-employee for how our own works.' },
-    { question: 'How long does it take to build a Software application?', answer: 'It depends on the complexity and scale of the project. But since we have experienced developers in our ranks, we can meet your deadline, regardless of the complexity.' },
-    { question: 'How much does a software application cost?', answer: 'The cost of a new website can vary significantly depending on several factors including the complexity of the design, the number of pages and features required, the level of customization needed, and the specific requirements of the project.' },
-    { question: 'Will my application be mobile-friendly?', answer: 'Absolutely! Ensuring mobile-friendliness is a priority for us. We design and develop your application with responsive design principles in mind, making it accessible and optimized for a seamless user experience across different mobile devices.' },
-    { question: 'How do I start my project with you?', answer: 'You can reach out to us by sending an email to admin@solidevelectrosoft.com or visit our website and use the provided contact form. Our team will review your message and respond promptly to discuss the next steps.' },
-    { question: 'What are your hiring models?', answer: 'You can hire our highly qualified experts on full-time, part-time, hourly, monthly and weekly basis as per your convenience.' },
-    { question: 'Can you handle ongoing maintenance?', answer: 'Absolutely! We offer ongoing maintenance services to ensure the continued smooth operation and optimal performance of your application. Our maintenance services can be tailored to meet your specific requirements.' },
-  ];
-
   // SEO Configuration
   useSEO({
     title: pageSEO.faq.title,
@@ -52,7 +65,7 @@ const Faq = () => {
     ogType: pageSEO.faq.ogType,
     schemas: [
       ...getCommonSchemas(),
-      generateFAQSchema(faqs),
+      generateFAQSchema(FAQS.map((faq) => ({ question: faq.question, answer: faqSchemaText(faq) }))),
       generateBreadcrumbSchema([
         { name: 'Home', url: 'https://www.solidevelectrosoft.com/' },
         { name: 'FAQ', url: 'https://www.solidevelectrosoft.com/faq' },
@@ -122,403 +135,37 @@ const Faq = () => {
             <div className="row">
               <div className="col-11">
                 <div className="accordion tp-accordion" id="accordionExample">
-                  
-                  {/* FAQ 1 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq1">
-                      <button 
-                        className="accordion-button" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" 
-                        aria-expanded="true" 
-                        aria-controls="collapseOne"
-                      >
-                        What kind of service do you provide?
-                      </button>
-                    </h2>
-                    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        We build AI software teams and automation — AI employees, scheduled tasks and workflow automation — and the custom web and mobile applications they build and run on. We also offer UI/UX design and ongoing maintenance and support. We work with various technologies such as Microsoft Technologies (Asp.net MVC, Asp.net Core), Python, Angular, React, Flutter and more.
+                  {FAQS.map((faq, index) => {
+                    const isOpen = index === 0;
+                    return (
+                      <div className="accordion-item" key={faq.id}>
+                        <h2 className="accordion-header" id={faq.id}>
+                          <button
+                            className={isOpen ? 'accordion-button' : 'accordion-button collapsed'}
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target={`#${faq.collapseId}`}
+                            aria-expanded={isOpen ? 'true' : 'false'}
+                            aria-controls={faq.collapseId}
+                          >
+                            {faq.question}
+                          </button>
+                        </h2>
+                        <div id={faq.collapseId} className={isOpen ? 'accordion-collapse collapse show' : 'accordion-collapse collapse'} aria-labelledby={faq.id} data-bs-parent="#accordionExample">
+                          <div className="accordion-body">
+                            {faq.answer.length > 1
+                              ? faq.answer.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+                              : faq.answer[0]}
+                            {faq.link && (
+                              <>
+                                {' '}{faq.link.before}<Link to={faq.link.to}>{faq.link.label}</Link>{faq.link.after}
+                              </>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 1 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi1">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi1" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi1"
-                      >
-                        What is an AI employee?
-                      </button>
-                    </h2>
-                    <div id="collapseAi1" className="accordion-collapse collapse" aria-labelledby="faqAi1" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'A software team built from AI agents — a project manager (Asha), a developer (Arjun), a tester (Meera), a reviewer (Kabir) and a growth lead (Naina) — that plan work, build it, check it and look for ways to grow it every hour of the working day, and report to you in the tools you already use, such as Microsoft Teams, Jira and GitHub. Our own runs on Claude; for yours we choose among Claude, Cursor, GitHub Copilot and ChatGPT. A person approves every important step.'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 2 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi2">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi2" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi2"
-                      >
-                        Can an AI team replace hiring developers?
-                      </button>
-                    </h2>
-                    <div id="collapseAi2" className="accordion-collapse collapse" aria-labelledby="faqAi2" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'For many projects it removes the need to hire a full team. You still have people in charge: our senior engineers set the team up and check its work, and you approve what it builds and what gets released.'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 3 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi3">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi3" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi3"
-                      >
-                        Will AI automation make decisions without us?
-                      </button>
-                    </h2>
-                    <div id="collapseAi3" className="accordion-collapse collapse" aria-labelledby="faqAi3" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'No. It starts on "ask first": it proposes, and nothing happens until you approve. Releases, payments and filings always stay with a person. You can let small, safe jobs run by themselves later, one type at a time.'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 4 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi4">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi4" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi4"
-                      >
-                        What can you automate?
-                      </button>
-                    </h2>
-                    <div id="collapseAi4" className="accordion-collapse collapse" aria-labelledby="faqAi4" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'Recurring reports and reminders, inbox and document triage, task planning, software testing, deadline tracking and follow-ups. If a job is repetitive and has clear rules, it is usually a good first candidate.'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 5 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi5">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi5" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi5"
-                      >
-                        Is our data safe with AI agents?
-                      </button>
-                    </h2>
-                    <div id="collapseAi5" className="accordion-collapse collapse" aria-labelledby="faqAi5" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'The agents work inside accounts you control and only see what you give them access to. They never put passwords or keys into reports or chats, never delete data, and never pay, file or sign anything.'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* AI FAQ 6 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faqAi6">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseAi6" 
-                        aria-expanded="false" 
-                        aria-controls="collapseAi6"
-                      >
-                        How do we start with AI automation?
-                      </button>
-                    </h2>
-                    <div id="collapseAi6" className="accordion-collapse collapse" aria-labelledby="faqAi6" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        {'Book a free 30-minute call. We pick one workflow, run a pilot with every step on "ask first", and expand only where it proves itself. '}See <Link to="/ai-employee">our AI employee page</Link> for how our own works.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 2 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq2">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" 
-                        aria-expanded="false" 
-                        aria-controls="collapseTwo"
-                      >
-                        How long does it take to build a Software application?
-                      </button>
-                    </h2>
-                    <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        It depends on the complexity and scale of the project. But since we have experienced developers in our ranks, we can meet your deadline, regardless of the complexity.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 3 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq3">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" 
-                        aria-expanded="false" 
-                        aria-controls="collapseThree"
-                      >
-                        How much does a software application cost?
-                      </button>
-                    </h2>
-                    <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        The cost of a new website can vary significantly depending on several factors. These factors include the complexity of the design, the number of pages and features required, the level of customization needed, the platform or content management system (CMS) used, and the specific requirements of the project.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 4 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq4">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseFour" 
-                        aria-expanded="false" 
-                        aria-controls="collapseFour"
-                      >
-                        Will my application be mobile-friendly?
-                      </button>
-                    </h2>
-                    <div id="collapseFour" className="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        Absolutely! Ensuring mobile-friendliness is a priority for us. We understand the importance of reaching your audience on various devices. Our team will design and develop your application with responsive design principles in mind, making it accessible and optimized for a seamless user experience across different mobile devices, including smartphones and tablets. By leveraging technologies like Flutter, Media Query, React Native, or responsive web design, we'll ensure that your application adapts and functions flawlessly on mobile platforms.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 5 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq5">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseFive" 
-                        aria-expanded="false" 
-                        aria-controls="collapseFive"
-                      >
-                        How do I start my project with you?
-                      </button>
-                    </h2>
-                    <div id="collapseFive" className="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        <p>You can reach out to us by sending an email to admin@solidevelectrosoft.com. Please provide a brief description of your project, including your requirements, timeline, and any other relevant details. Our team will review your email and respond promptly to discuss the next steps.</p>
-                        <p>OR</p>
-                        <p>You can visit our website (www.solidevelectrosoft.com) and use the provided contact form or messaging feature to send us a direct message. Fill in the required information, including your name, email address, and a message describing your project. Our team will receive your message and get back to you as soon as possible.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 6 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq6">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseSix" 
-                        aria-expanded="false" 
-                        aria-controls="collapseSix"
-                      >
-                        What are your hiring models?
-                      </button>
-                    </h2>
-                    <div id="collapseSix" className="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        You can hire our highly qualified experts on full-time, part-time, hourly, monthly and weekly basis as per your convenience.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 7 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq7">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseSeven" 
-                        aria-expanded="false" 
-                        aria-controls="collapseSeven"
-                      >
-                        Can you handle ongoing maintenance?
-                      </button>
-                    </h2>
-                    <div id="collapseSeven" className="accordion-collapse collapse" aria-labelledby="faq7" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        <p>Absolutely! We offer ongoing maintenance services to ensure the continued smooth operation and optimal performance of your application. Our maintenance services are designed to keep your application up to date, secure, and functioning at its best.</p>
-                        <p>Our maintenance services can be tailored to meet your specific requirements and can be structured on an ongoing basis, whether it's monthly, quarterly, or as needed. We value long-term partnerships with our clients and are committed to providing continuous support to help your application thrive.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 8 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq8">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseEight" 
-                        aria-expanded="false" 
-                        aria-controls="collapseEight"
-                      >
-                        What happens if my application breaks?
-                      </button>
-                    </h2>
-                    <div id="collapseEight" className="accordion-collapse collapse" aria-labelledby="faq8" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        <p>We understand that application issues can occur, and we have a dedicated support system in place to address such situations promptly. If your application breaks or experiences any technical issues, our team is here to assist you.</p>
-                        <p>First, we encourage you to reach out to our support team and provide detailed information about the problem you're encountering. Our experts will investigate the issue and work diligently to identify the cause and implement a solution. Depending on the severity and complexity of the problem, the resolution time may vary.</p>
-                        <p>Additionally, we offer maintenance and support services to ensure the ongoing functionality and stability of your application. This can include regular updates, bug fixes, security patches, and performance optimizations to keep your application running smoothly.</p>
-                        <p>Our goal is to minimize downtime and provide a swift resolution to any issues that arise. We strive to maintain open communication with our clients and keep you informed throughout the troubleshooting and resolution process.</p>
-                        <p>Rest assured that we are committed to providing reliable support and ensuring the smooth operation of your application.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 9 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq9">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseNine" 
-                        aria-expanded="false" 
-                        aria-controls="collapseNine"
-                      >
-                        How long does a application redesign take?
-                      </button>
-                    </h2>
-                    <div id="collapseNine" className="accordion-collapse collapse" aria-labelledby="faq9" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        The duration of an application redesign can vary depending on several factors, including the complexity of the application, the scope of changes required, and the availability of resources. Typically, a complete application redesign may take several weeks to a few months to ensure thorough planning, design, development, testing, and deployment.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 10 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq10">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseTen" 
-                        aria-expanded="false" 
-                        aria-controls="collapseTen"
-                      >
-                        What are the types of companies have you worked with?
-                      </button>
-                    </h2>
-                    <div id="collapseTen" className="accordion-collapse collapse" aria-labelledby="faq10" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        We have worked with a diverse range of companies across various industries. We have designed and developed Software applications for both large sized and small sized business owners from domains like eCommerce, NGO, legal, medical, finance, and many more.
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 11 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq11">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseEleven" 
-                        aria-expanded="false" 
-                        aria-controls="collapseEleven"
-                      >
-                        I don't want to go elsewhere for web application hosting. Can I get it at Solidev Electrosoft?
-                      </button>
-                    </h2>
-                    <div id="collapseEleven" className="accordion-collapse collapse" aria-labelledby="faq11" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        <p>To provide our clients one stop solutions and help them save their costs, this is what our motto is. At Solidev Electrosoft, we provide comprehensive Software development solutions which include:</p>
-                        <p>eCommerce Web Design and Development Services</p>
-                        <p>Software Development</p>
-                        <p>Web Application Design</p>
-                        <p>Web Application Hosting</p>
-                        <p>Payment Gateway Integration</p>
-                        <p>Web Application Re-Designing</p>
-                        <p>Web Application Maintenance</p>
-                        <p>Mobile Application Development</p>
-                        <p>You can either avail our services for a standalone project or as a part of an entire project.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FAQ 12 */}
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="faq12">
-                      <button 
-                        className="accordion-button collapsed" 
-                        type="button" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwelve" 
-                        aria-expanded="false" 
-                        aria-controls="collapseTwelve"
-                      >
-                        What kind of ready made product we have?
-                      </button>
-                    </h2>
-                    <div id="collapseTwelve" className="accordion-collapse collapse" aria-labelledby="faq12" data-bs-parent="#accordionExample">
-                      <div className="accordion-body">
-                        <p>Offer several ready-made products that can be customized to meet your specific needs. Here are two examples:</p>
-                        <p>Electronic Health Record (EHR): Our electronic health record solution is designed to streamline and digitize the healthcare documentation process. It enables healthcare providers to efficiently manage patient records, track medical history, schedule appointments, generate reports, and more. The EHR system can be tailored to suit different healthcare settings, such as hospitals, clinics, and private practices.</p>
-                        <p>Calling CRM: Our Calling CRM (Customer Relationship Management) software is designed to enhance customer interactions and streamline sales and support processes. It provides features for managing customer contacts, tracking communication history, scheduling follow-ups, analysing sales data, and optimizing customer engagement. The Calling CRM can be customized to fit various industries and business sizes.</p>
-                        <p>If you are interested in exploring our ready-made products or discussing how we can customize them to suit your business, please contact us at admin@solidevelectrosoft.com or through our website's messaging platform. Our team will be happy to provide further information and guidance.</p>
-                      </div>
-                    </div>
-                  </div>
+                    );
+                  })}
 
                 </div>
                 <p className="mt-30" style={{ fontSize: '0.8rem', color: 'var(--text-muted, #6b7280)' }}>{TRADEMARK_LINE}</p>
