@@ -1,12 +1,28 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+// Interim lock (SE-4200): the admin panel's image folders are publicly readable and only the
+// admin uploads or deletes (images up to 10 MB). Every other path is denied.
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+
+    function isAdmin() {
+      return request.auth != null
+        && (request.auth.token.admin == true
+          || (request.auth.token.email == 'admin@solidevelectrosoft.com'
+            && request.auth.token.email_verified == true));
+    }
+
+    function isImageFolder(folder) {
+      return folder in ['products', 'portfolios', 'blogs', 'team', 'story', 'testimonials', 'feed-posts'];
+    }
+
+    match /{folder}/{allPaths=**} {
+      allow read: if isImageFolder(folder);
+      allow create, update: if isAdmin()
+        && isImageFolder(folder)
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isAdmin() && isImageFolder(folder);
     }
   }
 }

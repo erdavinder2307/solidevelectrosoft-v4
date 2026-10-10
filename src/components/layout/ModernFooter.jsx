@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 // Import logo for proper Vite bundling
@@ -20,7 +20,8 @@ const ModernFooter = ({ onQuoteClick = null }) => {
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
     
-    if (!email || !email.includes('@')) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normalizedEmail) || normalizedEmail.length > 254) {
       setSubscribeStatus('error');
       setSubscribeMessage('Please enter a valid email address');
       return;
@@ -30,20 +31,10 @@ const ModernFooter = ({ onQuoteClick = null }) => {
     setSubscribeMessage('');
 
     try {
-      // Check if email already exists
-      const subscribersRef = collection(db, 'subscribedUsers');
-      const q = query(subscribersRef, where('email', '==', email.toLowerCase()));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        setSubscribeStatus('error');
-        setSubscribeMessage('This email is already subscribed');
-        return;
-      }
-
-      // Add new subscriber
-      await addDoc(subscribersRef, {
-        email: email.toLowerCase(),
+      // The email is the document id. Visitors cannot read the list, and the rules
+      // deny a second write to the same id, so a repeat sign-up fails with permission-denied.
+      await setDoc(doc(db, 'subscribedUsers', normalizedEmail), {
+        email: normalizedEmail,
         subscribedAt: serverTimestamp(),
         status: 'active',
         source: 'footer',
@@ -59,8 +50,12 @@ const ModernFooter = ({ onQuoteClick = null }) => {
         setSubscribeMessage('');
       }, 5000);
     } catch (error) {
-      console.error('Error subscribing:', error);
       setSubscribeStatus('error');
+      if (error?.code === 'permission-denied') {
+        setSubscribeMessage('This email is already subscribed');
+        return;
+      }
+      console.error('Error subscribing:', error);
       setSubscribeMessage('Failed to subscribe. Please try again.');
     }
   };
