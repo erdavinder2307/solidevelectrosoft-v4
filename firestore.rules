@@ -1,17 +1,133 @@
-rules_version='2'
+rules_version = '2';
 
+// Interim lock (SE-4200): public read only for what the public site shows, admin-only writes,
+// and narrow public writes for the newsletter, feed likes, comments and share counts.
+// Anything not matched below is denied.
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Public testimonials: read-only if published and not deleted
-    match /testimonials/{doc} {
-      allow read: if resource.data.isPublished == true && resource.data.isDeleted == false;
-      // Admin writes: must be authenticated
-      allow write: if request.auth != null;
+
+    function isAdmin() {
+      return request.auth != null
+        && (request.auth.token.admin == true
+          || (request.auth.token.email == 'admin@solidevelectrosoft.com'
+            && request.auth.token.email_verified == true));
     }
 
-    // Temporary global rule (expires) — keep as-is for other collections until secured
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2026, 1, 14);
+    function isShortString(value, max) {
+      return value is string && value.size() <= max;
+    }
+
+    // A public like/comment/share changes exactly one counter by one.
+    function isCounterBump() {
+      let changed = request.resource.data.diff(resource.data).affectedKeys();
+      return (changed.hasOnly(['likeCount']) && bumpedByOne('likeCount'))
+        || (changed.hasOnly(['commentCount']) && bumpedByOne('commentCount'))
+        || (changed.hasOnly(['shareCount']) && bumpedByOne('shareCount'));
+    }
+
+    function bumpedByOne(field) {
+      return request.resource.data[field] is int
+        && (request.resource.data[field] - resource.data.get(field, 0)) in [-1, 1];
+    }
+
+    // Site content: anyone reads, only the admin writes.
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /portfolios/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /client_engagements/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /story_images/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /team_members/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /blogs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /videos/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /testimonials/{id} {
+      allow read: if isAdmin()
+        || (resource.data.isPublished == true && resource.data.isDeleted == false);
+      allow write: if isAdmin();
+    }
+
+    match /feedPosts/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+      allow update: if isCounterBump();
+    }
+
+    // Like/comment/share counters for blog items in the feed.
+    match /feedEngagement/{feedId} {
+      allow read: if true;
+      allow create: if isAdmin()
+        || (request.resource.data.keys().hasOnly(['likeCount', 'commentCount', 'shareCount'])
+          && request.resource.data.get('likeCount', 0) in [0, 1]
+          && request.resource.data.get('commentCount', 0) in [0, 1]
+          && request.resource.data.get('shareCount', 0) in [0, 1]);
+      allow update: if isAdmin() || isCounterBump();
+      allow delete: if isAdmin();
+    }
+
+    // One like per visitor and post; the id is "<postId>_<visitorId>".
+    match /feedReactions/{reactionId} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if isAdmin()
+        || (request.resource.data.keys().hasOnly(['postId', 'visitorId', 'reactionType', 'createdDate'])
+          && isShortString(request.resource.data.postId, 200)
+          && isShortString(request.resource.data.visitorId, 100)
+          && reactionId == request.resource.data.postId + '_' + request.resource.data.visitorId
+          && request.resource.data.reactionType == 'like'
+          && request.resource.data.createdDate == request.time);
+      allow update: if isAdmin();
+      allow delete: if true; // unlike; the visitor id is the only key a visitor has
+    }
+
+    // Visitors submit comments as pending; everyone reads approved ones.
+    match /feedComments/{id} {
+      allow read: if isAdmin() || resource.data.status == 'approved';
+      allow create: if isAdmin()
+        || (request.resource.data.keys().hasOnly(['postId', 'visitorId', 'name', 'email', 'comment', 'status', 'createdDate'])
+          && isShortString(request.resource.data.postId, 200)
+          && isShortString(request.resource.data.visitorId, 100)
+          && isShortString(request.resource.data.name, 100)
+          && isShortString(request.resource.data.email, 200)
+          && isShortString(request.resource.data.comment, 2000)
+          && request.resource.data.comment.size() > 0
+          && request.resource.data.status == 'pending'
+          && request.resource.data.createdDate == request.time);
+      allow update, delete: if isAdmin();
+    }
+
+    // Newsletter: the document id is the lower-case email. Visitors may only add themselves;
+    // a second sign-up with the same email is an update and is denied.
+    match /subscribedUsers/{email} {
+      allow create: if isAdmin()
+        || (request.resource.data.keys().hasOnly(['email', 'subscribedAt', 'status', 'source'])
+          && request.resource.data.email == email
+          && isShortString(email, 254)
+          && email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+          && email == email.lower()
+          && request.resource.data.subscribedAt == request.time
+          && request.resource.data.status == 'active'
+          && request.resource.data.source == 'footer');
+      allow read, update, delete: if isAdmin();
     }
   }
 }
