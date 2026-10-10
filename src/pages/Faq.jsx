@@ -55,6 +55,8 @@ const Faq = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [showResponse, setShowResponse] = useState(false);
+  // Open question, controlled by React: Bootstrap's collapse JS is not loaded on this page.
+  const [openFaqId, setOpenFaqId] = useState(FAQS[0].id);
 
   // SEO Configuration
   useSEO({
@@ -135,23 +137,22 @@ const Faq = () => {
             <div className="row">
               <div className="col-11">
                 <div className="accordion tp-accordion" id="accordionExample">
-                  {FAQS.map((faq, index) => {
-                    const isOpen = index === 0;
+                  {FAQS.map((faq) => {
+                    const isOpen = openFaqId === faq.id;
                     return (
                       <div className="accordion-item" key={faq.id}>
                         <h2 className="accordion-header" id={faq.id}>
                           <button
                             className={isOpen ? 'accordion-button' : 'accordion-button collapsed'}
                             type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target={`#${faq.collapseId}`}
+                            onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
                             aria-expanded={isOpen ? 'true' : 'false'}
                             aria-controls={faq.collapseId}
                           >
                             {faq.question}
                           </button>
                         </h2>
-                        <div id={faq.collapseId} className={isOpen ? 'accordion-collapse collapse show' : 'accordion-collapse collapse'} aria-labelledby={faq.id} data-bs-parent="#accordionExample">
+                        <div id={faq.collapseId} className={isOpen ? 'accordion-collapse collapse show' : 'accordion-collapse collapse'} role="region" aria-labelledby={faq.id}>
                           <div className="accordion-body">
                             {faq.answer.length > 1
                               ? faq.answer.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
