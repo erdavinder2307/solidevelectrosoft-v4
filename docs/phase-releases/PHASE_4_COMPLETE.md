@@ -24,10 +24,9 @@
 - **Purpose:** At-a-glance overview
 - **Includes:** Data mapping, commands, features
 
-### ✅ Complete Roadmap
+### ✅ Admin Panel Roadmap
 - **File:** `/ADMIN_PANEL_ROADMAP.md`
-- **Scope:** All 7 phases (1-4 complete, 5-7 pending)
-- **Contains:** Timeline, file structure, checklist
+- **Note:** The roadmap is kept privately by Solidev Electrosoft; this file is a placeholder.
 
 ### ✅ Package.json Updated
 - Added: `"migrate": "node scripts/migrateInitialData.js"`
@@ -112,7 +111,7 @@ scripts/
 Documentation/
 ├── MIGRATION_GUIDE.md .................... Step-by-step guide (500+ lines)
 ├── PHASE_4_SUMMARY.md .................... Quick reference
-├── ADMIN_PANEL_ROADMAP.md ............... Full roadmap (all 7 phases)
+├── ADMIN_PANEL_ROADMAP.md ............... Roadmap note (kept privately)
 └── PHASE_4_COMPLETE.md .................. This file!
 ```
 
@@ -326,11 +325,7 @@ service cloud.firestore {
    - File manifest
 
 3. **ADMIN_PANEL_ROADMAP.md**
-   - All 7 phases overview
-   - Progress tracking
-   - Complete checklist
-   - File structure
-   - Success metrics
+   - Placeholder: the roadmap is kept privately
 
 4. **PHASE_4_COMPLETE.md** (this file)
    - Executive summary
@@ -400,7 +395,7 @@ This will populate your Firestore database with 16 initial documents, ready for 
 
 - 📖 [Migration Guide](../guides/MIGRATION_GUIDE.md) - Full step-by-step
 - 📋 [Phase 4 Summary](./PHASE_4_SUMMARY.md) - Quick reference
-- 🗺️ [Admin Panel Roadmap](../admin/ADMIN_PANEL_ROADMAP.md) - All 7 phases
+- 🗺️ [Admin Panel Roadmap](../admin/ADMIN_PANEL_ROADMAP.md) - kept privately
 - 🔥 [Firebase Docs](https://firebase.google.com/docs)
 - 🎯 [Firestore Best Practices](https://firebase.google.com/docs/firestore/best-practices)
 
