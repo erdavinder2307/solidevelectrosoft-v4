@@ -19,6 +19,8 @@ const STATIC_ROUTES = [
   { loc: '/about', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services', changefreq: 'monthly', priority: '0.9' },
   { loc: '/ai-employee', changefreq: 'monthly', priority: '0.9' },
+  { loc: '/decidemate/support', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/decidemate/privacy', changefreq: 'yearly', priority: '0.3' },
   { loc: '/services/web-development', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/mobile-app-development', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/ai-solutions', changefreq: 'monthly', priority: '0.8' },
