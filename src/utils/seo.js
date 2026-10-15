@@ -139,6 +139,20 @@ export const pageSEO = {
     canonical: '/faq',
     ogType: 'website',
   },
+  decidemateSupport: {
+    title: 'DecideMate Pro Support | Solidev Electrosoft',
+    description: 'Get help with the DecideMate Pro app: email support with a reply within one working day, account deletion and common questions.',
+    keywords: 'DecideMate Pro support, DecideMate help, delete DecideMate account',
+    canonical: '/decidemate/support',
+    ogType: 'website',
+  },
+  decidematePrivacy: {
+    title: 'DecideMate Pro Privacy Policy | Solidev Electrosoft',
+    description: 'What the DecideMate Pro app collects, what stays on your phone, who processes your data and how to delete your account.',
+    keywords: 'DecideMate Pro privacy policy, DecideMate data, DecideMate account deletion',
+    canonical: '/decidemate/privacy',
+    ogType: 'website',
+  },
 };
 
 /**
