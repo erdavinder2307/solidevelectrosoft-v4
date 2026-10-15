@@ -36,6 +36,7 @@ import Videos from './pages/Videos';
 
 // Import AI Employee page
 import AIEmployee from './pages/AIEmployee';
+import { DecideMateSupport, DecideMatePrivacy } from './pages/DecideMate';
 
 // Import search
 import { SearchProvider } from './contexts/SearchContext';
@@ -142,6 +143,8 @@ function App() {
             <Route path="/products" element={<ModernProducts />} />
             <Route path="/products.html" element={<ModernProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/decidemate/support" element={<DecideMateSupport />} />
+            <Route path="/decidemate/privacy" element={<DecideMatePrivacy />} />
             <Route path="/ai-employee" element={<AIEmployee />} />
             <Route path="/ai-employee.html" element={<AIEmployee />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
