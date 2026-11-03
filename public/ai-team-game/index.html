@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>A Day at the AI Office</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #f7f9fb; color: #0f172a; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+      #poster { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 24px;
+                background: radial-gradient(circle at 50% 35%, #ffffff 0%, #eef2f6 75%); z-index: 2; }
+      #poster h1 { margin: 0; font-size: clamp(26px, 5vw, 44px); color: #0f172a; }
+      #poster p { margin: 0; max-width: 520px; font-size: 17px; line-height: 1.45; color: #475569; }
+      #poster .ai-label { font-size: 13px; color: #64748b; }
+      #play { min-width: 200px; min-height: 56px; font-size: 22px; font-weight: 700; border: 0; border-radius: 12px; background: #0085ff; color: #fff; cursor: pointer; }
+      #play:focus-visible { outline: 3px solid #0085ff; outline-offset: 3px; }
+      #loading { display: none; width: min(360px, 80vw); }
+      #bar { height: 10px; border-radius: 5px; background: #e2e8f0; overflow: hidden; }
+      #fill { height: 100%; width: 0; background: #0085ff; transition: width .2s; }
+      #canvas { position: fixed; inset: 0; width: 100%; height: 100%; visibility: hidden; touch-action: none; outline: none; }
+      #fallback { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="poster">
+      <h1>A Day at the AI Office</h1>
+      <p>You're the founder. Your AI team works; you decide. About 90 seconds.</p>
+      <button id="play" type="button">Play</button>
+      <div id="loading"><p>Booting the office…</p><div id="bar"><div id="fill"></div></div></div>
+      <p class="ai-label">Asha, Arjun, Meera, Kabir and Naina are AI agents, shown as AI-made characters.</p>
+      <p id="fallback">Your browser can't run the game (it needs WebGL 2). The text under the game explains how the AI team works.</p>
+    </div>
+    <canvas id="canvas" tabindex="-1"></canvas>
+    <script>
+      // Nothing Unity-related downloads until the visitor presses Play.
+      (function () {
+        var origin = window.location.origin;
+        function post(event, data) {
+          try { window.parent.postMessage({ type: 'aiteam', event: event, data: data }, origin); } catch (e) {}
+        }
+        var play = document.getElementById('play');
+        if (!document.createElement('canvas').getContext('webgl2')) {
+          play.style.display = 'none';
+          document.getElementById('fallback').style.display = 'block';
+          post('game_error', { reason: 'webgl2_unsupported' });
+          return;
+        }
+        play.addEventListener('click', function () {
+          post('game_play');
+          var started = performance.now();
+          play.style.display = 'none';
+          document.getElementById('loading').style.display = 'block';
+          var canvas = document.getElementById('canvas');
+          var script = document.createElement('script');
+          script.src = 'Build/27d1e6172a770a48078ffb5a20748f81.loader.js';
+          script.onload = function () {
+            createUnityInstance(canvas, {
+              arguments: [],
+              dataUrl: 'Build/c6aaa211d8eddf412eb5b393b6b00a45.data.br',
+              frameworkUrl: 'Build/ae112f082c8222614ea08f7a9e99829b.framework.js.br',
+              codeUrl: 'Build/457a9392693b366ce76a3399bfa41960.wasm.br',
+              streamingAssetsUrl: 'StreamingAssets',
+              companyName: "Solidev Electrosoft",
+              productName: "A Day at the AI Office",
+              productVersion: "0.1.0",
+              devicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.5)
+            }, function (p) {
+              document.getElementById('fill').style.width = Math.round(p * 100) + '%';
+            }).then(function (instance) {
+              window.aiTeamGame = instance;
+              document.getElementById('poster').style.display = 'none';
+              canvas.style.visibility = 'visible';
+              canvas.focus();
+              post('game_loaded', { seconds: Math.round((performance.now() - started) / 100) / 10 });
+            }).catch(function (message) {
+              post('game_error', { reason: 'load_failed' });
+              document.querySelector('#loading p').textContent = 'The game could not start on this device.';
+              console.error(message);
+            });
+          };
+          document.body.appendChild(script);
+        });
+      })();
+    </script>
+  </body>
+</html>

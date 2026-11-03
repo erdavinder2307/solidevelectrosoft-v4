@@ -6,6 +6,7 @@ import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
 import ControlDemo from '../components/sections/ControlDemo';
 import TaskStory from '../components/sections/TaskStory';
+import AITeamGame from '../components/sections/AITeamGame';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
@@ -499,6 +500,20 @@ const AIEmployee = () => {
           </div>
         </section>
 
+        {/* Play a day: the AI team showcase game */}
+        <section id="play-a-day" className="modern-section modern-bg-light" style={{ scrollMarginTop: '80px' }}>
+          <div className="modern-container">
+            <SectionHeader
+              title="Play a day at the AI office"
+              intro="You're the founder. Watch the AI team plan, build, test and review, and make the calls only a person makes. About 90 seconds."
+            />
+            <AITeamGame statsTargetId="ai-team-live" />
+            <p style={{ ...noteStyle, marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+              The game uses example tasks. {AI_TEAM_DISCLOSURE}
+            </p>
+          </div>
+        </section>
+
         {/* Guardrails built in */}
         <section className="modern-section" style={{ background: 'var(--bg-primary)' }}>
           <div className="modern-container">
@@ -577,7 +592,7 @@ const AIEmployee = () => {
         </section>
 
         {/* Our AI team, live */}
-        <section className="modern-section" style={{ background: 'var(--bg-dark)' }}>
+        <section id="ai-team-live" className="modern-section" style={{ background: 'var(--bg-dark)', scrollMarginTop: '80px' }}>
           <div className="modern-container">
             <motion.div {...fadeUp} style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto var(--space-12)' }}>
               <h2 className="modern-h2" style={{ color: 'white', marginBottom: 'var(--space-2)' }}>Our AI team, live</h2>
