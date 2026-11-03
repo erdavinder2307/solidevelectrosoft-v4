@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>A Day at the AI Office</title>
     <style>
-      html, body { margin: 0; height: 100%; background: #2a1f1a; color: #fff; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+      html, body { margin: 0; height: 100%; background: #f7f9fb; color: #0f172a; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
       #poster { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 24px;
-                background: radial-gradient(circle at 50% 35%, #5a3f2e 0%, #2a1f1a 70%); z-index: 2; }
-      #poster h1 { margin: 0; font-size: clamp(26px, 5vw, 44px); color: #ffc75a; }
-      #poster p { margin: 0; max-width: 520px; font-size: 17px; line-height: 1.45; color: #f0e6da; }
-      #poster .ai-label { font-size: 13px; color: #c9b8a6; }
-      #play { min-width: 200px; min-height: 56px; font-size: 22px; font-weight: 700; border: 0; border-radius: 28px; background: #33c7b8; color: #1f1813; cursor: pointer; }
-      #play:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+                background: radial-gradient(circle at 50% 35%, #ffffff 0%, #eef2f6 75%); z-index: 2; }
+      #poster h1 { margin: 0; font-size: clamp(26px, 5vw, 44px); color: #0f172a; }
+      #poster p { margin: 0; max-width: 520px; font-size: 17px; line-height: 1.45; color: #475569; }
+      #poster .ai-label { font-size: 13px; color: #64748b; }
+      #play { min-width: 200px; min-height: 56px; font-size: 22px; font-weight: 700; border: 0; border-radius: 12px; background: #0085ff; color: #fff; cursor: pointer; }
+      #play:focus-visible { outline: 3px solid #0085ff; outline-offset: 3px; }
       #loading { display: none; width: min(360px, 80vw); }
-      #bar { height: 10px; border-radius: 5px; background: #4a372b; overflow: hidden; }
-      #fill { height: 100%; width: 0; background: #33c7b8; transition: width .2s; }
+      #bar { height: 10px; border-radius: 5px; background: #e2e8f0; overflow: hidden; }
+      #fill { height: 100%; width: 0; background: #0085ff; transition: width .2s; }
       #canvas { position: fixed; inset: 0; width: 100%; height: 100%; visibility: hidden; touch-action: none; outline: none; }
       #fallback { display: none; }
     </style>
@@ -51,13 +51,13 @@
           document.getElementById('loading').style.display = 'block';
           var canvas = document.getElementById('canvas');
           var script = document.createElement('script');
-          script.src = 'Build/c0b01636f1d047172dfd07c994079663.loader.js';
+          script.src = 'Build/27d1e6172a770a48078ffb5a20748f81.loader.js';
           script.onload = function () {
             createUnityInstance(canvas, {
               arguments: [],
-              dataUrl: 'Build/e781b5c5a2a65ad52dd37710794c0cdf.data.br',
+              dataUrl: 'Build/c6aaa211d8eddf412eb5b393b6b00a45.data.br',
               frameworkUrl: 'Build/ae112f082c8222614ea08f7a9e99829b.framework.js.br',
-              codeUrl: 'Build/658ce1f9e009feea3d3dac0e89453f81.wasm.br',
+              codeUrl: 'Build/457a9392693b366ce76a3399bfa41960.wasm.br',
               streamingAssetsUrl: 'StreamingAssets',
               companyName: "Solidev Electrosoft",
               productName: "A Day at the AI Office",

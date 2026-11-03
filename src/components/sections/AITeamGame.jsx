@@ -45,7 +45,7 @@ const AITeamGame = ({ statsTargetId }) => {
         maxHeight: '80vh',
         borderRadius: 'var(--radius-xl)',
         overflow: 'hidden',
-        background: '#2a1f1a',
+        background: '#f7f9fb',
         boxShadow: 'var(--shadow-lg)',
       }}
     >
