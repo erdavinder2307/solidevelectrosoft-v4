@@ -37,6 +37,9 @@ import Videos from './pages/Videos';
 // Import AI Employee page
 import AIEmployee from './pages/AIEmployee';
 
+// Protech Worth app: privacy / terms / support (SE-4182)
+import ProtechWorthLegal from './pages/ProtechWorthLegal';
+
 // Import search
 import { SearchProvider } from './contexts/SearchContext';
 import { SearchModal } from './components/search';
@@ -144,6 +147,9 @@ function App() {
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/ai-employee" element={<AIEmployee />} />
             <Route path="/ai-employee.html" element={<AIEmployee />} />
+            <Route path="/apps/protech-worth/privacy" element={<ProtechWorthLegal page="privacy" />} />
+            <Route path="/apps/protech-worth/terms" element={<ProtechWorthLegal page="terms" />} />
+            <Route path="/apps/protech-worth/support" element={<ProtechWorthLegal page="support" />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
             
             {/* Videos Routes */}
