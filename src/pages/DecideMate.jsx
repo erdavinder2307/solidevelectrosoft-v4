@@ -96,7 +96,7 @@ export const DecideMateSupport = () => (
 
 export const DecideMatePrivacy = () => (
   <DecideMatePage seo={pageSEO.decidematePrivacy} title="DecideMate Pro Privacy Policy" path="/decidemate/privacy">
-    <p><em>Effective 15 October 2026. Applies to the DecideMate Pro app for iPhone and Android, version 1.1.</em></p>
+    <p><em>Effective 15 October 2026. Applies to the DecideMate Pro app for iPhone and Android.</em></p>
     <p>
       DecideMate Pro is made by Solidev Electrosoft Private Limited, India (&quot;we&quot;). This policy explains
       what the app collects, why, and how you can remove it.
@@ -116,7 +116,8 @@ export const DecideMatePrivacy = () => (
       </li>
       <li>
         <strong>Your profile photo, if you add one.</strong> The app asks for access to your photos or camera only
-        when you choose a photo, and uploads only the photo you pick.
+        when you choose a photo, and uploads only the photo you pick. We store the photo and its link with your
+        profile.
       </li>
     </ul>
 
@@ -128,7 +129,7 @@ export const DecideMatePrivacy = () => (
 
     <h3 className="mt-40">What we do not do</h3>
     <ul>
-      <li>Version 1.1 has no advertising, no analytics and no tracking across other apps or websites.</li>
+      <li>The app currently has no advertising, no analytics and no tracking across other apps or websites.</li>
       <li>We do not sell your data or share it with advertisers.</li>
       <li>We use your email address only for signing in and to answer you when you contact us.</li>
     </ul>
