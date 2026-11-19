@@ -13,6 +13,11 @@ import { useSEO } from '../hooks/useSEO';
 import { generateSoftwareApplicationSchema, generateBreadcrumbSchema } from '../utils/structuredData';
 import { siteConfig } from '../utils/seo';
 
+// Store links that are not part of the product record, keyed by product id or slug.
+const GALAXY_STORE_URLS = {
+  solidtrack: 'https://galaxystore.samsung.com/detail/com.solidevelectrosoft.solidtrack',
+};
+
 /**
  * Product Details Page
  * App store-like detailed view of a product with all information
@@ -174,6 +179,7 @@ const ProductDetails = () => {
   const features = product.features || [];
   const technologies = product.technologies || [];
   const currentScreenshot = screenshots[selectedScreenshot];
+  const galaxyStoreUrl = GALAXY_STORE_URLS[product.id] || GALAXY_STORE_URLS[product.slug];
 
   return (
     <>
@@ -381,6 +387,36 @@ const ProductDetails = () => {
                     >
                       <FaApple size={16} />
                       App Store
+                    </a>
+                  )}
+
+                  {/* Galaxy Store Button (text/outline; official badge to follow) */}
+                  {galaxyStoreUrl && (
+                    <a
+                      href={galaxyStoreUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackExternalLinkClicked('galaxy_store')}
+                      style={{
+                        width: '100%',
+                        padding: '14px 20px',
+                        borderRadius: '12px',
+                        background: '#ffffff',
+                        boxShadow: 'inset 0 0 0 2px #000000',
+                        color: '#000000',
+                        textDecoration: 'none',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        transition: 'all 0.2s',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+                      onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                    >
+                      Get it on Galaxy Store
                     </a>
                   )}
                 </div>
