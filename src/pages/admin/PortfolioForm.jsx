@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, addDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { validatePortfolio, hasErrors } from '../../utils/formValidation';
-import { uploadImageToFirebase, generateThumbnail } from '../../utils/imageUtils';
+import { uploadImageToFirebase } from '../../utils/imageUtils';
 import ImageUploader from '../../components/admin/ImageUploader';
 import { FaGlobe, FaGooglePlay, FaApple } from 'react-icons/fa';
 
@@ -142,16 +142,6 @@ const PortfolioForm = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files || []);
-    const mapped = files.map((file) => ({ id: `${Date.now()}-${Math.random()}`.replace(/\./g, ''), file, preview: URL.createObjectURL(file) }));
-    setFormData((prev) => ({
-      ...prev,
-      imageFiles: [...prev.imageFiles, ...mapped],
-    }));
-    setImageError('');
-  };
-
   const handleImageSelected = (croppedFile) => {
     const fileObj = { id: `${Date.now()}-${Math.random()}`.replace(/\./g, ''), file: croppedFile, preview: URL.createObjectURL(croppedFile) };
     setFormData((prev) => ({
@@ -195,13 +185,13 @@ const PortfolioForm = () => {
     }));
   };
 
-  const handleRemoveNewImage = (index) => {
+  const handleRemoveNewImage = (fileId) => {
     setFormData((prev) => {
-      const toRemove = prev.imageFiles.find((f) => f.id === id);
+      const toRemove = prev.imageFiles.find((f) => f.id === fileId);
       if (toRemove?.preview) URL.revokeObjectURL(toRemove.preview);
       return {
         ...prev,
-        imageFiles: prev.imageFiles.filter((f) => f.id !== id),
+        imageFiles: prev.imageFiles.filter((f) => f.id !== fileId),
       };
     });
   };
