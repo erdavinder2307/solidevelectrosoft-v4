@@ -129,6 +129,7 @@ const Faq = () => {
       <Breadcrumb
         title="FAQ"
         backgroundImage={faqBackground}
+        headingTag="h1"
       />
 
       <main>
