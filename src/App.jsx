@@ -36,6 +36,9 @@ import Videos from './pages/Videos';
 
 // Import AI Employee page
 import AIEmployee from './pages/AIEmployee';
+
+// Import Flutter App Rescue Audit offer page
+import FlutterAppRescueAudit from './pages/FlutterAppRescueAudit';
 import { DecideMateSupport, DecideMatePrivacy } from './pages/DecideMate';
 
 // Protech Worth app: privacy / terms / support (SE-4182)
@@ -173,6 +176,7 @@ function App() {
             <Route path="/services/mobile-app-development" element={<MobileAppService />} />
             <Route path="/services/ai-solutions" element={<AISolutionsService />} />
             <Route path="/services/mvp-development" element={<MVPDevelopmentService />} />
+            <Route path="/flutter-app-rescue-audit" element={<FlutterAppRescueAudit />} />
 
             {/* Legacy route aliases for SEO */}
             <Route path="/web-development" element={<WebDevelopmentService />} />

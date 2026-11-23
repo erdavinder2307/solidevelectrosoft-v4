@@ -25,6 +25,7 @@ const STATIC_ROUTES = [
   { loc: '/services/mobile-app-development', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/ai-solutions', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/mvp-development', changefreq: 'monthly', priority: '0.8' },
+  { loc: '/flutter-app-rescue-audit', changefreq: 'monthly', priority: '0.8' },
   { loc: '/web-development', changefreq: 'monthly', priority: '0.7' },
   { loc: '/mobile-app-development', changefreq: 'monthly', priority: '0.7' },
   { loc: '/ai-ml-solutions', changefreq: 'monthly', priority: '0.7' },
