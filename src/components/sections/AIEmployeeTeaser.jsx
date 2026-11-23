@@ -77,8 +77,8 @@ const AIEmployeeTeaser = () => {
               We run our own software team on AI — and we can build yours
             </h2>
             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-3)' }}>
-              An AI project manager, developer and tester plan, build and test our software every hour on Claude, with
-              a person approving every step. Need a team without hiring? We'll build one for you.
+              An AI project manager, developer, tester, reviewer and growth lead plan, build, test and review our software
+              every hour on Claude, with a person approving every step. Need a team without hiring? We'll build one for you.
             </p>
             <p style={{ color: 'var(--text-primary)', fontWeight: 600, marginBottom: 'var(--space-6)' }}>
               You approve from one page, with a picture for every decision.
@@ -89,14 +89,24 @@ const AIEmployeeTeaser = () => {
             </Link>
           </div>
 
-          <div style={{ display: 'grid', gap: 'var(--space-4)', alignContent: 'center' }}>
+          {/* One grid over all rows: numbers right-aligned in the first column, so every label shares one left edge */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr',
+              columnGap: 'var(--space-3)',
+              rowGap: 'var(--space-4)',
+              alignItems: 'baseline',
+              alignContent: 'center',
+            }}
+          >
             {teaserStats(stats).map((stat) => (
-              <div key={stat.label} style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)' }}>
-                <span style={{ fontSize: 'var(--text-3xl)', fontWeight: '700', color: 'var(--color-primary-500)', minWidth: '7rem' }}>
+              <React.Fragment key={stat.label}>
+                <span style={{ fontSize: 'var(--text-3xl)', fontWeight: '700', color: 'var(--color-primary-500)', whiteSpace: 'nowrap', justifySelf: 'end' }}>
                   {stat.value}
                 </span>
                 <span style={{ color: 'var(--text-secondary)' }}>{stat.label}</span>
-              </div>
+              </React.Fragment>
             ))}
           </div>
         </motion.div>

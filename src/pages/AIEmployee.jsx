@@ -1,10 +1,12 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 import CTABanner from '../components/sections/CTABanner';
 import ControlDemo from '../components/sections/ControlDemo';
+import TaskStory from '../components/sections/TaskStory';
+import AITeamGame from '../components/sections/AITeamGame';
 import { FloatingCTA } from '../components/ui';
 import AIProjectAssistant from '../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../hooks/useAIAssistant';
@@ -25,7 +27,7 @@ const team = [
   { member: aiTeam.asha, description: 'Plans the day. Reads email, tasks and code, suggests the day\'s work, and reports morning and evening.' },
   { member: aiTeam.arjun, description: 'Builds the work. Takes one approved task each hour and makes the change on its own copy of the code.' },
   { member: aiTeam.meera, description: 'Checks the work. Tries every change on a separate test machine and a virtual phone, then writes up what it found.' },
-  { member: aiTeam.kabir, description: 'Reads every change twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
+  { member: aiTeam.kabir, description: 'Checks our code changes twice a day and writes a plain-language verdict — ready, fix first, or don\'t merge — before a person decides.' },
   { member: aiTeam.naina, description: 'Finds customers. Researches the market, spots what stops people from buying, and drafts the plan and the messages to win them — a person approves and sends every one.' },
   { icon: FaUserCheck, title: 'You', description: 'Make every call. Approve tasks, review the work, and decide what reaches your customers.', human: true },
 ];
@@ -38,13 +40,13 @@ const workingDay = [
 ];
 
 const taskSteps = [
-  { title: 'Spotted', description: 'A bug, a test finding or a new idea.' },
-  { title: 'Proposed', description: 'The manager writes down why, how big, and what done means.' },
-  { title: 'Approved', description: 'You reply "go" or "skip".', you: true },
-  { title: 'Built', description: 'The developer makes the change on a separate copy.' },
-  { title: 'Checked', description: 'The tester tries it on a test machine.' },
-  { title: 'Reviewed', description: 'Kabir, our AI reviewer, reads the change and says whether it is ready.' },
-  { title: 'Released', description: 'You review it and publish it.', you: true },
+  { title: 'Spotted', description: 'A bug, a test finding or a new idea.', member: aiTeam.asha, picture: 'spotted' },
+  { title: 'Proposed', description: 'The manager writes down why, how big, and what done means.', member: aiTeam.asha, picture: 'proposed' },
+  { title: 'Approved', description: 'You reply "go" or "skip".', you: true, picture: 'approved' },
+  { title: 'Built', description: 'The developer makes the change on a separate copy.', member: aiTeam.arjun, picture: 'built' },
+  { title: 'Checked', description: 'The tester tries it on a test machine.', member: aiTeam.meera, picture: 'checked' },
+  { title: 'Reviewed', description: 'Kabir, our AI reviewer, reads the change and says whether it is ready.', member: aiTeam.kabir, picture: 'reviewed' },
+  { title: 'Released', description: 'You review it and publish it.', you: true, picture: 'released' },
 ];
 
 const controlPoints = [
@@ -56,13 +58,13 @@ const controlPoints = [
 const guardrails = [
   { icon: FaRocket, title: 'Never releases to customers', description: 'publishing stays with you.' },
   { icon: FaCalendarCheck, title: 'Never handles money or filings', description: 'it prepares checklists; it never pays, files or signs.' },
-  { icon: FaKey, title: 'Never types a password', description: 'a person signs in once; the agents reuse that session.' },
+  { icon: FaKey, title: 'Never sees a password', description: 'test logins live in a password manager; a sign-in tool hands the agents only the open session.' },
   { icon: FaTrashAlt, title: 'Never deletes anything', description: 'files, tasks and history always stay.' },
   { icon: FaCodeBranch, title: 'Works on its own copy', description: 'your team\'s unfinished work is never touched.' },
   { icon: FaUserSecret, title: 'Keeps secrets out', description: 'no passwords or keys in reports, chats or code.' },
   { icon: FaDatabase, title: 'Live data changes', description: 'a dry run first, the real run only on your tap.' },
   { icon: FaVial, title: 'Releases go to test users first', description: 'you submit to the store.' },
-  { icon: FaSearch, title: 'An AI reviewer reads every change', description: 'you decide to merge.' },
+  { icon: FaSearch, title: 'An AI reviewer checks our code changes before they ship', description: 'you decide to merge.' },
 ];
 
 const toolGroups = [
@@ -103,7 +105,7 @@ const liveCounters = (stats) => [
 ];
 
 const capabilities = [
-  { icon: FaUsers, title: 'AI employees', description: 'A manager, developer and tester working your task list every hour, with you approving each step.' },
+  { icon: FaUsers, title: 'AI employees', description: 'A manager, developer, tester, reviewer and growth lead working your task list every hour, with you approving each step.' },
   { icon: FaClock, title: 'Scheduled tasks & routines', description: 'Jobs that run every morning, hour or week: reports, reminders, data checks, follow-ups.' },
   { icon: FaInbox, title: 'Inbox & document triage', description: 'Sort incoming mail and documents, draft replies, and flag what needs you. Nothing is sent without approval.' },
   { icon: FaComments, title: 'Reply watchers', description: 'Short replies in Teams or Slack turn into queued work, answers and updated task lists.' },
@@ -187,6 +189,7 @@ const scrollToHowItWorks = () => {
  */
 const AIEmployee = () => {
   const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const reduceMotion = useReducedMotion();
   const stats = useAiTeamStats();
 
   useSEO({
@@ -287,8 +290,8 @@ const AIEmployee = () => {
                   lineHeight: 1.7,
                 }}
               >
-                We build the whole team for you out of AI — a project manager, a developer and a tester that plan,
-                build and test your product every hour. Our senior engineers set it up and keep watch; you approve
+                We build the whole team for you out of AI — a project manager, a developer, a tester, a reviewer and a growth
+                lead that plan, build, test and review your product every hour. Our senior engineers set it up and keep watch; you approve
                 every step.
               </motion.p>
 
@@ -415,44 +418,48 @@ const AIEmployee = () => {
         <section id="how-it-works" className="modern-section modern-bg-light" style={{ scrollMarginTop: '80px' }}>
           <div className="modern-container">
             <SectionHeader title="How one task travels" />
-            <ol className="ai-employee-steps" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {taskSteps.map((step, index) => (
-                <motion.li key={step.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.08 }}>
-                  <div
-                    style={{
-                      ...cardStyle,
-                      border: step.you ? '2px solid var(--color-primary-500)' : cardStyle.border,
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                      <span
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '50%',
-                          background: step.you ? 'var(--color-primary-500)' : 'var(--bg-tertiary)',
-                          color: step.you ? 'white' : 'var(--text-primary)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: '700',
-                          fontSize: 'var(--text-sm)',
-                        }}
-                      >
-                        {index + 1}
-                      </span>
-                      {step.you && (
-                        <span className="modern-badge" style={{ background: 'var(--color-primary-500)', color: 'white' }}>
-                          You
+            {reduceMotion ? (
+              <ol className="ai-employee-steps" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {taskSteps.map((step, index) => (
+                  <motion.li key={step.title} {...fadeUp} transition={{ duration: 0.4, delay: index * 0.08 }}>
+                    <div
+                      style={{
+                        ...cardStyle,
+                        border: step.you ? '2px solid var(--color-primary-500)' : cardStyle.border,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
+                        <span
+                          style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: step.you ? 'var(--color-primary-500)' : 'var(--bg-tertiary)',
+                            color: step.you ? 'white' : 'var(--text-primary)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: '700',
+                            fontSize: 'var(--text-sm)',
+                          }}
+                        >
+                          {index + 1}
                         </span>
-                      )}
+                        {step.you && (
+                          <span className="modern-badge" style={{ background: 'var(--color-primary-500)', color: 'white' }}>
+                            You
+                          </span>
+                        )}
+                      </div>
+                      <h3 style={cardTitleStyle}>{step.title}</h3>
+                      <p style={cardTextStyle}>{step.description}</p>
                     </div>
-                    <h3 style={cardTitleStyle}>{step.title}</h3>
-                    <p style={cardTextStyle}>{step.description}</p>
-                  </div>
-                </motion.li>
-              ))}
-            </ol>
+                  </motion.li>
+                ))}
+              </ol>
+            ) : (
+              <TaskStory steps={taskSteps} />
+            )}
             <motion.p {...fadeUp} style={noteStyle}>
               Steps 3 and 7 are always a person. Nothing reaches your customers without your click.
             </motion.p>
@@ -489,6 +496,20 @@ const AIEmployee = () => {
             </p>
             <p style={{ ...noteStyle, marginTop: 'var(--space-3)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
               The demo uses example tasks. {AI_TEAM_DISCLOSURE}
+            </p>
+          </div>
+        </section>
+
+        {/* Play a day: the AI team showcase game */}
+        <section id="play-a-day" className="modern-section modern-bg-light" style={{ scrollMarginTop: '80px' }}>
+          <div className="modern-container">
+            <SectionHeader
+              title="Play a day at the AI office"
+              intro="You're the founder. Watch the AI team plan, build, test and review, and make the calls only a person makes. About 90 seconds."
+            />
+            <AITeamGame statsTargetId="ai-team-live" />
+            <p style={{ ...noteStyle, marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+              The game uses example tasks. {AI_TEAM_DISCLOSURE}
             </p>
           </div>
         </section>
@@ -571,7 +592,7 @@ const AIEmployee = () => {
         </section>
 
         {/* Our AI team, live */}
-        <section className="modern-section" style={{ background: 'var(--bg-dark)' }}>
+        <section id="ai-team-live" className="modern-section" style={{ background: 'var(--bg-dark)', scrollMarginTop: '80px' }}>
           <div className="modern-container">
             <motion.div {...fadeUp} style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto var(--space-12)' }}>
               <h2 className="modern-h2" style={{ color: 'white', marginBottom: 'var(--space-2)' }}>Our AI team, live</h2>

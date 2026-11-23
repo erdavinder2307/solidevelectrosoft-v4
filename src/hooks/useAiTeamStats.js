@@ -5,14 +5,14 @@ const TIMEOUT_MS = 3000;
 
 const COUNT_FIELDS = ['improvementsShipped', 'checksRun', 'problemsCaught', 'problemsFixed', 'reviewsWritten'];
 
-// Shown straight away, and kept if the live file is slow, missing or malformed (values of 30 Sep 2026).
+// Shown straight away, and kept if the live file is slow, missing or malformed (values of 2 Oct 2026).
 export const FALLBACK_AI_TEAM_STATS = {
-  updated: '2026-09-30T12:30:00+05:30',
-  improvementsShipped: 37,
-  checksRun: 33,
-  problemsCaught: 16,
+  updated: '2026-10-02T12:20:00+05:30',
+  improvementsShipped: 48,
+  checksRun: 60,
+  problemsCaught: 38,
   problemsFixed: 7,
-  reviewsWritten: 0,
+  reviewsWritten: 17,
 };
 
 const isCount = (value) => Number.isInteger(value) && value >= 0;
@@ -21,6 +21,7 @@ const parseStats = (data) => {
   if (!data || typeof data !== 'object') return null;
   if (!COUNT_FIELDS.every((field) => isCount(data[field]))) return null;
   if (Number.isNaN(Date.parse(data.updated))) return null;
+  if (data.problemsFixed > data.problemsCaught) return null;
   const stats = { updated: data.updated };
   COUNT_FIELDS.forEach((field) => { stats[field] = data[field]; });
   return stats;

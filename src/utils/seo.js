@@ -126,7 +126,7 @@ export const pageSEO = {
   
   aiEmployee: {
     title: 'AI Software Team — Skip the Hiring | AI Employee',
-    description: 'Need a software team without hiring? We build one for you out of AI: an AI project manager, developer and tester on Claude, Cursor, GitHub Copilot and ChatGPT, set up by senior engineers, approved by you.',
+    description: 'A software team without hiring: an AI project manager, developer, tester, reviewer and growth lead, set up by our senior engineers and approved by you.',
     keywords: 'AI software development team, AI employee, AI developer, AI agents, AI automation, Claude Code, Cursor, GitHub Copilot, ChatGPT, software team without hiring, AI software testing',
     canonical: '/ai-employee',
     ogType: 'website',
@@ -137,6 +137,20 @@ export const pageSEO = {
     description: 'Frequently asked questions about our software development services, pricing, process, and technologies. Get answers before starting your project.',
     keywords: 'software development FAQ, development questions, pricing information',
     canonical: '/faq',
+    ogType: 'website',
+  },
+  decidemateSupport: {
+    title: 'DecideMate Pro Support | Solidev Electrosoft',
+    description: 'Get help with the DecideMate Pro app: email support with a reply within one working day, account deletion and common questions.',
+    keywords: 'DecideMate Pro support, DecideMate help, delete DecideMate account',
+    canonical: '/decidemate/support',
+    ogType: 'website',
+  },
+  decidematePrivacy: {
+    title: 'DecideMate Pro Privacy Policy | Solidev Electrosoft',
+    description: 'What the DecideMate Pro app collects, what stays on your phone, who processes your data and how to delete your account.',
+    keywords: 'DecideMate Pro privacy policy, DecideMate data, DecideMate account deletion',
+    canonical: '/decidemate/privacy',
     ogType: 'website',
   },
 };

@@ -83,7 +83,15 @@ const injectStructuredData = (schemas) => {
  */
 export const useSEO = (config = {}) => {
   const location = useLocation();
-  
+  // Pages pass a new config object on every render, so compare by content: re-running on each
+  // keystroke in a page form used to scroll the page back to the top.
+  const configKey = JSON.stringify(config);
+
+  // Scroll to top only when the route changes (good UX for SPA).
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   useEffect(() => {
     const {
       title,
@@ -150,10 +158,7 @@ export const useSEO = (config = {}) => {
       injectStructuredData(schemas);
     }
     
-    // Scroll to top on route change (good UX for SPA)
-    window.scrollTo(0, 0);
-    
-  }, [config, location.pathname]);
+  }, [configKey, location.pathname]);
 };
 
 /**

@@ -2,6 +2,21 @@ const Anthropic = require('@anthropic-ai/sdk');
 const functions = require('firebase-functions');
 
 /**
+ * The one place the assistant's Claude model is set (Claude Sonnet 5.5).
+ * CLAUDE_MODEL in the functions environment overrides it.
+ */
+const CLAUDE_MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-5-5';
+
+/**
+ * Claude Sonnet 5.5 rejects `thinking: {type: "disabled"}` and non-default
+ * `temperature`. `between_tools` is its lowest setting: no extended thinking,
+ * as on Sonnet 4.5, so latency and max_tokens stay as they were.
+ */
+const CLAUDE_REQUEST_FIELDS = {
+  thinking: { type: 'between_tools' },
+};
+
+/**
  * System Prompt - STRICT REQUIREMENTS GATHERING
  * DO NOT MODIFY without approval
  */
@@ -77,17 +92,16 @@ async function callClaudeAI(userMessage, conversationHistory = []) {
   ];
 
   try {
-    // Call Claude API
-    // Note: Using claude-3-sonnet - if you want claude-3-5-sonnet, ensure your API key has access
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: CLAUDE_MODEL,
       max_tokens: 1024,
       system: SYSTEM_PROMPT,
       messages: messages,
+      ...CLAUDE_REQUEST_FIELDS,
     });
 
-    // Extract response text
-    const assistantMessage = response.content[0].text;
+    // Read the reply by block type: the first block is not always text
+    const assistantMessage = extractReplyText(response);
 
     // Try to extract backend-provided suggestions JSON
     let suggestions = [];
@@ -158,7 +172,29 @@ async function callClaudeAI(userMessage, conversationHistory = []) {
   }
 }
 
+/**
+ * Join the text blocks of a Messages API response.
+ * @param {Object} response - Messages API response
+ * @returns {string}
+ */
+function extractReplyText(response) {
+  if (response.stop_reason === 'refusal') {
+    throw new Error('Claude declined to answer this message');
+  }
+  const text = (response.content || [])
+    .filter((block) => block.type === 'text')
+    .map((block) => block.text)
+    .join('');
+  if (!text) {
+    throw new Error(`Claude returned no text (stop_reason: ${response.stop_reason})`);
+  }
+  return text;
+}
+
 module.exports = {
   callClaudeAI,
+  extractReplyText,
   SYSTEM_PROMPT,
+  CLAUDE_MODEL,
+  CLAUDE_REQUEST_FIELDS,
 };

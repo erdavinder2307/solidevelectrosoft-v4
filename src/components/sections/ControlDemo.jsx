@@ -105,8 +105,10 @@ const ControlDemo = () => {
   }, [phase, released]);
 
   useEffect(() => {
-    if (phase === 'change') noteRef.current?.focus();
-    else if (phase !== 'choose') statusRef.current?.focus();
+    // preventScroll: on phones the track sits above the phone frame, so scrolling to the
+    // focused element would push the animating track under the sticky header.
+    if (phase === 'change') noteRef.current?.focus({ preventScroll: true });
+    else if (phase !== 'choose') statusRef.current?.focus({ preventScroll: true });
     else if (focusCardsRef.current) {
       focusCardsRef.current = false;
       cardsRef.current?.querySelector('button')?.focus();
@@ -263,6 +265,10 @@ const ControlDemo = () => {
         }
         @media (min-width: 900px) {
           .control-demo { grid-template-columns: 360px 1fr; }
+        }
+        /* Stacked on narrow screens: the track goes above the phone so it stays in view while it animates. */
+        @media (max-width: 899px) {
+          .control-demo-track-panel { order: -1; }
         }
         .control-demo-phone {
           width: 100%;

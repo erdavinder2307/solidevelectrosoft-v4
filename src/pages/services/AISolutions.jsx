@@ -24,7 +24,7 @@ const AISolutionsService = () => {
     {
       icon: FaUsers,
       title: 'AI Software Team',
-      description: 'A manager, developer and tester working your task list every hour, with you approving each step.',
+      description: 'A manager, developer, tester, reviewer and growth lead working your task list every hour, with you approving each step.',
       link: '/ai-employee',
       bgGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
       accentColor: '#8b5cf6',

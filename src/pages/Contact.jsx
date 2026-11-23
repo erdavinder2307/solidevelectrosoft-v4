@@ -9,6 +9,9 @@ import {
 import Breadcrumb from '../components/sections/Breadcrumb';
 import emailService from '../services/emailService';
 
+const SEND_FAILED_MESSAGE =
+  "Sorry, we couldn't send your message. Please WhatsApp or call us on +91 91158 66828.";
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -35,9 +38,9 @@ const Contact = () => {
     setShowResponse(false);
 
     try {
-      // Use Azure Communication Services for email
+      // The email API also sends the submitter a confirmation.
       const result = await emailService.sendContactFormEmail(formData);
-      
+
       if (result.success) {
         setResponseMessage(result.message);
         setShowResponse(true);
@@ -50,44 +53,14 @@ const Contact = () => {
           subject: '',
           message: ''
         });
-
-        // Optionally send confirmation email to the user
-        try {
-          await emailService.sendConfirmationEmail(
-            formData.email, 
-            formData.name, 
-            formData.message
-          );
-        } catch (confirmationError) {
-          console.warn('Failed to send confirmation email:', confirmationError);
-          // Don't show error to user as main email was sent successfully
-        }
       } else {
-        setResponseMessage(result.message);
+        setResponseMessage(SEND_FAILED_MESSAGE);
         setShowResponse(true);
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      
-      // Fallback: try the fallback email method
-      try {
-        const fallbackResult = await emailService.sendEmailFallback(formData);
-        setResponseMessage(fallbackResult.message);
-        setShowResponse(true);
-        
-        if (fallbackResult.success) {
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            subject: '',
-            message: ''
-          });
-        }
-      } catch (fallbackError) {
-        setResponseMessage('Unable to send message. Please try again later or contact us directly at admin@solidevelectrosoft.com');
-        setShowResponse(true);
-      }
+      setResponseMessage(SEND_FAILED_MESSAGE);
+      setShowResponse(true);
     } finally {
       setIsSubmitting(false);
     }

@@ -19,6 +19,8 @@ const STATIC_ROUTES = [
   { loc: '/about', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services', changefreq: 'monthly', priority: '0.9' },
   { loc: '/ai-employee', changefreq: 'monthly', priority: '0.9' },
+  { loc: '/decidemate/support', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/decidemate/privacy', changefreq: 'yearly', priority: '0.3' },
   { loc: '/services/web-development', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/mobile-app-development', changefreq: 'monthly', priority: '0.8' },
   { loc: '/services/ai-solutions', changefreq: 'monthly', priority: '0.8' },
@@ -32,6 +34,9 @@ const STATIC_ROUTES = [
   { loc: '/blog', changefreq: 'weekly', priority: '0.8' },
   { loc: '/contact', changefreq: 'monthly', priority: '0.7' },
   { loc: '/faq', changefreq: 'monthly', priority: '0.6' },
+  { loc: '/apps/protech-worth/privacy', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/apps/protech-worth/terms', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/apps/protech-worth/support', changefreq: 'yearly', priority: '0.4' },
 ];
 
 function xmlEscape(value) {

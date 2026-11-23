@@ -18,7 +18,7 @@ A complete **AI-powered project requirements gathering system** integrated into 
 - CORS enabled for frontend
 
 ✅ **File:** `functions/ai/claudeHandler.js`
-- Claude Sonnet API integration (claude-sonnet-4-5-20250929)
+- Claude Sonnet API integration (claude-sonnet-5-5; set in functions/ai/claudeHandler.js, CLAUDE_MODEL overrides)
 - Strict system prompt for requirements-only gathering
 - Conversation history management
 - Completion detection marker: `[REQUIREMENTS_COMPLETE]`

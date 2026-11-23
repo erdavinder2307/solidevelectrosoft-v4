@@ -36,6 +36,10 @@ import Videos from './pages/Videos';
 
 // Import AI Employee page
 import AIEmployee from './pages/AIEmployee';
+import { DecideMateSupport, DecideMatePrivacy } from './pages/DecideMate';
+
+// Protech Worth app: privacy / terms / support (SE-4182)
+import ProtechWorthLegal from './pages/ProtechWorthLegal';
 
 // Import search
 import { SearchProvider } from './contexts/SearchContext';
@@ -142,8 +146,13 @@ function App() {
             <Route path="/products" element={<ModernProducts />} />
             <Route path="/products.html" element={<ModernProducts />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/decidemate/support" element={<DecideMateSupport />} />
+            <Route path="/decidemate/privacy" element={<DecideMatePrivacy />} />
             <Route path="/ai-employee" element={<AIEmployee />} />
             <Route path="/ai-employee.html" element={<AIEmployee />} />
+            <Route path="/apps/protech-worth/privacy" element={<ProtechWorthLegal page="privacy" />} />
+            <Route path="/apps/protech-worth/terms" element={<ProtechWorthLegal page="terms" />} />
+            <Route path="/apps/protech-worth/support" element={<ProtechWorthLegal page="support" />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
             
             {/* Videos Routes */}

@@ -32,19 +32,16 @@ Inside each page’s `useEffect`:
 See `src/pages/Home.jsx` and `src/pages/Contact.jsx` for examples.
 
 ### Email flow and environment configuration
-- Primary email path: client-side Azure Communication Services via `src/services/emailService.js`.
-- Config source: `src/config/environment.js` reads Vite env vars.
-- Expected env vars in `.env.local` (Vite style):
-  - `VITE_AZURE_COMMUNICATION_CONNECTION_STRING`
-  - `VITE_AZURE_COMMUNICATION_SECONDARY_CONNECTION_STRING` (optional fallback)
-- Sender/recipients live in `environment.email`. Don’t hardcode in components.
-- Templates: confirmation template loaded from `/assets/templates/customer-email-template.html` (public). If missing, service falls back to `getDefaultEmailTemplate()`.
-- Behavior: tries primary ACS, then secondary; if none/failure, uses `sendEmailFallback()` which simulates success (development-friendly).
+- Forms send through the Solidev email API (an Azure Function in the solidev-apps repo) via `src/services/emailService.js`.
+  The API URL is in `src/config/environment.js` (`environment.emailApi.sendUrl`). The site holds no email settings.
+- The API owns recipients, subjects and templates. The client picks a use case (`website-contact`, `website-callback`)
+  and sends field values only; the API sends the submitter's confirmation itself.
+- `emailService` never throws: it returns `{ success: true, message }` or `{ success: false }`.
 
-Example (reuse service, don’t call EmailClient directly):
+Example (reuse the service, don't call the API directly from components):
 ```js
 const result = await emailService.sendContactFormEmail({ name, email, phone, subject, message });
-if (result.success) await emailService.sendConfirmationEmail(email, name, message);
+if (!result.success) showError();
 ```
 
 ### Legacy JS compatibility
@@ -62,7 +59,7 @@ if (result.success) await emailService.sendConfirmationEmail(email, name, messag
 
 ### External integrations present
 - Google Analytics via gtag in `index.html` (GA4: GT-MBLK2C2Q; Google Ads: AW-18359572635).
-- Azure Communication Services for email (see above). A legacy PHP fallback exists at `public/mail.php` for server-side environments; don’t add new PHP.
+- Solidev email API for form emails (see above). A legacy PHP fallback exists at `public/mail.php` for server-side environments; don’t add new PHP.
 
 ### Do/Don’t
 - Do reuse barrel exports (`components/sections`, `components/layout`, `components/ui`).

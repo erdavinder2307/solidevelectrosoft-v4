@@ -50,7 +50,7 @@ const WhyChooseUs = ({
         </svg>
       ),
       title: "We Run on It Ourselves",
-      description: "Our own team works with an AI project manager, developer and tester every day, so we build yours with tools and guardrails we have already tested on ourselves.",
+      description: "Our own team works with an AI project manager, developer, tester, reviewer and growth lead every day, so we build yours with tools and guardrails we have already tested on ourselves.",
     },
     {
       icon: (
