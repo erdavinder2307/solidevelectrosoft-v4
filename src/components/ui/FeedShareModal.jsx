@@ -28,7 +28,7 @@ import { recordShare } from '../../services/feedService';
 function getPostUrl(post) {
   const base   = window.location.origin;
   const source = post.source || 'feed';
-  const { type, slug, relatedProductSlug, relatedProductId } = post;
+  const { type, slug, relatedProductSlug } = post;
   if (source === 'blog' || type === 'blog_article') return `${base}/blog/${slug}`;
   if ((type === 'product_update' || type === 'feature_release') && relatedProductSlug) {
     return `${base}/products/${relatedProductSlug}`;

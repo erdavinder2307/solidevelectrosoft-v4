@@ -91,7 +91,7 @@ export const useOriginalJS = () => {
 
       // Initialize lazy loading for images
       if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
+        const imageObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const img = entry.target;

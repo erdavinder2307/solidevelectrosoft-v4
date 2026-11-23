@@ -58,10 +58,9 @@ export const generateThumbnail = async (file, maxSize = 300) => {
  * Upload image to Firebase Storage
  * @param {File} file - Image file to upload
  * @param {string} folder - Storage folder (products or portfolios)
- * @param {Function} onProgress - Progress callback
  * @returns {Promise<string>} - Download URL of uploaded image
  */
-export const uploadImageToFirebase = async (file, folder = 'products', onProgress = null) => {
+export const uploadImageToFirebase = async (file, folder = 'products') => {
   try {
     // Compress image first
     const compressedFile = await compressImage(file);
@@ -128,6 +127,7 @@ export const deleteImageFromFirebase = async (imageUrl) => {
   try {
     // Extract filename from URL
     const urlParts = imageUrl.split('/');
+    // eslint-disable-next-line no-unused-vars -- kept for the planned server-side delete call
     const fileName = urlParts[urlParts.length - 1].split('?')[0];
 
     // This requires a backend function for security

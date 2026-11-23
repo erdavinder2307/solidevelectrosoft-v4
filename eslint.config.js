@@ -1,5 +1,6 @@
 import js from '@eslint/js'
 import globals from 'globals'
+import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
@@ -13,6 +14,8 @@ export default tseslint.config([
     'solidev',
     // Vendored third-party scripts (jQuery plugins, bundles), not our code.
     'src/assets/js',
+    // Generated Unity WebGL build output (minified loader), not our code.
+    'public/ai-team-game/Build',
   ]),
   {
     files: ['**/*.{ts,tsx}'],
@@ -42,10 +45,13 @@ export default tseslint.config([
         ecmaFeatures: { jsx: true },
       },
     },
+    plugins: { react },
+    settings: { react: { version: 'detect' } },
     rules: {
-      // ESLint 9 core does not see JSX usage, so components used only as
-      // <Foo /> would be reported as unused (same rule as Vite's React template).
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // Mark components and <motion.div> used only in JSX as used, so
+      // no-unused-vars reports only names that are really unused.
+      'react/jsx-uses-vars': 'error',
+      'react/jsx-uses-react': 'error',
     },
   },
   {

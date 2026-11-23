@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { search as runSearch } from '../services/searchService';
 
 const SearchContext = createContext(null);
@@ -106,6 +105,7 @@ export function SearchProvider({ children }) {
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- context hook kept next to its provider; only affects dev hot reload
 export function useSearch() {
   const ctx = useContext(SearchContext);
   if (!ctx) throw new Error('useSearch must be used inside <SearchProvider>');

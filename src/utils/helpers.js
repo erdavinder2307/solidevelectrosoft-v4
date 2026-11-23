@@ -1,4 +1,6 @@
 // JavaScript utilities for handling additional interactions
+// jQuery, WOW and AOS are loaded as globals by script tags when present.
+/* global $, WOW, AOS */
 // This file contains functionality that was in the original main.js
 
 // Initialize features when DOM is loaded

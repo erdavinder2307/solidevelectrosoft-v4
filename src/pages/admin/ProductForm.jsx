@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, addDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { validateProduct, hasErrors } from '../../utils/formValidation';
 import { uploadImageToFirebase } from '../../utils/imageUtils';
@@ -370,7 +370,7 @@ const ProductForm = () => {
     setSavingOrder(true);
     try {
       // Prepare screenshots with updated order
-      const screenshotsToSave = formData.screenshots.map(({ id, url, type, displayOrder, caption }) => ({
+      const screenshotsToSave = formData.screenshots.map(({ url, type, displayOrder, caption }) => ({
         url,
         type,
         displayOrder,

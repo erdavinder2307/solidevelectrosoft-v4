@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { fetchPublishedVideos, getVideoCategories } from '../services/videosService';
 import VideoCard from '../components/videos/VideoCard';
 import VideoModal from '../components/videos/VideoModal';
-import PreLoader from '../components/ui/PreLoader';
 import ModernHeader from '../components/layout/ModernHeader';
 import ModernFooter from '../components/layout/ModernFooter';
 
