@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { PlaceholderImage } from '../ui/Placeholders';
 import ProjectLogo from '../ui/ProjectLogo';
 
 /**

@@ -3,7 +3,7 @@
  * Lists all FeedPosts across all types. Supports search, filter by type.
  */
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   fetchAllFeedPostsAdmin,
   deleteFeedPost,
@@ -131,7 +131,6 @@ const ContentHubList = () => {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => { loadPosts(); }, []);
 
@@ -141,7 +140,7 @@ const ContentHubList = () => {
     try {
       const data = await fetchAllFeedPostsAdmin();
       setPosts(data);
-    } catch (err) {
+    } catch {
       setError('Failed to load posts.');
     } finally {
       setLoading(false);

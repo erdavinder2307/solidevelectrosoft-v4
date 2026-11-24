@@ -17,7 +17,7 @@ const ModernTestimonials = ({
 }) => {
   const [loadedTestimonials, setLoadedTestimonials] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
 
   useEffect(() => {
     let mounted = true;

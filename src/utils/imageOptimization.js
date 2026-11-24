@@ -130,8 +130,6 @@ export const validateImage = (
   const {
     maxSize = 5 * 1024 * 1024, // 5MB default
     allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-    minWidth = 100,
-    minHeight = 100,
   } = options;
 
   // Check file size

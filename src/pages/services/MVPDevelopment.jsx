@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ModernHeader from '../../components/layout/ModernHeader';
@@ -6,7 +6,7 @@ import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import { FloatingCTA } from '../../components/ui';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
-import { FaRocket, FaBullseye, FaChartLine, FaCrown, FaLock, FaCode, FaArrowUp, FaLightbulb, FaRegClipboard, FaCompass, FaCubes } from 'react-icons/fa';
+import { FaRocket, FaCrown, FaLock, FaCode, FaArrowUp, FaLightbulb, FaRegClipboard, FaCubes } from 'react-icons/fa';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 import { useSEO } from '../../hooks/useSEO';
 import { pageSEO } from '../../utils/seo';

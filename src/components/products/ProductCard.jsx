@@ -29,7 +29,6 @@ const ProductCard = ({ product, onViewScreenshots }) => {
     logo,
     color = '#3b82f6',
     links,
-    category,
     screenshots = [],
     webAppUrl,
     androidAppUrl,

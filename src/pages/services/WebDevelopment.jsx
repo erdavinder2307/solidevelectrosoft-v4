@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ModernHeader from '../../components/layout/ModernHeader';
@@ -6,7 +6,6 @@ import ModernFooter from '../../components/layout/ModernFooter';
 import CTABanner from '../../components/sections/CTABanner';
 import SocialProof from '../../components/sections/SocialProof';
 import { FloatingCTA } from '../../components/ui';
-import { IconBox } from '../../components/ui/Placeholders';
 import AIProjectAssistant from '../../components/ai/AIProjectAssistant';
 import { useAIAssistant } from '../../hooks/useAIAssistant';
 import { FaRocket, FaMobileAlt, FaLock, FaCloud, FaSyncAlt, FaChartBar } from 'react-icons/fa';

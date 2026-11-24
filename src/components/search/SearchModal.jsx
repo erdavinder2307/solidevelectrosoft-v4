@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSearch } from '../../contexts/SearchContext';
 import SearchInput from './SearchInput';
@@ -31,7 +31,6 @@ const SearchModal = () => {
     results,
     loading,
     error,
-    resetSearch,
   } = useSearch();
 
   const overlayRef = useRef(null);
