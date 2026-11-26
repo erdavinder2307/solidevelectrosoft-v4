@@ -1,0 +1,16 @@
+/*
+ * Pages that open with the shared Breadcrumb banner put their content in a legacy
+ * Bootstrap `.container`, which react-app.css and carousel-fixes.css stretch to 100%
+ * of the viewport. On wide screens that pushes headings to the far left edge, out of
+ * line with the ModernHeader (`.modern-container`: max 1400px, 40px side padding from
+ * 1024px). Line the content column up with the header on those pages only; below
+ * 1024px the existing container padding is kept.
+ */
+@media (min-width: 1024px) {
+  .breadcrumb__area ~ main .container {
+    max-width: var(--container-2xl, 1400px) !important;
+    /* the header's side padding minus the Bootstrap column gutter (0.75rem) */
+    padding-left: calc(var(--space-10, 2.5rem) - 0.75rem);
+    padding-right: calc(var(--space-10, 2.5rem) - 0.75rem);
+  }
+}
