@@ -61,9 +61,9 @@ const SmartImage = ({
   }, [lazy, isVisible]);
 
   // Handle image load
-  const handleImageLoad = () => {
+  const handleImageLoad = (e) => {
     setImageLoaded(true);
-    if (onLoad) onLoad();
+    if (onLoad) onLoad(e);
   };
 
   // Handle thumbnail load
@@ -72,9 +72,9 @@ const SmartImage = ({
   };
 
   // Handle image error
-  const handleImageError = () => {
+  const handleImageError = (e) => {
     setError(true);
-    if (onError) onError();
+    if (onError) onError(e);
   };
 
   // Container padding to maintain aspect ratio (if aspectRatio is provided)
