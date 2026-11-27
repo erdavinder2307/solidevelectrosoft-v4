@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SmartImage } from '../ui';
 
@@ -18,7 +18,16 @@ const VideoCard = ({ video, onClick }) => {
     isFeatured,
   } = video;
 
-  const thumbnail = thumbnailUrl || `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
+  // YouTube has no maxresdefault.jpg for some videos: it returns a 404 or a 120x90 grey
+  // placeholder, so switch to hqdefault.jpg (always present) when that happens.
+  const [useFallbackThumbnail, setUseFallbackThumbnail] = useState(false);
+  const fallbackThumbnail = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+  const thumbnail = useFallbackThumbnail
+    ? fallbackThumbnail
+    : thumbnailUrl || `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
+  const handleThumbnailLoad = (e) => {
+    if (e?.currentTarget?.naturalWidth === 120) setUseFallbackThumbnail(true);
+  };
 
   // Truncate description
   const truncatedDescription = description && description.length > 100 
@@ -45,9 +54,12 @@ const VideoCard = ({ video, onClick }) => {
       {/* Thumbnail with Play Overlay */}
       <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
         <SmartImage
+          key={thumbnail}
           src={thumbnail}
           alt={title}
           aspectRatio={16 / 9}
+          onLoad={handleThumbnailLoad}
+          onError={() => setUseFallbackThumbnail(true)}
           style={{
             width: '100%',
             height: '100%',
