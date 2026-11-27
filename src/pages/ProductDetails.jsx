@@ -29,7 +29,6 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedScreenshot, setSelectedScreenshot] = useState(0);
-  const [showAllScreenshots, setShowAllScreenshots] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const resolveCanonicalPath = (canonicalUrl, fallbackPath) => {

@@ -12,7 +12,7 @@ import { generateArticleSchema, generateBreadcrumbSchema } from '../utils/struct
 
 const BlogDetails = () => {
   const { slug } = useParams();
-  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const { openAI } = useAIAssistant();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 

@@ -12,7 +12,7 @@ import { sendMessageToAI, sendRequirementsToEmail } from '../../services/aiServi
  * - initialMessage: string - Optional pre-filled message
  * - mode: string - 'requirements' (default) or 'consultation'
  */
-const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode = 'requirements' }) => {
+const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '' }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState(initialMessage);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +60,7 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
   const cleanMessageContent = (content) => {
     if (!content) return '';
     // Remove any JSON suggestion payload that might remain
-    let cleaned = content.replace(/\{\"suggestions\"\s*:\s*\[.*?\]\}/gs, '').trim();
+    let cleaned = content.replace(/\{"suggestions"\s*:\s*\[.*?\]\}/gs, '').trim();
     // Remove markdown code blocks with json/other formatting
     cleaned = cleaned.replace(/```(?:json|javascript|js)?\s*\n?/g, '').trim();
     // Remove any remaining triple backticks
@@ -167,7 +167,7 @@ const AIProjectAssistant = ({ isOpen = false, onClose, initialMessage = '', mode
         // Invalid selection, re-prompt
         const errorMsg = {
           role: 'assistant',
-          content: 'Please choose either \"Free AI Consultation\" or \"AI Requirements Assistant\".',
+          content: 'Please choose either "Free AI Consultation" or "AI Requirements Assistant".',
           suggestions: modeSelectionSuggestions,
         };
         setMessages((prev) => [...prev, errorMsg]);

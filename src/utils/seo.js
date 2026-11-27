@@ -241,7 +241,7 @@ export const generateBreadcrumbs = (pathSegments) => {
   ];
   
   let currentPath = '';
-  pathSegments.forEach((segment, index) => {
+  pathSegments.forEach((segment) => {
     if (!segment) return;
     
     currentPath += `/${segment}`;

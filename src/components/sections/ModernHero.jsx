@@ -22,7 +22,6 @@ const ModernHero = ({
     { value: "3", label: "AI Agents on Our Own Team" },
     { value: "4", label: "Core Industries" },
   ],
-  backgroundImage = null,
   footnote = TRADEMARK_LINE,
 }) => {
   // Animation variants

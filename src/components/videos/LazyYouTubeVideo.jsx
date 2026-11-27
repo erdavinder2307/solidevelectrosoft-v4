@@ -23,7 +23,16 @@ const LazyYouTubeVideo = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const thumbnail = thumbnailUrl || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  // YouTube has no maxresdefault.jpg for some videos: it returns a 404 or a 120x90 grey
+  // placeholder, so switch to hqdefault.jpg (always present) when that happens.
+  const [useFallbackThumbnail, setUseFallbackThumbnail] = useState(false);
+  const fallbackThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  const thumbnail = useFallbackThumbnail
+    ? fallbackThumbnail
+    : thumbnailUrl || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  const handleThumbnailLoad = (e) => {
+    if (e?.currentTarget?.naturalWidth === 120) setUseFallbackThumbnail(true);
+  };
   const embedUrl = `https://www.youtube.com/embed/${videoId}${autoplay ? '?autoplay=1&rel=0' : '?rel=0'}`;
 
   const handlePlay = () => {
@@ -50,9 +59,12 @@ const LazyYouTubeVideo = ({
         <>
           {/* Thumbnail */}
           <SmartImage
+            key={thumbnail}
             src={thumbnail}
             alt={title}
             aspectRatio={aspectRatio}
+            onLoad={handleThumbnailLoad}
+            onError={() => setUseFallbackThumbnail(true)}
             style={{
               position: 'absolute',
               top: 0,

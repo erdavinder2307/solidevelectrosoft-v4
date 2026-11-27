@@ -1,4 +1,5 @@
 // Environment configuration
+/* global process */
 // Note: In Vite, import.meta.env is used instead of process.env
 const getEnvVar = (key, defaultValue = '') => {
   // Check if we're in a Vite environment

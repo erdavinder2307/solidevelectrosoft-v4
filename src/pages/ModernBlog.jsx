@@ -11,7 +11,7 @@ import CTABanner from '../components/sections/CTABanner';
 import { getCommonSchemas, generateBreadcrumbSchema } from '../utils/structuredData';
 
 const ModernBlog = () => {
-  const { isAIOpen, openAI, closeAI } = useAIAssistant();
+  const { openAI } = useAIAssistant();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);

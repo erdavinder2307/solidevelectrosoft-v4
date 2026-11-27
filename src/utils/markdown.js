@@ -44,7 +44,7 @@ export function renderMarkdown(md = '') {
     // List
     if (line.startsWith('- ')) {
       if (!inList) { html += '<ul>'; inList = true; }
-      html += `<li>${parseInline(esc(line.replace(/^\-\s+/, '')))}</li>`;
+      html += `<li>${parseInline(esc(line.replace(/^-\s+/, '')))}</li>`;
       continue;
     }
 

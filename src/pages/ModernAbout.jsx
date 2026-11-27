@@ -39,8 +39,8 @@ const ModernAbout = () => {
   const [teamLoading, setTeamLoading] = useState(true);
   const [teamError, setTeamError] = useState('');
   const [storyImages, setStoryImages] = useState([]);
-  const [storyLoading, setStoryLoading] = useState(true);
-  const [storyError, setStoryError] = useState('');
+  const [, setStoryLoading] = useState(true);
+  const [, setStoryError] = useState('');
   
   // Random team image for story section
   const teamImages = [team1, team2, team3, team4, team5, team6, team7, team8];

@@ -10,14 +10,12 @@ const ImageUploader = ({
   onImageSelected, 
   aspectRatio = 1,
   mode = 'single', // 'single' or 'multiple'
-  maxImages = 10,
   onError = null,
   inputId,
 }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [, setSelectedImage] = useState(null);
   const [showCropper, setShowCropper] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const autoId = useId();
   const fieldId = inputId || `image-input-${autoId}`;
 

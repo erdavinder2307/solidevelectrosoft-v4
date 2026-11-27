@@ -1,6 +1,7 @@
 import React from 'react';
+import './Breadcrumb.css';
 
-const Breadcrumb = ({ title, backgroundImage }) => {
+const Breadcrumb = ({ title, backgroundImage, headingTag: Heading = 'h3' }) => {
   return (
     <section 
       className="breadcrumb__area include-bg"
@@ -18,7 +19,7 @@ const Breadcrumb = ({ title, backgroundImage }) => {
               className="breadcrumb__content text-center p-relative z-index-1"
              
             >
-              <h3 className="breadcrumb__title" style={{ marginBottom: '0px' }}>{title}</h3>
+              <Heading className="breadcrumb__title" style={{ marginBottom: '0px' }}>{title}</Heading>
               <div className="breadcrumb__list">
                 <span><a href="#"></a></span>
               </div>

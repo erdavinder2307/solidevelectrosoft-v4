@@ -61,9 +61,9 @@ const SmartImage = ({
   }, [lazy, isVisible]);
 
   // Handle image load
-  const handleImageLoad = () => {
+  const handleImageLoad = (e) => {
     setImageLoaded(true);
-    if (onLoad) onLoad();
+    if (onLoad) onLoad(e);
   };
 
   // Handle thumbnail load
@@ -72,16 +72,14 @@ const SmartImage = ({
   };
 
   // Handle image error
-  const handleImageError = () => {
+  const handleImageError = (e) => {
     setError(true);
-    if (onError) onError();
+    if (onError) onError(e);
   };
 
   // Container padding to maintain aspect ratio (if aspectRatio is provided)
   const paddingTop = aspectRatio ? `${(1 / aspectRatio) * 100}%` : undefined;
 
-  // Use blur placeholder (thumbnail) as fallback
-  const placeholderSrc = thumbnailSrc || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23f3f4f6" width="400" height="300"/%3E%3C/svg%3E';
 
   return (
     <div

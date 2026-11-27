@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, NavLink, useNavigate, Routes, Route } from 'react-router-dom';
+import { NavLink, useNavigate, Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import AdminDashboard from '../../pages/admin/AdminDashboard';
 import ProductsList from '../../pages/admin/ProductsList';

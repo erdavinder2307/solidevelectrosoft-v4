@@ -193,7 +193,6 @@ const PortfolioDetails = () => {
   const features = project.features || [];
   const results = project.results || [];
   const currentImage = images[selectedImage];
-  const mainImage = project.logo || project.thumbnailUrl || (images.length > 0 ? images[0] : '');
 
   return (
     <>
