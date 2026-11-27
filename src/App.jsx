@@ -41,6 +41,9 @@ import { DecideMateSupport, DecideMatePrivacy } from './pages/DecideMate';
 // Protech Worth app: privacy / terms / support (SE-4182)
 import ProtechWorthLegal from './pages/ProtechWorthLegal';
 
+// SolidTrack app: privacy / terms / support (SE-4140)
+import SolidTrackLegal from './pages/SolidTrackLegal';
+
 // Import search
 import { SearchProvider } from './contexts/SearchContext';
 import { SearchModal } from './components/search';
@@ -152,6 +155,9 @@ function App() {
             <Route path="/apps/protech-worth/privacy" element={<ProtechWorthLegal page="privacy" />} />
             <Route path="/apps/protech-worth/terms" element={<ProtechWorthLegal page="terms" />} />
             <Route path="/apps/protech-worth/support" element={<ProtechWorthLegal page="support" />} />
+            <Route path="/solidtrack/privacy" element={<SolidTrackLegal page="privacy" />} />
+            <Route path="/solidtrack/terms" element={<SolidTrackLegal page="terms" />} />
+            <Route path="/solidtrack/support" element={<SolidTrackLegal page="support" />} />
             <Route path="/portfolio/:id" element={<PortfolioDetails />} />
             
             {/* Videos Routes */}
