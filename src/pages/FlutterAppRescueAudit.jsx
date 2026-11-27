@@ -47,7 +47,7 @@ const deliverables = [
 const needs = [
   'Read access to the repo (GitHub, GitLab or Bitbucket invite). Never send passwords.',
   'Optional: crash reports (Firebase Crashlytics or Sentry export), the store rejection message, a list of what users complain about.',
-  "We'll sign your NDA, or send ours. We delete our copy of your code when the audit ends, unless you hire us for the fixes.",
+  "We'll sign your NDA, or send ours.",
 ];
 
 const apps = [
@@ -64,7 +64,7 @@ const apps = [
 ];
 
 const smallPrint = [
-  'The App Rescue Audit is offered by Solidev Electrosoft Private Limited.',
+  'The App Rescue Audit is offered by Solidev Electrosoft (OPC) Private Limited.',
   "The audit is advice and a fix plan; it doesn't include fixing (that's quoted separately, at a fixed price per item).",
   "We don't guarantee App Store or Google Play approval; we explain each rejection reason and the fix.",
 ];
@@ -93,9 +93,9 @@ const SectionHeading = ({ children }) => (
  */
 const FlutterAppRescueAudit = () => {
   useSEO({
-    title: 'Flutter App Rescue Audit | $149 Fixed Price',
+    title: 'Flutter App Rescue Audit ($149)',
     description:
-      'Fixed-price Flutter app audit for $149. In 3 working days you get a ranked top-10 problem report and a fix plan with a price per item. Credited to your fixes.',
+      'Fixed-price Flutter app audit for $149. In 3 working days from repo access you get a ranked top-10 problem report and a fix plan with a price per item. The $149 is credited to any fixes you order within 30 days.',
     canonical: '/flutter-app-rescue-audit',
     ogType: 'website',
     schemas: [
@@ -322,6 +322,7 @@ const FlutterAppRescueAudit = () => {
                     href={app.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${app.name} on the App Store`}
                     style={{ color: 'var(--color-primary-600)', fontWeight: 600, textDecoration: 'none' }}
                   >
                     View on the App Store →
@@ -362,8 +363,9 @@ const FlutterAppRescueAudit = () => {
                   Price
                 </h2>
                 <p style={bodyText}>
-                  <strong style={{ color: 'var(--text-primary)' }}>$149, fixed.</strong> Pay upfront by card or
-                  Upwork (if you prefer Upwork, we send you a Direct Contract). It&apos;s credited 100% against any
+                  <strong style={{ color: 'var(--text-primary)' }}>$149, fixed.</strong> Pay upfront by card (after
+                  your email, we send you a card payment link on day 1) or Upwork (if you prefer Upwork, we send you a
+                  Direct Contract). It&apos;s credited 100% against any
                   fix you order from us within 30 days.
                 </p>
                 <p style={{ ...bodyText, marginTop: 'var(--space-3)' }}>

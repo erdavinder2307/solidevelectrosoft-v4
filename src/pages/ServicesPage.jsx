@@ -298,7 +298,7 @@ const Services = () => {
                 </h2>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
                   Is your Flutter app stuck? For a fixed $149, get a plain-English report of the top 10 problems and a
-                  fix plan with a price per item in 3 working days. The $149 is credited to any fix you order within 30 days.
+                  fix plan with a price per item in 3 working days from repo access. The $149 is credited to any fix you order within 30 days.
                 </p>
               </div>
               <Link to="/flutter-app-rescue-audit" className="modern-btn modern-btn-primary">

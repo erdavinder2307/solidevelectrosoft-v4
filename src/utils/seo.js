@@ -24,7 +24,7 @@ export const siteConfig = {
   },
   organization: {
     name: 'Solidev Electrosoft',
-    legalName: 'Solidev Electrosoft Private Limited',
+    legalName: 'Solidev Electrosoft (OPC) Private Limited',
     logo: 'https://www.solidevelectrosoft.com/assets/img/logo.png',
     foundingDate: '2014',
     email: 'admin@solidevelectrosoft.com',

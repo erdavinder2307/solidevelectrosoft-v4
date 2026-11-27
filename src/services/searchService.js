@@ -80,6 +80,16 @@ const STATIC_PAGES = [
     date: null,
   },
   {
+    id: 'flutter-app-rescue-audit',
+    type: 'page',
+    title: 'Flutter App Rescue Audit',
+    description: 'Fixed-price $149 audit of a stuck Flutter app: top-10 problem report and a priced fix plan.',
+    slug: 'flutter-app-rescue-audit',
+    url: '/flutter-app-rescue-audit',
+    tags: ['flutter', 'audit', 'rescue', 'app review'],
+    date: null,
+  },
+  {
     id: 'contact',
     type: 'page',
     title: 'Contact Us',
