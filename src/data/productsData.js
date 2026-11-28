@@ -1,191 +1,137 @@
 /**
- * Products Data
- * Contains all Solidev Electrosoft products with their details
- * 
- * TODO: Replace placeholder screenshots with actual product images
- * TODO: Replace placeholder icons with actual product icons
- * TODO: Update links when products go live
+ * Products Data (fallback)
+ * Shown only when the Firestore `products` collection cannot be loaded.
+ * Keep it in line with the live products in the admin (title, short description, status, links).
+ * No icons or screenshots here: the cards show their built-in placeholder instead of broken images.
  */
 
 const productsData = [
   {
-    id: 'solidcare',
-    name: 'Solidcare',
-    description: 'Complete Electronic Healthcare Record System',
+    id: 'solidev-store',
+    slug: 'solidev-store',
+    name: 'Solidev Store',
+    description: 'An independent app marketplace that makes discovering and installing apps simple, transparent and reliable.',
     platform: ['Web', 'Mobile'],
     status: 'LIVE',
-    icon: '/src/assets/products/solidcare/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/solidcare/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/solidcare/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/solidcare/screenshot-3.png', // TODO: Replace with actual
-    ],
+    screenshots: [],
     links: {
-      websiteUrl: 'https://solidcare.org/',
+      websiteUrl: 'https://www.solidev.store/',
       appStoreUrl: null,
       playStoreUrl: null,
     },
-    color: '#10b981', // Green for healthcare
-    featured: true,
-  },
-  {
-    id: 'smart-invoice-pro',
-    name: 'Smart Invoice Pro',
-    description: 'Manage Inventory and Generate Invoices',
-    platform: ['Web', 'Mobile'],
-    status: 'IN PROGRESS',
-    icon: '/src/assets/products/smart-invoice-pro/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/smart-invoice-pro/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/smart-invoice-pro/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/smart-invoice-pro/screenshot-3.png', // TODO: Replace with actual
-    ],
-    links: {
-      websiteUrl: null, // TODO: Add when available
-      appStoreUrl: null,
-      playStoreUrl: null,
-    },
-    color: '#3b82f6', // Blue for business
+    color: '#3b82f6',
     featured: false,
   },
   {
     id: 'adopals',
-    name: 'AdoPals',
-    description: 'Adopt pets and gain knowledge about them',
-    platform: ['Web', 'Mobile'],
+    slug: 'adopals-pet-adoption-platform',
+    name: 'Adopals – Pet Adoption & Relocation Platform',
+    description: 'A pet adoption platform that connects caring pet parents with pets that need a loving home.',
+    platform: ['Web'],
     status: 'LIVE',
-    icon: '/src/assets/products/adopals/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/adopals/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/adopals/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/adopals/screenshot-3.png', // TODO: Replace with actual
-    ],
+    screenshots: [],
     links: {
-      websiteUrl: null, // TODO: Add when available
+      websiteUrl: 'https://adopals.com/',
       appStoreUrl: null,
       playStoreUrl: null,
     },
-    color: '#f59e0b', // Orange for pets
+    color: '#f59e0b',
     featured: false,
   },
   {
-    id: 'protech-wallet',
-    name: 'ProTech Wallet',
-    description: 'Manage expenses and incomes with a simple app',
-    platform: ['Mobile', 'Web'],
-    status: 'IN PROGRESS',
-    icon: '/src/assets/products/protech-wallet/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/protech-wallet/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/protech-wallet/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/protech-wallet/screenshot-3.png', // TODO: Replace with actual
-    ],
+    id: 'solidtrack',
+    slug: 'solid-track-app',
+    name: 'SolidTrack',
+    description: 'Log your lifts, scan your food, get an AI coach. A workout tracker for people who lift.',
+    platform: ['Mobile'],
+    status: 'LIVE',
+    screenshots: [],
     links: {
-      websiteUrl: null, // TODO: Add when available
-      appStoreUrl: null,
+      websiteUrl: null,
+      appStoreUrl: 'https://apps.apple.com/app/solid-track-app/id6751640011',
       playStoreUrl: null,
     },
-    color: '#8b5cf6', // Purple for finance
-    featured: false,
+    color: '#ef4444',
+    featured: true,
   },
   {
-    id: 'mindset-fuel-mobile',
+    id: 'mindset-fuel',
+    slug: 'mindset-fuel',
     name: 'Mindset Fuel',
-    description: 'Stay motivated with daily AI-based quotes in mobile',
+    description: 'An AI-powered motivation app that builds confidence, focus and resilience with personalised quotes and wallpapers.',
     platform: ['Mobile', 'Web'],
-    status: 'IN PROGRESS',
-    icon: '/src/assets/products/mindset-fuel/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/mindset-fuel/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/mindset-fuel/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/mindset-fuel/screenshot-3.png', // TODO: Replace with actual
-    ],
+    status: 'LIVE',
+    screenshots: [],
     links: {
-      websiteUrl: null, // TODO: Add when available
+      websiteUrl: null,
+      appStoreUrl: 'https://apps.apple.com/app/mindset-fuel/id6757799330',
+      playStoreUrl: null,
+    },
+    color: '#ec4899',
+    featured: false,
+  },
+  {
+    id: 'solidev-books',
+    slug: 'solidev-books',
+    name: 'Solidev Books',
+    description: 'A workflow-driven financial operating system that helps businesses run their finances through connected workflows.',
+    platform: ['Web'],
+    status: 'LIVE',
+    screenshots: [],
+    links: {
+      websiteUrl: 'https://www.solidevbooks.com/',
       appStoreUrl: null,
       playStoreUrl: null,
     },
-    color: '#ec4899', // Pink for motivation
+    color: '#3b82f6',
     featured: false,
   },
   {
     id: 'decidemate-pro',
+    slug: 'decidemate-pro',
     name: 'Decidemate Pro',
-    description: 'Make smarter decisions with Quick Spin, Insights, and History — your ultimate decision-making companion',
+    description: 'Take the guesswork out of your day: spin for quick decisions and see your insights and history.',
     platform: ['Mobile'],
     status: 'LIVE',
-    icon: '/src/assets/products/decidemate-pro/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/decidemate-pro/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/decidemate-pro/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/decidemate-pro/screenshot-3.png', // TODO: Replace with actual
-    ],
+    screenshots: [],
     links: {
       websiteUrl: null,
-      appStoreUrl: 'https://apps.apple.com/app/decidemate-pro', // TODO: Replace with actual App Store link
+      appStoreUrl: 'https://apps.apple.com/app/decidemate-pro/id6738579894',
       playStoreUrl: null,
     },
-    color: '#06b6d4', // Cyan for decision
+    color: '#06b6d4',
     featured: true,
   },
   {
-    id: 'solidtrack',
-    name: 'SolidTrack',
-    description: 'Complete workout tracking app with food log, meditation features',
-    platform: ['Mobile'],
+    id: 'solidcare',
+    slug: 'solidcare',
+    name: 'Solidcare - Healthcare',
+    description: 'Healthcare management for clinics and patients: appointments, records and follow-ups in one place.',
+    platform: ['Web', 'Mobile'],
     status: 'LIVE',
-    icon: '/src/assets/products/solidtrack/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/solidtrack/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/solidtrack/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/solidtrack/screenshot-3.png', // TODO: Replace with actual
-    ],
+    screenshots: [],
     links: {
-      websiteUrl: null,
-      appStoreUrl: 'https://apps.apple.com/app/solidtrack', // TODO: Replace with actual App Store link
+      websiteUrl: 'https://solidcare.org/',
+      appStoreUrl: 'https://apps.apple.com/app/solidcare-healthcare/id6473382556',
       playStoreUrl: null,
     },
-    color: '#ef4444', // Red for fitness
+    color: '#10b981',
     featured: true,
   },
   {
-    id: 'solid-apps',
-    name: 'Solid Apps',
-    description: 'Discover all our apps and products in one place',
-    platform: ['Web'],
-    status: 'LIVE',
-    icon: '/src/assets/products/solid-apps/icon.png', // TODO: Add actual icon
-    screenshots: [
-      '/src/assets/products/solid-apps/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/solid-apps/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/solid-apps/screenshot-3.png', // TODO: Replace with actual
-    ],
-    links: {
-      websiteUrl: 'https://solidevapps.com/',
-      appStoreUrl: null,
-      playStoreUrl: null,
-    },
-    color: '#3b82f6', // Blue for brand
-    featured: false,
-  },
-  {
-    id: 'mindset-fuel-web',
-    name: 'MindsetFuel Web',
-    description: 'Stay motivated with daily AI-based quotes - Web version',
-    platform: ['Web'],
+    id: 'protech-wallet',
+    slug: 'protech-wallet',
+    name: 'ProTech Wallet',
+    description: 'A simple, secure personal bookkeeping app to understand and control your money.',
+    platform: ['Mobile'],
     status: 'IN PROGRESS',
-    icon: '/src/assets/products/mindset-fuel/icon.png', // TODO: Add actual icon (same as mobile)
-    screenshots: [
-      '/src/assets/products/mindset-fuel-web/screenshot-1.png', // TODO: Replace with actual
-      '/src/assets/products/mindset-fuel-web/screenshot-2.png', // TODO: Replace with actual
-      '/src/assets/products/mindset-fuel-web/screenshot-3.png', // TODO: Replace with actual
-    ],
+    screenshots: [],
     links: {
-      websiteUrl: null, // TODO: Add when available
+      websiteUrl: null,
       appStoreUrl: null,
       playStoreUrl: null,
     },
-    color: '#ec4899', // Pink for motivation (same as mobile)
+    color: '#8b5cf6',
     featured: false,
   },
 ];

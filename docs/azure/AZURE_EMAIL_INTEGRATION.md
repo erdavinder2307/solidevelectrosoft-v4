@@ -21,7 +21,14 @@ AI assistant  ──POST summary + history──▶  Firebase Function   ──�
   project-type and budget labels are sent as `projectType` and `budget`) and `website-callback` (the floating form,
   phone number only, no confirmation).
 - The client never sends a recipient, a subject, HTML or a key. A refused or failed call returns `{ success: false }`
-  and the form shows its "could not send" message; it never throws.
+  and the form shows its failure message; it never throws. The messages each form shows:
+
+  | Form | Failure message |
+  |---|---|
+  | Contact page form (`src/pages/Contact.jsx`) | "Sorry, we couldn't send your message. Please WhatsApp or call us on +91 91158 66828." |
+  | Contact form on the modern Contact page (`src/components/ui/ModernContactForm.jsx`) | "Something went wrong. Please try again or contact us directly." |
+  | FAQ form (`src/pages/Faq.jsx`) | "Sorry, we couldn't send your message. Please WhatsApp or call us on +91 91158 66828." |
+  | Floating "call me back" form (`src/components/ui/FloatingMenu.jsx`) | "Sorry, we couldn't send your query. Please WhatsApp or call us on +91 91158 66828." |
 - The API URL is the only email-related setting in this repository. If the API is ever hosted elsewhere, change it in
   `src/config/environment.js`.
 
@@ -44,7 +51,7 @@ that move together with the next change to this function.
 ## Testing
 
 - Forms, locally: `npm run dev`, submit a form with test data, and confirm in DevTools → Network one `POST` to the API
-  URL per submission. From `localhost` the API refuses the origin, so the form shows its "could not send" message;
+  URL per submission. From `localhost` the API refuses the origin, so the form shows its failure message (table above);
   that is expected.
 - Requirements email: call the deployed function with test data only (it emails the inbox configured in the function):
 
@@ -58,6 +65,6 @@ curl -X POST "<functions base URL>/sendRequirements" \
 
 - `Azure Communication Services configuration missing` in the function logs: the runtime configuration key above is
   not set for the deployed project.
-- A form shows "could not send" on the live site: check the email API's own logs (origin allow-list, rate limit,
+- A form shows its failure message on the live site: check the email API's own logs (origin allow-list, rate limit,
   validation) in its repository; the website only reports success or failure.
 - `firebase functions:log` shows the function's output; the email API has its own Application Insights.

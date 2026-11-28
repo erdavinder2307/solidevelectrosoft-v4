@@ -25,6 +25,10 @@ const ModernContactForm = ({
   const [submitStatus, setSubmitStatus] = useState(null);
   const formStartedRef = useRef(false); // Track if user started form
 
+  // Readable option label for a stored option value ("web-app" → "Web Application").
+  const labelOf = (options, value) =>
+    value ? options.find((option) => option.value === value)?.label || value : undefined;
+
   const projectTypes = [
     { value: '', label: 'Select project type' },
     { value: 'web-app', label: 'Web Application' },
@@ -65,8 +69,6 @@ const ModernContactForm = ({
     try {
       // Send through the Solidev email API: it owns the recipients and templates and emails
       // the sender a confirmation. The readable option labels go in, not the option values.
-      const labelOf = (options, value) =>
-        value ? options.find((option) => option.value === value)?.label || value : undefined;
       const result = await emailService.sendContactFormEmail({
         name: formData.name,
         email: formData.email,
@@ -112,7 +114,7 @@ const ModernContactForm = ({
     }
   };
 
-  const whatsappMessage = `Hi! I'm ${formData.name || '[Your Name]'} and I'm interested in discussing a ${formData.projectType || 'project'} with Solidev Electrosoft.`;
+  const whatsappMessage = `Hi! I'm ${formData.name || '[Your Name]'} and I'm interested in discussing a ${labelOf(projectTypes, formData.projectType) || 'project'} with Solidev Electrosoft.`;
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const inputStyle = {
