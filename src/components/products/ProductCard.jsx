@@ -197,7 +197,7 @@ const ProductCard = ({ product, onViewScreenshots }) => {
                   objectFit: 'cover',
                 }}
               />
-            ) : iconError ? (
+            ) : !icon || iconError ? (
               <PlaceholderImage
                 width={64}
                 height={64}
