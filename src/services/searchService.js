@@ -80,6 +80,16 @@ const STATIC_PAGES = [
     date: null,
   },
   {
+    id: 'services-game',
+    type: 'page',
+    title: 'Game Development',
+    description: 'Unity mobile games for iOS and Android, from first prototype to store release.',
+    slug: 'services/game-development',
+    url: '/services/game-development',
+    tags: ['game', 'unity', 'mobile', 'ios', 'android'],
+    date: null,
+  },
+  {
     id: 'contact',
     type: 'page',
     title: 'Contact Us',

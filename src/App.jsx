@@ -22,6 +22,7 @@ import {
   MobileAppService,
   AISolutionsService,
   MVPDevelopmentService,
+  GameDevelopmentService,
   ModernBlog,
   BlogDetails,
   UpdateDetails,
@@ -172,6 +173,7 @@ function App() {
             <Route path="/services/mobile-app-development" element={<MobileAppService />} />
             <Route path="/services/ai-solutions" element={<AISolutionsService />} />
             <Route path="/services/mvp-development" element={<MVPDevelopmentService />} />
+            <Route path="/services/game-development" element={<GameDevelopmentService />} />
 
             {/* Legacy route aliases for SEO */}
             <Route path="/web-development" element={<WebDevelopmentService />} />

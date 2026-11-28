@@ -24,3 +24,4 @@ export { default as WebDevelopmentService } from './services/WebDevelopment';
 export { default as MobileAppService } from './services/MobileAppDevelopment';
 export { default as AISolutionsService } from './services/AISolutions';
 export { default as MVPDevelopmentService } from './services/MVPDevelopment';
+export { default as GameDevelopmentService } from './services/GameDevelopment';

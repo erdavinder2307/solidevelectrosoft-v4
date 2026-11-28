@@ -66,6 +66,7 @@ const ModernFooter = ({ onQuoteClick = null }) => {
       { label: 'Mobile App Development', path: '/services/mobile-app-development' },
       { label: 'AI Team & Automation', path: '/services/ai-solutions' },
       { label: 'MVP Development', path: '/services/mvp-development' },
+      { label: 'Game Development', path: '/services/game-development' },
     ],
     company: [
       { label: 'About Us', path: '/about' },

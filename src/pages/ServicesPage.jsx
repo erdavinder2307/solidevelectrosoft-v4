@@ -6,6 +6,7 @@ import {
   FaMobileAlt,
   FaBrain,
   FaRocket,
+  FaGamepad,
   FaPalette,
   FaCloud,
   FaCogs,
@@ -85,6 +86,14 @@ const Services = () => {
       link: '/services/mvp-development',
       proof: { before: 'Check our', linkText: 'startup success stories', after: '.', to: '/products', ariaLabel: 'View startup success stories' },
       color: '#22c55e',
+    },
+    {
+      icon: FaGamepad,
+      title: 'Game Development',
+      description: 'Mobile games built in Unity, from first prototype to store release. An AI game developer does the heavy lifting and a person checks every change.',
+      features: ['Unity mobile games', 'Casual and 2D games', 'Playable prototypes', 'Store release help'],
+      link: '/services/game-development',
+      color: '#f59e0b',
     },
   ];
 

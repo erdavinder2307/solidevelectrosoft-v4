@@ -100,6 +100,14 @@ export const pageSEO = {
     ogType: 'service',
   },
   
+  servicesGameDev: {
+    title: 'Mobile Game Development (Unity)',
+    description: 'Unity mobile games for iOS and Android, with an AI-assisted art pipeline and a person reviewing every change. Prototype to store release.',
+    keywords: 'mobile game development, Unity game development, iOS game development, Android game development, game prototype, Unity WebGL',
+    canonical: '/services/game-development',
+    ogType: 'service',
+  },
+  
   products: {
     title: 'Our Products | Custom Software Applications',
     description: 'Explore our portfolio of custom software products including web applications, mobile apps, and SaaS platforms built for clients worldwide.',
@@ -226,6 +234,12 @@ export const services = [
     name: 'MVP Development for Startups',
     shortName: 'MVP Development',
     path: '/services/mvp-development',
+  },
+  {
+    slug: 'game-development',
+    name: 'Mobile Game Development',
+    shortName: 'Game Development',
+    path: '/services/game-development',
   },
 ];
 
