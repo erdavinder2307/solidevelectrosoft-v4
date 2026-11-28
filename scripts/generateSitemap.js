@@ -38,6 +38,9 @@ const STATIC_ROUTES = [
   { loc: '/apps/protech-worth/privacy', changefreq: 'yearly', priority: '0.3' },
   { loc: '/apps/protech-worth/terms', changefreq: 'yearly', priority: '0.3' },
   { loc: '/apps/protech-worth/support', changefreq: 'yearly', priority: '0.4' },
+  { loc: '/solidtrack/privacy', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/solidtrack/terms', changefreq: 'yearly', priority: '0.3' },
+  { loc: '/solidtrack/support', changefreq: 'yearly', priority: '0.4' },
 ];
 
 function xmlEscape(value) {
