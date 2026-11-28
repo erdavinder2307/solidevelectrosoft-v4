@@ -33,6 +33,7 @@ const ModernHeader = () => {
         { path: '/services/mobile-app-development', label: 'Mobile App Development' },
         { path: '/services/ai-solutions', label: 'AI Team & Automation' },
         { path: '/services/mvp-development', label: 'MVP Development' },
+        { path: '/flutter-app-rescue-audit', label: 'Flutter App Rescue Audit' },
       ],
     },
     {

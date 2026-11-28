@@ -277,6 +277,38 @@ const Services = () => {
           </div>
         </section>
 
+        {/* Flutter App Rescue Audit offer */}
+        <section style={{ padding: '0 0 var(--space-20)', background: 'var(--bg-primary)' }}>
+          <div className="modern-container">
+            <div
+              className="modern-card"
+              style={{
+                padding: 'var(--space-8)',
+                borderTop: '3px solid #0ea5e9',
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 'var(--space-6)',
+              }}
+            >
+              <div style={{ flex: '1 1 320px' }}>
+                <h2 className="modern-h3" style={{ marginBottom: 'var(--space-3)' }}>
+                  Flutter App Rescue Audit
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+                  Is your Flutter app stuck? For a fixed $149, get a plain-English report of the top 10 problems and a
+                  fix plan with a price per item in 3 working days from repo access. The $149 is credited to any fix you order within 30 days.
+                </p>
+              </div>
+              <Link to="/flutter-app-rescue-audit" className="modern-btn modern-btn-primary">
+                See the audit
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Additional Services */}
         <section style={{ padding: 'var(--space-20) 0', background: 'var(--bg-secondary)' }}>
           <div className="modern-container">
